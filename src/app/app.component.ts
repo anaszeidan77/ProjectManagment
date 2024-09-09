@@ -10,8 +10,7 @@ import { ButtonComponent } from "./components/shared/button/button.component";
 import { TextControlComponent } from "./components/shared/text-control/text-control.component";
 import { TestService } from './services/test.service';
 import { TableComponent } from "./components/shared/table/table.component";
-import { Task } from './model/Task';
-import { TaskService } from './services/task.service';
+
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -33,11 +32,10 @@ handleSubmit($event: Event) {
 
   constructor(public pageLayoutService:PageLayoutService,
     private testService:TestService,
-    private taskService: TaskService,
     private fb: FormBuilder){}
   ngOnInit(): void {
     this.initForm();
-    this.loadTasks(this.pageNumber, this.pageSize);
+    // this.loadTasks(this.pageNumber, this.pageSize);
   
   }
 
@@ -67,24 +65,24 @@ logIn() {
  
 
 
-  tableData: (string | number | boolean)[][] = [];
-  headers = ['Task Name', 'Description', 'Due Date', 'Priority', 'Status'];
-  totalItems: number = 0;
-  totalPages: number = 1;
-  pageNumber: number = 1;
-  pageSize: number = 10;
+  // tableData: (string | number | boolean)[][] = [];
+  // headers = ['Task Name', 'Description', 'Due Date', 'Priority', 'Status'];
+  // totalItems: number = 0;
+  // totalPages: number = 1;
+  // pageNumber: number = 1;
+  // pageSize: number = 10;
   
   
-  loadTasks(pageNumber: number, pageSize: number): void {
-    this.taskService.getTasks(pageNumber, pageSize).subscribe((tableData: (string | number | boolean)[][]) => {
-      this.tableData = tableData;
+  // loadTasks(pageNumber: number, pageSize: number): void {
+  //   this.taskService.getTasks(pageNumber, pageSize).subscribe((tableData: (string | number | boolean)[][]) => {
+  //     this.tableData = tableData;
   
-    });
-  }
+  //   });
+  // }
 
-  fetchPageData = (pageNumber: number, pageSize: number) => {
-    this.loadTasks(pageNumber, pageSize);
-  };
+  // fetchPageData = (pageNumber: number, pageSize: number) => {
+  //   this.loadTasks(pageNumber, pageSize);
+  // };
 
 
 
