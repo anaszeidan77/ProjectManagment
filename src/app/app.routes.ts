@@ -1,14 +1,10 @@
 import { Routes } from '@angular/router';
-import { TestComponent } from './components/test/test.component';
 import { setLayout } from './resolvers/layout.resolver';
 import { PageLayout } from './enums/page-layout.enum';
+import { TaskComponent } from './components/task/task.component';
 
 export const routes: Routes =
 [
-
-
-  {path:'test',component:TestComponent},
-
   {
     path: 'dashboard',
     loadComponent: () => import('./components/dashboard/dashboard.component')
@@ -17,7 +13,7 @@ export const routes: Routes =
       layout: () => setLayout(PageLayout.Dashboard)
     },
     children: [
-      { path: 'test', component: TestComponent }
+      
     ]
   },
 
@@ -27,4 +23,7 @@ export const routes: Routes =
     },
    
   },
+  {path: 'tasks',loadComponent:()=>import('./components/task/task.component')
+    .then(t=>t.TaskComponent)
+  }
 ];

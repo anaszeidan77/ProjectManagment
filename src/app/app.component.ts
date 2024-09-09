@@ -4,7 +4,6 @@ import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { PageLayout } from './enums/page-layout.enum';
 import { PageLayoutService } from './services/page-layout.service';
 import { CommonModule } from '@angular/common';
-import { TestComponent } from "./components/test/test.component";
 import { CardComponent } from "./components/shared/card/card.component";
 import { ButtonComponent } from "./components/shared/button/button.component";
 import { TextControlComponent } from "./components/shared/text-control/text-control.component";
@@ -12,11 +11,12 @@ import { TestService } from './services/test.service';
 import { TableComponent } from "./components/shared/table/table.component";
 
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { TaskComponent } from "./components/task/task.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, DashboardComponent, CommonModule, TestComponent,ReactiveFormsModule, CardComponent, ButtonComponent, TextControlComponent, TableComponent],
+  imports: [RouterOutlet, DashboardComponent, CommonModule, ReactiveFormsModule, CardComponent, ButtonComponent, TextControlComponent, TableComponent, TaskComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
