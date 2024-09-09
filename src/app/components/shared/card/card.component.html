@@ -1,0 +1,36 @@
+<div
+[id]="id"
+[class]="class + ' ' + btnClass"
+[style.width]="width"
+[style.height]="higth"
+[style.backgroundColor]="backgroundColor"
+[style.border]="border"
+[style.borderRadius]="borderRadius"
+[style.boxShadow]="boxShadow"
+[style.padding]="padding"
+[style.margin]="margin"
+>
+@if (image) {
+
+    <div class="card-image">
+        <img [src]="image" [alt]="imageAlt" [style.borderRadius]="imageBorderRadius" />
+      </div>
+}
+<div class="card-body">
+@if(title){
+    <h4  [style.color]="titleColor" [style.textAlign]="titleAlign">{{ title }}</h4>
+}
+@if (text) {
+    <p  [style.color]="textColor" [style.textAlign]="textAlign">{{ text }}</p>
+}
+<ng-content></ng-content>
+</div>
+  
+ 
+@if(icon){
+    <div class="card-icon">
+        <i [class]="iconClass" [style.color]="iconColor" [style.fontSize]="iconSize"></i>
+      </div>
+}
+
+</div>

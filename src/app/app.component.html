@@ -1,4 +1,4 @@
-<app-dashboard></app-dashboard>
+<!-- <app-dashboard></app-dashboard> -->
 
 <!--
 <router-outlet></router-outlet>
@@ -29,3 +29,81 @@
   }
 }
 -->
+<app-card
+  id="productCard"
+  class="card"
+  bootstrapClass="card"
+  [imageAlt]="'Product Image'"
+  [imageBorderRadius]="'8px'"
+  [title]="'Product Title'"
+  [titleColor]="'#333'"
+  [titleAlign]="'center'"
+  [text]="'This is a description of the product. It provides information about the features and benefits.'"
+  [textColor]="'#666'"
+  [textAlign]="'justify'"
+  [icon]="'fa fa-star'"
+  [iconClass]="'icon-class'"
+  [iconColor]="'#f39c12'"
+  [iconSize]="'20px'"
+  [width]="'350px'"
+  [higth]="'400px'"
+  [backgroundColor]="'#f8f9fa'"
+  [border]="'2px solid #dee2e6'"
+  [borderRadius]="'10px'"
+  [boxShadow]="'0 6px 12px rgba(0,0,0,0.15)'"
+  [padding]="'20px'"
+  [margin]="'15px'"
+>
+
+</app-card>
+
+<app-table
+  [headers]="headers"
+  [data]="tableData"
+  [totalItems]="totalItems"
+  [totalPages]="totalPages"
+  [pageNumber]="pageNumber"
+  [pagination]="true"
+  [pageSize]="pageSize"
+  [fetchPageData]="fetchPageData"
+  [btnClass]="'table table-striped'"
+></app-table>
+
+
+<br><br><br>
+
+<form [formGroup]="form" (ngSubmit)="logIn()">
+
+  <app-text-control
+  
+  id="username"
+  name="username"
+  labelFor="username"
+  labelId="username-label"
+  labelClass="form-label"
+  labelText="Username"
+  placeholder="Enter username"
+  btnClass="form-control form-floating-sm"
+  formControlName="username"
+ iconClass="fas fa-user"
+  iconColor="blue"
+  iconSize="20px"
+  iconPosition="left"
+></app-text-control>
+
+
+  <app-button
+  id="submitButton"
+  name="submitBtn"
+  class="btn-custom"
+  bootstrapClass="btn btn-primary"
+  type="submit"
+  label="Submit"
+  [color]="'white'"
+  [backgroundColor]="'#28a745'"
+  [border]="'2px solid #28a745'"
+  [borderRadius]="'10px'"
+  [disabled]="false"
+></app-button>
+</form>
+

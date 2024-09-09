@@ -1,0 +1,50 @@
+<div class="form-floating">
+
+    <input
+    [type]="type"
+    [id]="id"
+    [name]="name"
+    [class]="class + ' ' + btnClass"
+    [placeholder]="placeholder"
+    [value]="value"
+    [attr.aria-label]="ariaLabel"
+    [disabled]="disabled"
+    [readonly]="readonly"
+    [required]="required"
+    [attr.minlength]="minlength ? minlength : null"
+    [attr.maxlength]="maxlength ? maxlength : null"
+    [style.color]="color"
+    [style.backgroundColor]="backgroundColor"
+    [style.border]="border"
+    [style.borderRadius]="borderRadius"
+    [style.height]="height"
+    [style.width]="width"
+    (input)="onInputChange($event)"
+    (click)="onClick($event)"
+    (focus)="onFocus($event)"
+    (blur)="onBlur($event)"
+    
+  />
+ 
+
+
+  <label
+  [for]="labelFor"
+  [id]="labelId"
+  [class]="labelClass"
+  [style.color]="labelColor"
+  [style.backgroundColor]="labelBackgroundColor"
+  [style.fontSize]="labelFontSize"
+  [style.fontWeight]="labelFontWeight"
+  [style.margin]="labelMargin"
+  [style.padding]="labelPadding"
+  [style.textAlign]="labelTextAlign"
+>
+  {{ labelText }}
+</label>
+
+
+
+
+</div>
+

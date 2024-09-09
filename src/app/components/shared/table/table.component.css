@@ -1,0 +1,12 @@
+table {
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 10px;
+  }
+  .hover-row:hover {
+    background-color: var(--hoverColor);
+  }
+  .selected-row {
+    background-color: var(--selectedRowColor);
+  }

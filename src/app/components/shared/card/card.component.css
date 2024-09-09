@@ -1,0 +1,11 @@
+.card-image img {
+    width: 100%;
+    height: auto;
+  }
+  .card-body {
+    padding: 10px;
+  }
+  .card-icon {
+    text-align: center;
+    padding: 10px;
+  }

@@ -1,0 +1,14 @@
+<button
+[id]="id"
+[name]="name"
+[class]="class + ' ' + bootstrapClass"
+[type]="type"
+[disabled]="disabled"
+[style.color]="color"
+[style.backgroundColor]="backgroundColor"
+[style.border]="border"
+[style.borderRadius]="borderRadius"
+(click)="onClick($event)"
+>
+{{ label }}
+</button>

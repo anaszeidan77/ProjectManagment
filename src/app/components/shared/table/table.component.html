@@ -1,0 +1,47 @@
+<table
+      [id]="id"
+      [class]="class + ' ' + btnClass"
+      [style.width]="width"
+      [style.color]="color"
+      [style.backgroundColor]="backgroundColor"
+      [style.border]="border"
+      [style.borderRadius]="borderRadius"
+      [style.borderCollapse]="'collapse'"
+    >
+      <thead>
+        <tr>
+            @for (header of headers; track $index) {
+          <th [ngClass]="{'hover-row': hoverColor, 'selected-row': selectedRow === $index}"
+              [style.textAlign]="headerAlign"
+              [style.width]="columnWidths[headers.indexOf(header)]"
+              [style.cursor]="sortable ? 'pointer' : 'default'"
+              (click)="onHeaderClick($event, headers.indexOf(header))">
+            {{ header }}
+          </th>
+        }
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of paginatedData; track $index) {
+        <tr
+          
+        
+            (click)="onRowClick($index)">
+        @for (column of row; track $index) {
+          <td
+              [style.textAlign]="dataAlign"
+              [style.width]="columnWidths[row.indexOf(column)]">
+            {{ column }}
+          </td>
+        }
+        </tr>
+    }
+      </tbody>
+    </table>
+    @if (pagination) {
+    <div>
+      <button (click)="previousPage()" [disabled]="currentPage <= 1">Previous</button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button (click)="nextPage()" [disabled]="currentPage >= totalPages">Next</button>
+    </div>
+}
