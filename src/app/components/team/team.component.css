@@ -1,0 +1,121 @@
+/* .team-card {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+    background-color: red;
+  }
+  .team-icon {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #eee;
+    margin: 0 5px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 20px;
+  } */
+
+
+
+  .team-card {
+    border: 1px solid #e3e3e3;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+
+  .team-card .team-name {
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  .team-card .team-avatars {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .team-card .team-avatars img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .team-card .footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  .team-card .menu-icon {
+    cursor: pointer;
+  }
+
+
+
+
+
+
+  .card-body {
+    position: relative; /* للتأكيد على التموضع النسبي */
+  }
+  
+  .btn-link {
+    color: #000; /* تغيير لون النقاط الثلاث */
+    font-size: 1.5rem; /* تكبير النقاط قليلاً للتأكيد */
+  }
+  
+  .btn-link:hover {
+    color: #0056b3; /* تغيير اللون عند التحويم */
+  }
+  
+  .dropdown-toggle::after {
+    display: none; /* إخفاء السهم */
+}
+
+
+.dropdown-toggle {
+  cursor: pointer; /* يظهر الفأرة على شكل يد عند المرور فوق النص */
+  padding: 5px;    /* مسافة بادئة للنقاط لتسهيل النقر عليها */
+  font-size: 24px; /* حجم مناسب للنقاط */
+  font-weight: bold;
+}
+
+.dropdown-toggle:hover {
+  color: #555; /* تغيير لون النقاط عند النقر */
+}
+
+.dropdown-menu {
+  margin-top: 5px; /* تأكد من أن القائمة تظهر تحت النقاط مباشرة */
+}
+
+.dropdown-toggle:hover {
+  color: #555; /* تغيير لون النقاط عند النقر */
+}
+
+
+
+
+
+
+
+
+
+.rounded-circle {
+  object-fit: cover;  /* تأكد من أن الصور تُعرض بشكل مناسب داخل الدوائر */
+}
+
+.badge.bg-primary {
+  font-size: 16px;  /* تكبير الخط للبادج لزيادة الوضوح */
+  height: 40px;  /* ضمان أن يكون البادج بنفس ارتفاع الصور */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

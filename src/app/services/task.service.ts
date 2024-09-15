@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { Task } from '../model/task';
 
 @Injectable({
@@ -10,14 +10,13 @@ export class TaskService {
 
   private apiUrl = 'https://localhost:7058/api/Tasks';
   constructor(private http :HttpClient) { }
-  
-  getTasks():Observable<Task[]>{
-    return this.http.get<Task[]>(this.apiUrl)
-    .pipe(
-      catchError(this.handleError<Task[]>('getTasks',[]))
+ 
+  getAllTask(): Observable<any[]> {
+    return this.http.get<any>(this.apiUrl).pipe(
+      map((response: any) => response.data) // استخراج البيانات من الحقل data
     );
   }
-
+  
   getTasksById(id:string):Observable<Task>{
     const url = `${this.apiUrl}/${id}`;
     return this.http.get<Task>(url).

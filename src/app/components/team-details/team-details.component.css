@@ -1,0 +1,37 @@
+.team-header {
+    margin-top: 20px;
+    padding: 20px 0;
+    text-align: center;
+  }
+  .team-header h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+  .team-description {
+    margin: 20px 0;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #666666;
+  }
+  .team-member-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+  }
+  .team-member-card:hover {
+    transform: translateY(-5px);
+  }
+  .team-member-card h5 {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  .team-member-card p {
+    color: #666666;
+  }
+  .search-bar {
+    margin: 20px 0;
+    text-align: center;
+  }

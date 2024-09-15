@@ -1,10 +1,16 @@
 import { Routes } from '@angular/router';
 import { setLayout } from './resolvers/layout.resolver';
 import { PageLayout } from './enums/page-layout.enum';
+
+import { TeamComponent } from './components/team/team.component';
+import { TeamDetailsComponent } from './components/team-details/team-details.component';
 import { TaskComponent } from './components/task/task.component';
 
 export const routes: Routes =
 [
+  {path:'tasks',component:TaskComponent},
+  {path:'teams',component:TeamComponent},
+  {path:'TeamDetails/:Id',component:TeamDetailsComponent},
   {
     path: 'dashboard',
     loadComponent: () => import('./components/dashboard/dashboard.component')
@@ -23,7 +29,10 @@ export const routes: Routes =
     },
    
   },
-  {path: 'tasks',loadComponent:()=>import('./components/task/task.component')
-    .then(t=>t.TaskComponent)
-  }
+  
+
+
+  // {path: 'tasks',loadComponent:()=>import('./components/task/task.component')
+  //   .then(t=>t.TaskComponent)
+  // }
 ];

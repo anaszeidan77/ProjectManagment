@@ -1,0 +1,22 @@
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+  }
+  
+  .page-item {
+    margin: 0 5px;
+  }
+  
+  .page-item.disabled a {
+    pointer-events: none;
+    opacity: 0.6;
+  }
+  
+  .page-item.active a {
+    font-weight: bold;
+    color: white;
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  

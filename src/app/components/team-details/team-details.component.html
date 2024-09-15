@@ -1,0 +1,54 @@
+
+
+
+@if(team){
+
+
+<div class="container">
+    
+    <!-- Team Header -->
+    <div class="team-header">
+      <h1>{{team.teamName}}</h1>
+      <div class="team-description">
+      {{team.description}}
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+ 
+        <div class="search-bar">
+          <input type="text" class="form-control w-50 mx-auto" placeholder="Search team members"
+            [(ngModel)]="searchQuery" (input)="filterTeamMembers()" name="search" />
+        </div>
+    
+      
+
+@if(filteredTeamMembers && filteredTeamMembers.length > 0){
+
+    <div class="row g-4">
+  
+       @for (teamMem of team.teamMembers; track $index) {
+      <div class="col-lg-4 col-md-6">
+        <div class="team-member-card">
+          <div class="avatar mb-3">
+            <img src="../../../assets/TemplateDahboard/images/avatar/8.jpg" class="rounded-circle" alt="Profile Picture">
+          </div>
+          <h5>{{teamMem.firstName}} {{teamMem.lastName}}</h5>
+          <!-- <p>Role:{{teamMem.}}</p> -->
+          <p>Email:{{teamMem.userName}}</p>
+          <p>Joined: {{teamMem.createdAt}}</p>
+        </div>
+      </div>
+    }
+    </div>
+}@else {
+    <div class="alert alert-warning" role="alert">
+       Not Found Itme
+      </div>
+}
+
+
+  </div>
+}
+
+
