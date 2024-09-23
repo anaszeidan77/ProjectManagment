@@ -14,10 +14,8 @@ import { ProjectService } from '../../services/project.service';
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.css']
 })
-<<<<<<< HEAD
-export class TaskComponent {
-  
-=======
+
+
 export class TaskComponent implements OnInit {
   @ViewChild('editTaskModal') editTaskModal!: TemplateRef<any>; // إضافة المرجع للمودال
 
@@ -64,7 +62,7 @@ export class TaskComponent implements OnInit {
   }
 
   loadTasks(): void {
-    this.taskService.getTasks().subscribe({
+    this.taskService.getAllTask().subscribe({
       next: (tasks: Task[]) => {
         this.tasks = tasks;
       },
@@ -219,5 +217,4 @@ export class TaskComponent implements OnInit {
       }
     });
   }
->>>>>>> a61c2cb (create_login_register_tasks)
 }
