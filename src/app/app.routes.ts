@@ -5,6 +5,7 @@ import { PageLayout } from './enums/page-layout.enum';
 import { TeamComponent } from './components/team/team.component';
 import { TeamDetailsComponent } from './components/team-details/team-details.component';
 import { TaskComponent } from './components/task/task.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes =
 [
@@ -15,6 +16,7 @@ export const routes: Routes =
     path: 'dashboard',
     loadComponent: () => import('./components/dashboard/dashboard.component')
       .then(m => m.DashboardComponent),
+    canActivate:([authGuard]),
     resolve: {
       layout: () => setLayout(PageLayout.Dashboard)
     },
@@ -29,10 +31,21 @@ export const routes: Routes =
     },
    
   },
+<<<<<<< HEAD
   
 
 
   // {path: 'tasks',loadComponent:()=>import('./components/task/task.component')
   //   .then(t=>t.TaskComponent)
   // }
+=======
+  {path: 'tasks',loadComponent:()=>import('./components/task/task.component')
+    .then(t=>t.TaskComponent),
+    canActivate:([authGuard]),
+  },
+  {
+    path:'',loadComponent:()=>import('./components/auth/auth.component')
+    .then(l=>l.AuthComponent)
+  }
+>>>>>>> a61c2cb (create_login_register_tasks)
 ];

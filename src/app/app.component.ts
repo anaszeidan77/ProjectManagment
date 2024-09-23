@@ -12,11 +12,12 @@ import { TableComponent } from "./components/shared/table/table.component";
 
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TaskComponent } from "./components/task/task.component";
+import { AuthComponent} from "./components/auth/auth.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, DashboardComponent, CommonModule, ReactiveFormsModule, CardComponent, ButtonComponent, TextControlComponent, TableComponent, TaskComponent],
+  imports: [RouterOutlet, DashboardComponent, CommonModule, ReactiveFormsModule, CardComponent, ButtonComponent, TextControlComponent, TableComponent, TaskComponent, AuthComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
