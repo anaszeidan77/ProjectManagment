@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { PageLayout } from './enums/page-layout.enum';
@@ -10,13 +10,16 @@ import { TextControlComponent } from "./components/shared/text-control/text-cont
 import { TestService } from './services/test.service';
 import { TableComponent } from "./components/shared/table/table.component";
 
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TaskComponent } from "./components/task/task.component";
+import { ModalService } from './services/modal.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, DashboardComponent, CommonModule, ReactiveFormsModule, CardComponent, ButtonComponent, TextControlComponent, TableComponent, TaskComponent],
+  imports: [RouterOutlet, DashboardComponent, CommonModule,
+     ReactiveFormsModule, CardComponent, ButtonComponent,
+      TextControlComponent, TableComponent, TaskComponent,FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -32,6 +35,7 @@ handleSubmit($event: Event) {
 
   constructor(public pageLayoutService:PageLayoutService,
     private testService:TestService,
+    private modalService: ModalService,
     private fb: FormBuilder){}
   ngOnInit(): void {
     this.initForm();
@@ -86,7 +90,18 @@ logIn() {
 
 
 
+
   
+
+
+
+
+
+
+
+
+
+
 }
 
 

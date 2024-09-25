@@ -11,7 +11,7 @@ import { TeamMember } from "./TeamMember";
 //   }
 
   export interface Team {
-    teamId?: string;
+    teamId: string;
     teamName: string;
     description: string;
     projectId: string;

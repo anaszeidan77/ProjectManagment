@@ -26,6 +26,16 @@ export class TeamsService {
 
    return  this.http.get<Team>(`${this.apiUrl}/${Id}`)
   }
+
+  addTeam(teamData: Team): Observable<Team> {
+    return this.http.post<Team>(this.apiUrl, teamData);
+  }
+delete(teamId:string):Observable<Team>{
+  return this.http.delete<Team>(`${this.apiUrl}/${teamId}`)
+}
+update(teamData: Team):Observable<Team>{
+  return this.http.delete<Team>(this.apiUrl)
+}
   }
 
   

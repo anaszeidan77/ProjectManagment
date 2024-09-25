@@ -1,0 +1,15 @@
+<div class="modal-overlay">
+    <div class="modal-content">
+      <h2>{{ title }}</h2>
+
+      <div class="modal-body">
+        <ng-container *ngTemplateOutlet="bodyTemplate; context: { data: data }"></ng-container>
+      </div>
+
+      <div class="modal-actions">
+        <button *ngFor="let button of buttons" (click)="onAction(button.action)" [ngStyle]="button.style">
+          {{ button.label }}
+        </button>
+      </div>
+    </div>
+  </div>

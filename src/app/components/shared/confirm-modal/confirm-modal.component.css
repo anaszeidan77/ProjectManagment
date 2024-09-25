@@ -1,0 +1,10 @@
+.custom-header {
+    background-color: #ec2222; /* اللون الأزرق */
+    color: white;
+    padding: 1rem;
+  }
+  
+  .custom-header .close {
+    color: white;
+  }
+  

@@ -1,13 +1,6 @@
-// "projectId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-// "projectName": "string",
-// "description": "string",
-// "startDate": "2024-09-09T10:52:11.611Z",
-// "endDate": "2024-09-09T10:52:11.611Z",
-// "budget": 0,
-// "status": 0,
-// "createdBy": "string",
-// "createdAt": "2024-09-09T10:52:11.611Z",
-// "isDeleted": true,
+import { Task } from "./task";
+import { Team } from "./team";
+
 export interface Project{
     projectId:string;
     projectName:string;
@@ -19,4 +12,8 @@ export interface Project{
     createdBy:string;
     createdAt:Date;
     isDeleted:boolean;
+    documents: Document[];
+    resources: any[];
+    tasks: Task[];
+    teams: Team[];
 }
