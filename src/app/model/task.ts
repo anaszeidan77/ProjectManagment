@@ -2,13 +2,13 @@ export interface SubTask {
     subTaskId: string;
     subTaskName: string;
     description: string;
-    subTaskProgressPercentage: number;
-    isCompleted: boolean;
-    taskId: string;
+    subTaskProgressPercentage?: number;
+    isCompleted?: boolean;
+    taskId?: string;
   }
   
   export interface Task {
-    taskId: string;
+    taskId?: string;
     taskName: string;
     description: string;
     dueDate: string;
@@ -17,7 +17,7 @@ export interface SubTask {
     projectId: string;
     userId: string;
     createdBy: string;
-    isDeleted: boolean;
+    isDeleted?: boolean;
     subTaskDtos: SubTask[];
   }
   

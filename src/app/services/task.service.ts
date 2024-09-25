@@ -5,15 +5,23 @@ import { Task } from '../model/task';
 
 @Injectable({
   providedIn: 'root'
-})
+}) 
 export class TaskService {
-
   private apiUrl = 'https://localhost:7058/api/Tasks';
   constructor(private http :HttpClient) { }
+// <<<<<<< HEAD
  
-  getAllTask(): Observable<any[]> {
-    return this.http.get<any>(this.apiUrl).pipe(
-      map((response: any) => response.data) // استخراج البيانات من الحقل data
+//   getAllTask(): Observable<any[]> {
+//     return this.http.get<any>(this.apiUrl).pipe(
+//       map((response: any) => response.data) // استخراج البيانات من الحقل data
+// =======
+  
+  getTasks():Observable<Task[]>{
+    return this.http.get<Task[]>(this.apiUrl)
+    .pipe(
+      map((respose : any)=>respose.data),
+      catchError(this.handleError<Task[]>('getTasks',[]))
+
     );
   }
   
@@ -31,14 +39,16 @@ export class TaskService {
       catchError(this.handleError<Task>('addTask',))
     );
   }
-
-  updateTask(task:Task):Observable<any>{
-    const url = `${this.apiUrl}/${task.taskId}`;
-    return this.http.put(url,task,this.httpOptions)
+  updateTask(id : string,task:Task): Observable<any> {
+    const url = `${this.apiUrl}/${id}`;
+    console.log('Update URL:', url); // للتحقق
+    console.log(task.taskId)
+    return this.http.put(url, task, this.httpOptions)
     .pipe(
       catchError(this.handleError<any>('updateTask'))
-    )
+    );
   }
+  
 
   deleteTask(id?:string):Observable<Task>{
     const url = `${this.apiUrl}/${id}`;
@@ -47,11 +57,6 @@ export class TaskService {
       catchError(this.handleError<Task>('deleteTask'))
     )
   }
-
-
-
-
-
 
     // إعدادات HTTP
     private httpOptions = {

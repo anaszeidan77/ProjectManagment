@@ -1,0 +1,11 @@
+/* auth.component.css */
+.form-toggle-buttons .btn {
+    font-weight: bold;
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .form-toggle-buttons .btn.active {
+    text-decoration: underline;
+  }
+  

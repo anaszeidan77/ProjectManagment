@@ -63,7 +63,7 @@ export class TeamComponent implements OnInit,OnDestroy {
     this.initEditForm();
 
     this.getTeams();
-    this.getAllUsers();
+    // this.getAllUsers();
     this.getAllProjects();
 
     
@@ -155,19 +155,19 @@ console.log(error);
 
    
 
-  getAllUsers(){
-    this.user.getAll().subscribe(
-      {
-        next:(response)=>{
-          this.users=response;
+  // getAllUsers(){
+  //   this.user.getAll().subscribe(
+  //     {
+  //       next:(response)=>{
+  //         this.users=response;
         
-        },
-        error:(error)=>{
+  //       },
+  //       error:(error)=>{
 
-        }
-      }
-    )
-  }
+  //       }
+  //     }
+  //   )
+  // }
   getAllProjects(){
     this.projectsService.getAll().subscribe({
       next:(response)=>{
