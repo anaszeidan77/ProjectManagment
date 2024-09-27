@@ -64,41 +64,41 @@
 
 
   .card-body {
-    position: relative; /* للتأكيد على التموضع النسبي */
+    position: relative; 
   }
   
   .btn-link {
-    color: #000; /* تغيير لون النقاط الثلاث */
-    font-size: 1.5rem; /* تكبير النقاط قليلاً للتأكيد */
+    color: #000;
+    font-size: 1.5rem; 
   }
   
   .btn-link:hover {
-    color: #0056b3; /* تغيير اللون عند التحويم */
+    color: #0056b3;
   }
   
   .dropdown-toggle::after {
-    display: none; /* إخفاء السهم */
+    display: none;
 }
 
 
 .dropdown-toggle {
-  cursor: pointer; /* يظهر الفأرة على شكل يد عند المرور فوق النص */
-  padding: 5px;    /* مسافة بادئة للنقاط لتسهيل النقر عليها */
-  font-size: 24px; /* حجم مناسب للنقاط */
+  cursor: pointer; 
+  padding: 5px;   
+  font-size: 24px;
   font-weight: bold;
 }
 
 .dropdown-toggle:hover {
-  color: #555; /* تغيير لون النقاط عند النقر */
+  color: #555; 
 }
 
 .dropdown-menu {
-  margin-top: 5px; /* تأكد من أن القائمة تظهر تحت النقاط مباشرة */
+  margin-top: 5px; 
   padding: 10px;
 }
 
 .dropdown-toggle:hover {
-  color: #555; /* تغيير لون النقاط عند النقر */
+  color: #555; 
 }
 
 
@@ -110,12 +110,12 @@
 
 
 .rounded-circle {
-  object-fit: cover;  /* تأكد من أن الصور تُعرض بشكل مناسب داخل الدوائر */
+  object-fit: cover;  
 }
 
 .badge.bg-primary {
-  font-size: 16px;  /* تكبير الخط للبادج لزيادة الوضوح */
-  height: 40px;  /* ضمان أن يكون البادج بنفس ارتفاع الصور */
+  font-size: 16px; 
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -158,15 +158,15 @@
   width: 100%; 
   margin-bottom: 5px; 
 } */
-.delete-btn,
+.delete-btn,.view-btn,
 .edit-btn {
-  display: block; /* جعل الأزرار كعناصر كتلة لتظهر فوق بعضها البعض */
-  width: 100%; /* تأكد من أن الأزرار تأخذ عرض القائمة */
-  margin-bottom: 5px; /* مسافة بين الأزرار */
-  text-align: left; /* محاذاة النص لليسار */
-  background: none; /* إزالة الخلفية الافتراضية */
-  border: none; /* إزالة الحدود */
-  cursor: pointer; /* تغيير شكل الفأرة عند المرور */
+  display: block;
+  width: 100%; 
+  margin-bottom: 5px; 
+  text-align: left;
+  background: none; 
+  border: none;
+  cursor: pointer; 
 }
 .delete-btn i {
   color: red; /* Color of delete icon */
@@ -175,8 +175,10 @@
 .edit-btn i {
   color: green; /* Color of edit icon */
 }
-
-.delete-btn:hover i,
+.view-btn{
+  color: blue;
+}
+.delete-btn:hover i,.view-btn:hover i,
 .edit-btn:hover i {
   opacity: 0.7;
 }
@@ -186,7 +188,7 @@
   left: 50px; /* Adjust the distance between delete and edit buttons */
 }
 .delete-btn:hover, .edit-btn:hover {
-  opacity: 0.7; /* تأثير عند التحويم */
+  opacity: 0.7; 
 }
 .modal-body form {
   margin-top: 0;

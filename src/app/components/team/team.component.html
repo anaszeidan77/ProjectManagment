@@ -1,64 +1,76 @@
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-  Add
-</button>
-
-
-<!-- [routerLink]="['/TeamDetails', team.teamId]"  -->
 
 
 
-  @if(teams.length > 0){
-    <div class="container py-5">
-      <div class="row">
-        @for (team of teams; track $index) {
-          <div class="col-md-4">
-            <div class="card" style="position: relative;">
-              <div class="card-body" [routerLink]="['/TeamDetails', team.teamId]">
-                <div class="d-flex justify-content-between align-items-center">
-                  <h5 class="card-title mb-0">{{ team.teamName|truncateText:4 }}</h5>
-         
-                  <div class="dropdown">
-                    <span class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      ...
-                    </span>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                      <button class="delete-btn" (click)="deleteTeam(team.teamId)">
-                        <i class="fas fa-trash-alt"></i> حذف
-                      </button>
-                      <button type="button" class="btn btn-primary" 
-                      data-toggle="modal" (click)="openEditModal(team)"
-                       data-target="#exampleModalCenterEdit">
-                        edit
-                      </button>
-                      
-                      <button type="button" class="edit-btn" data-bs-toggle="modal" data-bs-target="#edit">
-                        <i class="fas fa-edit"></i> تعديل
-                      </button>
-                    </div>
-                  </div>
-                  
-                </div>
-                <p class="card-text mt-2">{{ team.description |truncateText:4 }}</p>
-                <div class="d-flex align-items-center">
-                  @for (teamMember of team.teamMembers.slice(0, 5); track $index) {
-                    <img src="../../../assets/TemplateDahboard/images/logo.png" class="rounded-circle me-2" alt="Member {{$index+1}}" style="width: 40px; height: 40px;">
-                  }
-                  @if(team.teamMembers.length > 5){
-                    <span class="badge bg-primary rounded-circle ms-3" style="margin-left: 5px;">
-                      +{{ team.teamMembers.length - 5 }}
-                    </span>
-                  }
-                </div>
+
+
+
+<div class="card-header border-0 d-flex justify-content-between align-items-center">
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+    Add
+  </button>
+  <h3 class="mb-0 title">list of Teams</h3>
+
+</div>
+
+<!--   <div class="card shadow"> [routerLink]="['/TeamDetails', team.teamId]"  -->
+
+
+
+@if(teams.length > 0){
+
+     
+           
+<div class="container py-5">
+  <div class="row">
+    @for (team of teams; track $index) {
+    <div class="col-md-4">
+      <div class="card" style="position: relative;">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">{{ team.teamName|truncateText:4 }}</h5>
+
+            <div class="dropdown">
+              <span class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                ...
+              </span>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                <button class="delete-btn" (click)="deleteTeam(team.teamId)">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+                <button type="button" class="view-btn" data-toggle="modal" (click)="viewDetails(team.teamId)"
+                  data-target="#exampleModalCenterEdit">
+                  <i class="fa fa-eye" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="edit-btn" (click)="openEditModal(team)" data-toggle="modal"
+                  data-target="#editModal">
+                  <i class="fas fa-edit"></i>
+                </button>
               </div>
-    
-          
             </div>
+
           </div>
-        }
+          <p class="card-text mt-2">{{ team.description |truncateText:4 }}</p>
+          <div class="d-flex align-items-center">
+            @for (teamMember of team.teamMembers.slice(0, 5); track $index) {
+            <img src="../../../assets/TemplateDahboard/images/logo.png" class="rounded-circle me-2"
+              alt="Member {{$index+1}}" style="width: 40px; height: 40px;">
+            }
+            @if(team.teamMembers.length > 5){
+            <span class="badge bg-primary rounded-circle ms-3" style="margin-left: 5px;">
+              +{{ team.teamMembers.length - 5 }}
+            </span>
+            }
+          </div>
+        </div>
+
+
       </div>
     </div>
-    
+    }
+  </div>
+</div>
+
 }
 
 
@@ -66,52 +78,53 @@
 
 
 
-
-
 <!-- Modal Add -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div #addModal class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">Add a New Team</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button #closeButton type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-   
+
         <form (submit)="Add()" [formGroup]="addTeamForm" class="container">
-  
-          <div class="row mb-3">
-              <div class="col-md-12">
-                  <label for="teamName" class="form-label">Team Name</label>
-                  <input type="text" id="teamName" formControlName="teamName" class="form-control" placeholder="Enter team name">
-              </div>
-          </div>
-      
-         
-          <div class="row mb-3">
-              <div class="col-md-12">
-                  <label for="description" class="form-label">Description</label>
-                  <textarea id="description" formControlName="description" class="form-control" rows="3" placeholder="Enter description"></textarea>
-              </div>
-          </div>
-      
 
           <div class="row mb-3">
-              <div class="col-md-12">
-                  <label for="singleSelect" class="form-label">Select Project</label>
-                  <select id="singleSelect" formControlName="projectId" class="form-select">
-                      <option disabled selected>Select an option</option>
-         
-                      @for (project of projects; track $index) {
-                          <option [value]="project.projectId">{{ project.projectName }}</option>
-                      }
-                  </select>
-              </div>
+            <div class="col-md-12">
+              <label for="teamName" class="form-label">Team Name</label>
+              <input type="text" id="teamName" formControlName="teamName" class="form-control"
+                placeholder="Enter team name">
+            </div>
           </div>
-      
-         <!-- <div class="row mb-3">
+
+
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <label for="description" class="form-label">Description</label>
+              <textarea id="description" formControlName="description" class="form-control" rows="3"
+                placeholder="Enter description"></textarea>
+            </div>
+          </div>
+
+
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <label for="singleSelect" class="form-label">Select Project</label>
+              <select id="singleSelect" formControlName="projectId" class="form-select">
+                <option disabled selected>Select an option</option>
+
+                @for (project of projects; track $index) {
+                <option [value]="project.projectId">{{ project.projectName }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <!-- <div class="row mb-3">
             <div class="col-md-12">
                 <label for="multiSelect" class="form-label">Assign Users</label>
                 <select class="form-multi-select" id="multiSelect" multiple formControlName="userId">
@@ -123,28 +136,28 @@
                 </select>
             </div>
         </div> -->
-       
-        <div class="row mb-3">
-          <div class="col-md-12">
-            <label for="multiSelect" class="form-label">Assign Users</label>
-            <select class="form-multi-select" id="multiSelect" multiple formControlName="userIds" class="form-select">
-              <option disabled>Select users </option>
-              @for (user of users; track $index) {
-              <option [value]="user.id">{{ user.userName }}</option>
-            }
-            </select>
+
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <label for="multiSelect" class="form-label">Assign Users</label>
+              <select class="form-multi-select" id="multiSelect" multiple formControlName="userIds" class="form-select">
+                <option disabled>Select users </option>
+                @for (user of users; track $index) {
+                <option [value]="user.id">{{ user.userName }}</option>
+                }
+              </select>
+            </div>
           </div>
-        </div>
-        
-        
+
+
           <div class="d-flex justify-content-between">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Save changes</button>
-        </div>
-      </form>
-      
-        
-       
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+
+
+
       </div>
       <!-- <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -160,66 +173,71 @@
 
 
 
-<!-- Edit -->
+<!-- Edit Modal-->
 
-<div class="modal fade" id="exampleModalCenterEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+<div #editModal class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Add a New Team</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" id="editModalLabel">edit tema</h5>
+        <button #closeButton type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-    
       <div class="modal-body">
         <form (ngSubmit)="updateTeam()" [formGroup]="editTeamForm" class="container">
-          <!-- حقول النموذج مشابهة لنموذج الإضافة -->
+
           <div class="row mb-3">
             <div class="col-md-12">
-              <label for="editTeamName" class="form-label">اسم الفريق</label>
-              <input type="text" id="editTeamName" formControlName="teamName" class="form-control" placeholder="أدخل اسم الفريق">
+              <label for="editTeamName" class="form-label">team Name </label>
+              <input type="text" id="editTeamName" formControlName="teamName" class="form-control"
+                placeholder="أدخل اسم الفريق">
             </div>
           </div>
 
           <div class="row mb-3">
             <div class="col-md-12">
-              <label for="editDescription" class="form-label">الوصف</label>
-              <textarea id="editDescription" formControlName="description" class="form-control" rows="3" placeholder="أدخل الوصف"></textarea>
+              <label for="editDescription" class="form-label">descrption</label>
+              <textarea id="editDescription" formControlName="description" class="form-control" rows="3"
+                placeholder="أدخل الوصف"></textarea>
             </div>
           </div>
 
           <div class="row mb-3">
             <div class="col-md-12">
-              <label for="editProjectSelect" class="form-label">اختر المشروع</label>
+              <label for="editProjectSelect" class="form-label">project </label>
               <select id="editProjectSelect" formControlName="projectId" class="form-select">
-                <option disabled selected>اختر خيارًا</option>
-                <option *ngFor="let project of projects" [value]="project.projectId">{{ project.projectName }}</option>
+                <option disabled selected> choesis</option>
+                @for (project of projects; track $index) {
+                <option [value]="project.projectId">{{ project.projectName }}</option>
+                }
               </select>
             </div>
           </div>
 
           <div class="row mb-3">
             <div class="col-md-12">
-              <label for="editUserSelect" class="form-label">تعيين المستخدمين</label>
+              <label for="editUserSelect" class="form-label">users </label>
               <select class="form-select" id="editUserSelect" multiple formControlName="userIds">
-                <option disabled>اختر المستخدمين</option>
-                <option *ngFor="let user of users" [value]="user.id">{{ user.userName }}</option>
+                <option disabled> choies user</option>
+                @for (user of usersEdit; track $index) {
+                <option [value]="user.id">{{ user.userName }}</option>
+                }
               </select>
             </div>
           </div>
 
           <div class="d-flex justify-content-between">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
-            <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">colse</button>
+            <button type="submit" class="btn btn-primary">save </button>
           </div>
         </form>
       </div>
-    
+
     </div>
   </div>
 </div>
 
 
 
-<i class="fas fa-trash-alt"></i>    <i class="fas fa-edit"></i>
