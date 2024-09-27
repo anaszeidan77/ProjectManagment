@@ -24,7 +24,7 @@
   <div class="row">
     @for (team of teams; track $index) {
     <div class="col-md-4">
-      <div class="card" style="position: relative;">
+      <div class="card " [ngClass]="{'bg-danger-transparent': team.isDeleted}" style="position: relative;">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center">
             <h5 class="card-title mb-0">{{ team.teamName|truncateText:4 }}</h5>
@@ -35,9 +35,12 @@
                 ...
               </span>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                <button class="delete-btn" (click)="deleteTeam(team.teamId)">
-                  <i class="fas fa-trash-alt"></i>
-                </button>
+                @if(!team.isDeleted){
+                  <button class="delete-btn" (click)="deleteTeam(team.teamId)">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                }
+
                 <button type="button" class="view-btn" data-toggle="modal" (click)="viewDetails(team.teamId)"
                   data-target="#exampleModalCenterEdit">
                   <i class="fa fa-eye" aria-hidden="true"></i>
@@ -50,6 +53,7 @@
             </div>
 
           </div>
+          {{team.isDeleted}}
           <p class="card-text mt-2">{{ team.description |truncateText:4 }}</p>
           <div class="d-flex align-items-center">
             @for (teamMember of team.teamMembers.slice(0, 5); track $index) {
