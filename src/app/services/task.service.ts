@@ -9,13 +9,8 @@ import { Task } from '../model/task';
 export class TaskService {
   private apiUrl = 'https://localhost:7058/api/Tasks';
   constructor(private http :HttpClient) { }
-// <<<<<<< HEAD
- 
-//   getAllTask(): Observable<any[]> {
-//     return this.http.get<any>(this.apiUrl).pipe(
-//       map((response: any) => response.data) // استخراج البيانات من الحقل data
-// =======
-  
+
+
   getTasks():Observable<Task[]>{
     return this.http.get<Task[]>(this.apiUrl)
     .pipe(
@@ -41,8 +36,6 @@ export class TaskService {
   }
   updateTask(id : string,task:Task): Observable<any> {
     const url = `${this.apiUrl}/${id}`;
-    console.log('Update URL:', url); // للتحقق
-    console.log(task.taskId)
     return this.http.put(url, task, this.httpOptions)
     .pipe(
       catchError(this.handleError<any>('updateTask'))
@@ -56,6 +49,14 @@ export class TaskService {
     .pipe(
       catchError(this.handleError<Task>('deleteTask'))
     )
+  }
+
+  getTaskByUserId(userId:string):Observable<Task[]>{
+    return this.http.get<Task[]>(`${this.apiUrl}/Tasks/${userId}`);
+  }
+
+  updateSubTask(subTaskId : string):Observable<any>{
+    return this.http.post<any>(`${this.apiUrl}/${subTaskId}`,{subTaskId},{'responseType':'text' as 'json'})
   }
 
     // إعدادات HTTP

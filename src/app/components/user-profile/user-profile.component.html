@@ -1,0 +1,332 @@
+<div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div
+                class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0">Profile</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col-xl-8">
+            <div class="card" style="padding: 0px;">
+                <div class="card-body pb-0" style="padding-bottom: 0px;">
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                            <div class="text-center border-right">
+                                <img
+                                    src="../../../assets/TemplateDahboard/images/logo.png"
+                                    class="img-fluid avatar-xxl rounded-circle"
+                                    alt>
+                                <h4
+                                    class="text-primary font-size-20 mt-3 mb-2">{{userName}}</h4>
+                                <h5 class="text-muted font-size-13 mb-0">Web
+                                    Designer</h5>
+                            </div>
+                        </div><!-- end col -->
+                        <div class="col-md-9">
+                            <div class="ml-3">
+                                <div>
+                                    <h4 class="card-title mb-2">Biography</h4>
+                                    <p class="mb-0 text-muted">Hi I'm Jansh, has
+                                        been the industry's standard dummy text
+                                        to an English person alteration
+                                        text.</p>
+                                </div>
+                                <div class="row my-4">
+                                    <div class="col-md-12">
+                                        <div>
+                                            <p
+                                                class="text-muted mb-2 font-weight-medium"><i
+                                                    class="mdi mdi-email-outline mr-2"></i>{{email}}</p>
+                                            <p
+                                                class="text-muted font-weight-medium mb-0"><i
+                                                    class="mdi mdi-phone-in-talk-outline mr-2"></i>418-955-4703</p>
+                                        </div>
+                                    </div><!-- end col -->
+                                </div><!-- end row -->
+                                <div class="d-flex gap-2 align-items-center">
+                                    <p
+                                        class="font-size-14 mb-0 font-weight-medium">Social
+                                        :</p>
+                                    <a href="javascript: void(0);">
+                                        <div class="avatar-sm">
+                                            <span
+                                                class="avatar-title bg-soft-primary rounded-circle font-size-16 text-primary">
+                                                <i class="mdi mdi-github"></i>
+                                            </span>
+                                        </div>
+                                    </a><!-- end -->
+                                    <a href="javascript: void(0);">
+                                        <div class="avatar-sm">
+                                            <span
+                                                class="avatar-title bg-soft-success text-success rounded-circle font-size-16">
+                                                <i class="mdi mdi-whatsapp"></i>
+                                            </span>
+                                        </div>
+                                    </a><!-- end -->
+                                    <a href="javascript: void(0)">
+                                        <div class="avatar-sm">
+                                            <span
+                                                class="avatar-title bg-soft-pink text-pink rounded-circle font-size-16">
+                                                <i
+                                                    class="mdi mdi-instagram"></i>
+                                            </span>
+                                        </div>
+                                    </a> <!-- end -->
+                                </div>
+                                <ul
+                                    class="nav nav-tabs nav-tabs-custom border-bottom-0 mt-3 nav-justified"
+                                    style="padding-bottom: 0px;" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link px-4"
+                                            data-toggle="tab"
+                                            href="#projects-tab" role="tab"
+                                            aria-selected="false" tabindex="-1">
+                                            <span class="d-block d-sm-none"><i
+                                                    class="fas fa-home"></i></span>
+                                            <span
+                                                class="d-none d-sm-block">Projects</span>
+                                        </a>
+                                    </li><!-- end li -->
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link px-4 active"
+                                            data-toggle="tab" href="#tasks-tab"
+                                            role="tab" aria-selected="true">
+                                            <span class="d-block d-sm-none"><i
+                                                    class="mdi mdi-menu-open"></i></span>
+                                            <span
+                                                class="d-none d-sm-block">Tasks</span>
+                                        </a>
+                                    </li><!-- end li -->
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link px-4"
+                                            data-toggle="tab" href="#team-tab"
+                                            role="tab" aria-selected="false"
+                                            tabindex="-1">
+                                            <span class="d-block d-sm-none"><i
+                                                    class="mdi mdi-account-group-outline"></i></span>
+                                            <span
+                                                class="d-none d-sm-block">Team</span>
+                                        </a>
+                                    </li><!-- end li -->
+                                </ul><!-- end ul -->
+                            </div>
+                        </div><!-- end col -->
+                    </div><!-- end row -->
+                </div><!-- end card body -->
+            </div><!-- end card -->
+
+            <div class="card">
+                <div class="tab-content p-4 mb-0">
+                    <div class="tab-pane" id="projects-tab" role="tabpanel">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-1">
+                                <h4 class="card-title mb-4">Projects</h4>
+                            </div>
+                        </div>
+                    </div><!-- end tab pane -->
+
+                    <div class="tab-pane active show" id="tasks-tab"
+                        role="tabpanel">
+                        <h4 class="card-title mb-4">Tasks</h4>
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="task-list-box" id="landing-task"
+                                    *ngFor="let task of tasks; let i = index">
+                                    <div class="card task-box rounded-3">
+                                        <div class="card-body">
+                                            <div class="row align-items-center">
+                                                <div class="col-xl-6 col-sm-5">
+                                                    <div
+                                                        class="checklist form-check font-size-15">
+                                                        <input type="checkbox"
+                                                            class="form-check-input"
+                                                            id="customCheck{{i}}"
+                                                            (change)="completeTask = !completeTask">
+                                                        <label
+                                                            class="form-check-label ml-1 task-title"
+                                                            for="customCheck{{i}}"
+                                                            [ngClass]="{'text-decoration-line-through':completeTask}">
+                                                            {{task.taskName}}
+                                                        </label>
+                                                    </div>
+                                                </div><!-- end col -->
+                                                <div class="col-xl-6 col-sm-7">
+                                                    <div
+                                                        class="row align-items-center">
+                                                        <div
+                                                            class="col-xl-5 col-md-6 col-sm-5">
+                                                            <span
+                                                                class="badge badge-warning font-size-11 task-status"
+                                                                style="color: brown;">
+                                                                {{task.priority
+                                                                | priority}}
+                                                            </span>
+                                                        </div><!-- end col -->
+                                                        <div
+                                                            class="col-xl-7 col-md-6 col-sm-7">
+                                                            <div
+                                                                class="d-flex flex-wrap gap-3 mt-3 mt-xl-0 justify-content-md-end">
+                                                                <div>
+                                                                    <a href="#"
+                                                                        class="mb-0 text-muted font-weight-medium"><i
+                                                                            class="mdi mdi-checkbox-marked-circle-outline mr-1"></i>4/8</a>
+                                                                </div>
+                                                                <div>
+                                                                    <a
+                                                                        class="mb-0 text-muted font-weight-medium"
+                                                                        (click)="openEditModal(task,editTaskModal)"
+                                                                        data-toggle="modal"
+                                                                        data-target=".bs-example-new-task"><i
+                                                                            class="mdi mdi-square-edit-outline font-size-16 align-middle"></i></a>
+                                                                </div>
+                                                                <div>
+                                                                    <a href="#"
+                                                                        class="delete-item"
+                                                                        onclick="deleteProjects('task-item-1')">
+                                                                        <i
+                                                                            class="mdi mdi-trash-can-outline align-middle font-size-16 text-danger"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div><!-- end col -->
+                                                    </div><!-- end row -->
+                                                </div><!-- end col -->
+                                            </div><!-- end row -->
+                                        </div><!-- end cardbody -->
+                                    </div><!-- end card -->
+                                </div><!-- end -->
+                            </div><!-- end col -->
+                        </div><!-- end row -->
+                    </div><!-- end tab pane -->
+
+                    <div class="tab-pane" id="team-tab" role="tabpanel">
+                        <h4 class="card-title mb-4">Team</h4>
+                    </div><!-- end tab pane -->
+                </div>
+            </div><!-- end card -->
+        </div><!-- end col -->
+
+        <div class="col-xl-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="pb-2">
+                        <h4 class="card-title mb-3">About</h4>
+                        <p>Hi I'm Jansh, has been the industry's standard dummy
+                            text to an English person, it will seem like
+                            simplified.</p>
+                        <ul class="pl-3 mb-0">
+                            <li>it will seem like simplified.</li>
+                            <li>To achieve this, it would necessary to have
+                                uniform pronunciation</li>
+                        </ul>
+                    </div>
+                    <hr>
+                    <div class="pt-2">
+                        <h4 class="card-title mb-4">My Skill</h4>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <span class="badge badge-secondary p-2">HTML</span>
+                            <span
+                                class="badge badge-secondary p-2">Bootstrap</span>
+                            <span class="badge badge-secondary p-2">Scss</span>
+                            <span
+                                class="badge badge-secondary p-2">Javascript</span>
+                            <span class="badge badge-secondary p-2">React</span>
+                            <span
+                                class="badge badge-secondary p-2">Angular</span>
+                        </div>
+                    </div>
+                </div><!-- end cardbody -->
+            </div><!-- end card -->
+
+            <div class="card">
+                <div class="card-body">
+                    <div>
+                        <h4 class="card-title mb-4">Personal Details</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered mb-0">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Name</th>
+                                        <td>{{userName}}</td>
+                                    </tr><!-- end tr -->
+                                    <tr>
+                                        <th scope="row">Location</th>
+                                        <td>California, United States</td>
+                                    </tr><!-- end tr -->
+                                    <tr>
+                                        <th scope="row">Language</th>
+                                        <td>English</td>
+                                    </tr><!-- end tr -->
+                                    <tr>
+                                        <th scope="row">roles</th>
+                                        <td>{{roles}}</td>
+                                    </tr><!-- end tr -->
+                                </tbody><!-- end tbody -->
+                            </table><!-- end table -->
+                        </div>
+                    </div>
+                </div><!-- end card body -->
+            </div><!-- end card -->
+        </div><!-- end col -->
+    </div>
+</div>
+<ng-template #editTaskModal let-modal>
+    <div class="modal-content border-0">
+        <div class="modal-header bg-soft-primary">
+            <h5 class="modal-title font-size-16 text-primary add-task-title"
+                id="add-task-title" style="display: none;">Add New Tasks</h5>
+            <h5 class="modal-title font-size-16 text-primary update-task-title"
+                id="update-task-title" style="display: block;">Update Tasks</h5>
+            <button type="button" id="update-task" class="btn-close"
+                data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+            <form id="NewtaskForm">
+                <div class="row mb-3">
+                    <h4 class="mb-0">{{selectedTask.taskName}}</h4>
+                </div><!-- end row -->
+                <div class="mt-3">
+                    <p class="fw-medium mb-0">Sub Tasks</p>
+                    <div id="sub-tasks" class="mt-1">
+                        <div
+                            *ngFor="let sub of selectedTask.subTaskDtos; let i = index">
+                            <div class="sub-group-item">
+                                <div
+                                    class="checklist px-0 d-flex form-check align-items-center font-size-16">
+                                    <div class="flex-grow-1">
+                                        <input
+                                            type="checkbox"
+                                            class="form-check-input ms-0"
+                                            id="customCheck{{i}}"
+                                            [checked]="sub.isCompleted"
+                                            (change)="onSubTaskSelected(sub, $event)">
+                                        <label
+                                            class="form-check-label font-size-14 mb-0 ms-3"
+                                            for="customCheck{{i}}">
+                                            {{sub.subTaskName}}
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <i
+                                            class="mdi mdi-text mdi-24px text-muted"></i>
+                                    </div>
+                                </div>
+                            </div><!-- end -->
+                        </div>
+                    </div><!-- end -->
+                </div>
+            </form><!-- end form -->
+        </div>
+        <div class="modal-footer">
+            <button type="button" (click)="saveSubTasks()" class="btn btn-primary">Save</button>
+            <button type="button" (click)="closeModel()" class="btn btn-light"
+                data-bs-dismiss="modal">Cancel</button>
+        </div>
+    </div>
+</ng-template>
+
