@@ -2,16 +2,20 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { jwt, login, register } from '../model/auth';
 import { Observable, take, tap } from 'rxjs';
+import { User } from '../model/user';
+  
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  
   private apiUrl = "https://localhost:7058/api/Auth";
   constructor(private http : HttpClient) { }
   
-  login(login : login): Observable<jwt>{
-    return this.http.post<jwt>(`${this.apiUrl}/Login`,login).pipe(
+  login(login : login): Observable<login>{
+    return this.http.post<login>(`${this.apiUrl}/Login`,login).pipe(
       tap(l=>console.log(l))
     )
   }
@@ -21,7 +25,7 @@ export class AuthService {
 
   register(registerInfo : register ):Observable<jwt>{
     console.log(registerInfo)
-    return this.http.post<jwt>(`${this.apiUrl}/register`,registerInfo);
+    return this.http.post<register>(`${this.apiUrl}/register`,registerInfo);
   }
 
   refreshToken():Observable<any>{

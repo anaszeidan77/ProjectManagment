@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Team } from '../model/team';
 import { PaginatedResponse } from '../model/PaginatedResponse';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class TeamsService {
       .set('pageNumber', pageNumber.toString())
       .set('pageSize', pageSize.toString());
 
-    return this.http.get<PaginatedResponse<Team>>(this.apiUrl, { params });
+    return this.http.get<PaginatedResponse<Team>>(`${environment.url}/Teams`, { params });
   }
 
   getById(Id:string):Observable<Team>{
