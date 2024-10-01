@@ -1,4 +1,3 @@
-
 <div class="container mt-4">
   <div class="row">
     <div class="col-12 mb-4 text-end">
@@ -8,146 +7,152 @@
     </div>
 
     <!-- قائمة المهام -->
-    <ng-container *ngIf="tasks.length; else noTasks">
-      <div
-        class="col-md-6 mb-4"
-        *ngFor="let item of tasks; trackBy: trackById"
-      >
-        <div class="card h-100">
-          <!-- Header -->
-          <div
-            class="card-header text-white"
-            [ngClass]="{
-              'bg-success': item.status === 1,
-              'bg-warning': item.status === 2,
-              'bg-info': item.status === 0
-            }"
-          >
-            <div class="d-flex justify-content-between align-items-center">
-              <h5 class="card-title mb-0">{{ item.taskName }}</h5>
-            </div>
-            <div>
-              <button
-                class="btn btn-light btn-sm me-1"
-                (click)="updateTask(item)"
-              >
-                <i class="fa fa-edit"></i>
-              </button>
-              <button
-                class="btn btn-light btn-sm"
-                (click)="deleteTask(item.taskId)"
-              >
-                <i class="fa fa-trash text-danger"></i>
-              </button>
-            </div>
-          </div>
+    <div class="main">
+      <div class="row">
+        <!-- تحقق من وجود المهام -->
+        <ng-container *ngIf="tasks && tasks.length; else noTasks">
+          <!-- تكرار على المهام وعرضها في البطاقات -->
+          <div class="col-md-4" *ngFor="let item of tasks; trackBy: trackById">
 
-          <!-- Body -->
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <div class="d-flex align-items-center">
-                <img
-                  src="../../../assets/TemplateDahboard/images/1.jpg"
-                  class="rounded-circle me-2"
-                  width="40"
-                  height="40"
-                />
+            <!-- تفاصيل المهمة -->
+            <div class="pt-2">
+              <div class="two">
+                <div class="d-flex justify-content-end px-3 pt-1">
+                  <!-- أيقونة النجمة -->
+                  <i class="mdi mdi-star-outline pr-1 star"></i>
 
-              </div>
-              <span
-                class="badge"
-                [ngClass]="{
-                  'bg-success': item.status === 1,
-                  'bg-warning': item.status === 2,
-                  'bg-info': item.status === 0
-                }"
-                >{{ item.status }}</span
-              >
-            </div>
-            <p class="card-text">{{ item.description }}</p>
-            <button
-              class="btn btn-outline-info btn-sm"
-              (click)="openSubtasksModal(subtasksModal, item)"
-            >
-              View Sub Tasks
-            </button>
-          </div>
+                  <div class="dropdown">
+                    <span type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false">
+                      <i class="mdi mdi-dots-horizontal dot"></i>
+                    </span>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                      @if(!item.isDeleted){
+                        <button class="delete-btn" (click)="deleteTask(item.taskId)">
+                          <i class="fas fa-trash-alt"></i>
+                        </button>
+                      }
+      
+                      <button type="button" class="view-btn" data-toggle="modal"
+                        data-target="#exampleModalCenterEdit">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                      </button>
+                      <button type="button" class="edit-btn" (click)="updateTask(item)" data-toggle="modal"
+                        data-target="#editModal">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
 
-          <!-- Footer -->
-          <div class="card-footer bg-white">
-            <div class="progress" style="height: 5px;">
-              <div
-                class="progress-bar"
-                role="progressbar"
-                [style.width]=" 20 + '%'"
-                [ngClass]="{
-                  'bg-success': item.status === 1,
-                  'bg-warning': item.status === 2,
-                  'bg-info': item.status === 0
-                }"
-              ></div>
-            </div>
-          </div>
-        </div>
-      </div>
+                <div class="px-3 pt-3">
+                  <h3 class="name">{{ item.taskName }}</h3>
+                  <p class="quote2">{{ item.description | truncateText:4  }}</p>
+                </div>
+                <div
+                  class="d-flex justify-content-start px-3 align-items-center">
+                  <i class="mdi mdi-view-comfy task"></i>
+                  <!-- <span class="quote2 pl-2">المهمة: {{ getTaskStatus(item.status) }}</span> -->
+                </div>
+                <div
+                  class="d-flex justify-content-between px-3 align-items-center pb-3">
+                  <div class="d-flex justify-content-start align-items-center">
+                    <i class="mdi mdi-calendar-clock date"></i>
+                    <span class="quote2 pl-2">التاريخ: {{ item.dueDate |
+                      date:'dd.MM.yyyy' }}</span>
+                  </div>
+                  <div class="d-flex justify-content-end">
+                    <button
+                      class="btn btn-primary btn-sm"
+                      (click)="openSubtasksModal(subtasksModal,item)">
+                      <i class="fas fa-tasks me-1"></i> sub task
+                    </button>
 
-      <!-- مودال المهام الفرعية -->
-      <ng-template #subtasksModal let-modal>
-        <div class="modal fade show" tabindex="-1" style="display: block;">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">المهام الفرعية</h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  (click)="modal.dismiss('Cross click')"
-                ></button>
-              </div>
-              <div class="modal-body">
-                <div *ngIf="selectedTask">
-                  <h6>المهام الفرعية لـ {{ selectedTask.taskName }}</h6>
-                  <div class="table-responsive">
-                    <table class="table table-bordered table-sm">
-                      <thead>
-                        <tr>
-                          <th>اسم المهمة الفرعية</th>
-                          <th>التقدم (%)</th>
-                          <th>مكتملة</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let st of selectedTask.subTaskDtos">
-                          <td>{{ st.subTaskName }}</td>
-                          <td>{{ st.subTaskProgressPercentage }}</td>
-                          <td>{{ st.isCompleted ? 'نعم' : 'لا' }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
                   </div>
                 </div>
               </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  (click)="modal.dismiss('Close click')"
-                >
-                  إغلاق
-                </button>
-              </div>
+              <ng-template #subtasksModal let-modal>
+                <div class="modal fade show" tabindex="-1"
+                  style="display: block;" aria-modal="true" role="dialog">
+                  <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">المهام الفرعية</h5>
+                        <button type="button" class="btn-close"
+                          (click)="modal.dismiss('Cross click')"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div *ngIf="selectedTask">
+                          <h6 class="mb-3">المهام الفرعية لـ {{
+                            selectedTask.taskName }}</h6>
+                          <div class="table-responsive">
+                            <table class="table table-hover table-bordered">
+                              <thead class="table-light">
+                                <tr>
+                                  <th>#</th>
+                                  <th>اسم المهمة الفرعية</th>
+                                  <th>التقدم (%)</th>
+                                  <th>مكتملة</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr
+                                  *ngFor="let st of selectedTask.subTaskDtos; let i = index">
+                                  <td>{{ i + 1 }}</td>
+                                  <td>{{ st.subTaskName }}</td>
+                                  <td>
+                                    <div class="progress" style="height: 5px;">
+                                      <div
+                                        class="progress-bar"
+                                        role="progressbar"
+                                        [style.width]="st.subTaskProgressPercentage + '%'"
+                                        [ngClass]="{
+                                              'bg-success': st.subTaskProgressPercentage
+
+                                            }">
+                                      </div>
+                                    </div>
+                                    <small>{{ st.subTaskProgressPercentage
+                                      }}%</small>
+                                  </td>
+                                  <td>
+                                    <i
+                                      [ngClass]="{
+                                            'fas fa-check-circle text-success': st.isCompleted,
+                                            'fas fa-times-circle text-danger': !st.isCompleted
+                                          }">
+                                    </i>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          (click)="modal.dismiss('Close click')">
+                          إغلاق
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
             </div>
           </div>
-        </div>
-      </ng-template>
-    </ng-container>
+        </ng-container>
 
-    <!-- رسالة عدم وجود مهام -->
-    <ng-template #noTasks>
-      <div class="col-12">
-        <h3 class="text-center">لا توجد مهام متاحة</h3>
+        <!-- قالب لعدم وجود مهام -->
+        <ng-template #noTasks>
+          <div class="col-12">
+            <h3 class="text-center">لا توجد مهام متاحة</h3>
+          </div>
+        </ng-template>
       </div>
-    </ng-template>
+    </div>
   </div>
 </div>
 
@@ -164,8 +169,7 @@
             type="button"
             class="btn-close"
             aria-label="Close"
-            (click)="modal.dismiss('Cross click')"
-          ></button>
+            (click)="modal.dismiss('Cross click')"></button>
         </div>
         <div class="modal-body">
           <form [formGroup]="formGroup" (ngSubmit)="saveTask()">
@@ -176,8 +180,7 @@
                   type="text"
                   id="taskName"
                   formControlName="taskName"
-                  class="form-control"
-                />
+                  class="form-control" />
               </div>
               <div class="col-md-6">
                 <label for="dueDate" class="form-label">Due Date</label>
@@ -185,16 +188,14 @@
                   type="date"
                   id="dueDate"
                   formControlName="dueDate"
-                  class="form-control"
-                />
+                  class="form-control" />
               </div>
               <div class="col-md-12">
                 <label for="description" class="form-label">Description</label>
                 <textarea
                   id="description"
                   formControlName="description"
-                  class="form-control"
-                ></textarea>
+                  class="form-control"></textarea>
               </div>
               <div class="col-md-4">
                 <label class="form-label">Priority</label>
@@ -205,13 +206,9 @@
                     name="priority"
                     id="priorityLow"
                     [value]="0"
-                    formControlName="priority"
-                  />
-                  <label
-                    class="btn btn-outline-success"
-                    for="priorityLow"
-                    >Low</label
-                  >
+                    formControlName="priority" />
+                  <label class="btn btn-outline-success"
+                    for="priorityLow">Low</label>
 
                   <input
                     type="radio"
@@ -219,13 +216,9 @@
                     name="priority"
                     id="priorityMedium"
                     [value]="1"
-                    formControlName="priority"
-                  />
-                  <label
-                    class="btn btn-outline-warning"
-                    for="priorityMedium"
-                    >Medium</label
-                  >
+                    formControlName="priority" />
+                  <label class="btn btn-outline-warning"
+                    for="priorityMedium">Medium</label>
 
                   <input
                     type="radio"
@@ -233,13 +226,9 @@
                     name="priority"
                     id="priorityHigh"
                     [value]="2"
-                    formControlName="priority"
-                  />
-                  <label
-                    class="btn btn-outline-danger"
-                    for="priorityHigh"
-                    >High</label
-                  >
+                    formControlName="priority" />
+                  <label class="btn btn-outline-danger"
+                    for="priorityHigh">High</label>
                 </div>
               </div>
               <div class="col-md-4">
@@ -247,28 +236,27 @@
                 <select
                   id="projectId"
                   formControlName="projectId"
-                  class="form-select"
-                >
+                  class="form-select">
                   <option
                     *ngFor="let project of projects"
-                    [value]="project.projectId"
-                  >
+                    [value]="project.projectId">
                     {{ project.projectName }}
                   </option>
                 </select>
               </div>
               <div class="col-md-4">
                 <label for="userId" class="form-label">User ID</label>
-                <input
-                  type="text"
-                  id="userId"
-                  formControlName="userId"
-                  class="form-control"
-                />
+                <select id="userId" formControlName="userId"
+                  class="form-select">
+                  <option *ngFor="let user of users" [value]="user.id">
+                    {{user.userName}}
+                  </option>
+                </select>
+
               </div>
             </div>
 
-            <!-- Subtasks Section -->
+            <!-- قسم المهام الفرعية -->
             <div formArrayName="subTaskDtos" class="mt-4">
               <h5>Subtasks</h5>
               <div
@@ -277,52 +265,42 @@
                   let i = index
                 "
                 [formGroupName]="i"
-                class="border rounded p-3 mb-3"
-              >
+                class="border rounded p-3 mb-3">
                 <div class="row g-3 align-items-end">
                   <div class="col-md-4">
-                    <label
-                      for="subTaskName{{ i }}"
-                      class="form-label"
-                      >Subtask Name</label
-                    >
+                    <label for="subTaskName{{ i }}" class="form-label">Subtask
+                      Name</label>
                     <input
                       type="text"
                       id="subTaskName{{ i }}"
                       formControlName="subTaskName"
-                      class="form-control"
-                    />
+                      class="form-control" />
                   </div>
-                  <div class="col-md-2">
-                  </div>
+                </div>
+                <div class="col-md-2">
+
                   <div class="col-md-2 text-end">
                     <button
                       type="button"
                       class="btn btn-danger"
-                      (click)="removeField(i)"
-                    >
+                      (click)="removeField(i)">
                       Remove
                     </button>
                   </div>
                   <div class="col-md-12">
-                    <label
-                      for="description{{ i }}"
-                      class="form-label"
-                      >Description</label
-                    >
+                    <label for="description{{ i }}"
+                      class="form-label">Description</label>
                     <textarea
                       id="description{{ i }}"
                       formControlName="description"
-                      class="form-control"
-                    ></textarea>
+                      class="form-control"></textarea>
                   </div>
                 </div>
               </div>
               <button
                 type="button"
                 (click)="addField()"
-                class="btn btn-secondary"
-              >
+                class="btn btn-secondary">
                 Add Subtask
               </button>
             </div>
@@ -334,8 +312,7 @@
               <button
                 type="button"
                 class="btn btn-secondary"
-                (click)="modal.dismiss('Cancel')"
-              >
+                (click)="modal.dismiss('Cancel')">
                 Cancel
               </button>
             </div>

@@ -205,8 +205,77 @@
                     </div><!-- end tab pane -->
 
                     <div class="tab-pane" id="team-tab" role="tabpanel">
-                        <h4 class="card-title mb-4">Team</h4>
-                    </div><!-- end tab pane -->
+                        <h4 class="card-title mb-4">Teams</h4>
+                        <div class="row">
+                            @for (team of teams; track $index) {
+                                <div class="col-xl-4 col-md-6" id="team-1">
+                                    <div class="card shadow">
+                                        <div class="card-body">
+                                            <div
+                                                class="d-flex mb-4 align-items-center">
+                                                <div class="avatar-group d-flex">
+                                                    @for (teamMember of team.teamMembers; track $index) {
+                                                        <div class="avatar-group-item">
+                                                            <a href="#"
+                                                                class="d-inline-block"
+                                                                data-bs-toggle="tooltip"
+                                                                data-bs-placement="top"
+                                                                title="تيريل سوتو">
+                                                                <img
+                                                                    src="../../../assets/TemplateDahboard/images/logo.png"
+                                                                    alt
+                                                                    class="rounded-circle small-avatar">
+                                                            </a>
+                                                        </div>
+                                                    }
+                                                </div>
+                                                <!-- end avatar group -->
+                                                <div class="dropdown ms-auto">
+                                                    <a href="#" class="text-muted"
+                                                        role="button"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                        <i
+                                                            class="mdi mdi-dots-horizontal font-size-18"></i>
+                                                    </a>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item"
+                                                                href="#">Update</a></li>
+                                                        <li><hr
+                                                                class="dropdown-divider"></li>
+                                                        <li>
+                                                            <a
+                                                                class="dropdown-item text-danger leave-team"
+                                                                data-id="1"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target=".bs-add-leave-team"
+                                                                href="#">
+                                                                مغادرة الفريق
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <!-- end dropdown -->
+    
+                                            </div>
+                                            <div>
+                                                <h5
+                                                    class="mb-1 font-size-18 text-primary">{{team.teamName}}</h5>
+                                                <p
+                                                    class="text-muted font-size-14 mb-0">{{team.description |truncateText:4 }}</p>
+                                            </div>
+                                        </div>
+                                        <!-- end card-body -->
+                                    </div>
+                                    <!-- end card -->
+                                </div>
+                            }
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                    </div>
+                    <!-- end tab pane -->
+
                 </div>
             </div><!-- end card -->
         </div><!-- end col -->
@@ -323,10 +392,10 @@
             </form><!-- end form -->
         </div>
         <div class="modal-footer">
-            <button type="button" (click)="saveSubTasks()" class="btn btn-primary">Save</button>
+            <button type="button" (click)="saveSubTasks()"
+                class="btn btn-primary">Save</button>
             <button type="button" (click)="closeModel()" class="btn btn-light"
                 data-bs-dismiss="modal">Cancel</button>
         </div>
     </div>
 </ng-template>
-

@@ -14,6 +14,7 @@ import { User } from '../../model/user';
 import { Project } from '../../model/project';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmModalComponent } from '../shared/confirm-modal/confirm-modal.component';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-team',
@@ -47,7 +48,7 @@ export class TeamComponent implements OnInit,OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private projectsService:ProjectsService,
-    private user:AuthService,
+    private user:UserService,
     private fb:FormBuilder,
     private modalService: NgbModal,
     private renderer: Renderer2
@@ -168,9 +169,6 @@ console.log(error);
 
   }
   
-
-   
-
   getAllUsers(){
     this.user.getAll().subscribe(
       {

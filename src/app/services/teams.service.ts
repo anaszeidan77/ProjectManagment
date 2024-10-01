@@ -11,7 +11,7 @@ import { environment } from '../../environments/environment';
 export class TeamsService {
 
   
-  private apiUrl = 'https://localhost:7058/api/Teams';
+  private apiUrl = `${environment.url}/Teams`;
   constructor(private http:HttpClient) { }
 
   getAll(pageNumber: number, pageSize: number): Observable<PaginatedResponse<Team>> {
@@ -20,7 +20,7 @@ export class TeamsService {
       .set('pageNumber', pageNumber.toString())
       .set('pageSize', pageSize.toString());
 
-    return this.http.get<PaginatedResponse<Team>>(`${environment.url}/Teams`, { params });
+    return this.http.get<PaginatedResponse<Team>>(this.apiUrl, { params });
   }
 
   getById(Id:string):Observable<Team>{
