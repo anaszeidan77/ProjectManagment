@@ -5,7 +5,8 @@ import { SubTask, Task } from '../../model/task';
 import { CommonModule } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
-import { ProjectService } from '../../services/project.service';
+import { ProjectsService } from '../../services/projects.service';
+
 
 @Component({
   selector: 'app-task',
@@ -29,7 +30,7 @@ export class TaskComponent implements OnInit {
     private taskService: TaskService,
     private fb: FormBuilder,
     private modalService: NgbModal,
-    private projectService: ProjectService
+    private projectService: ProjectsService
   ) {
     this.formGroup = this.fb.group({
       taskName: ['', Validators.required],
@@ -53,7 +54,7 @@ export class TaskComponent implements OnInit {
   getAllProjects() {
     this.projectService.getAll().subscribe({
       next: (response) => {
-        this.projects = response;
+        this.projects = response.data;
       },
       error: (error) => {
         console.log(error);

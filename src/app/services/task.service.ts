@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
 import { Task } from '../model/task';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class TaskService {
 // =======
   
   getTasks():Observable<Task[]>{
-    return this.http.get<Task[]>(this.apiUrl)
+    return this.http.get<Task[]>(`${environment.url}/Tasks`)
     .pipe(
       map((respose : any)=>respose.data),
       catchError(this.handleError<Task[]>('getTasks',[]))
@@ -34,7 +35,7 @@ export class TaskService {
   }
 
   addTask(task:Task):Observable<Task>{
-    return this.http.post<Task>(this.apiUrl,task,this.httpOptions)
+    return this.http.post<Task>(`${environment.url}/Tasks`,task,this.httpOptions)
     .pipe(
       catchError(this.handleError<Task>('addTask',))
     );
@@ -43,7 +44,7 @@ export class TaskService {
     const url = `${this.apiUrl}/${id}`;
     console.log('Update URL:', url); // للتحقق
     console.log(task.taskId)
-    return this.http.put(url, task, this.httpOptions)
+    return this.http.put(`${environment.url}/Tasks/${id}`, task, this.httpOptions)
     .pipe(
       catchError(this.handleError<any>('updateTask'))
     );
