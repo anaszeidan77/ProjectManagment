@@ -48,6 +48,10 @@ export const routes: Routes =
   {
     path:'profile',loadComponent:()=>import('./components/user-profile/user-profile.component')
     .then(l=>l.UserProfileComponent)
+  },
+  {
+    path:'projects',loadComponent:()=>import('./components/project-list/project-list.component')
+    .then(p=>p.ProjectListComponent)
   }
 
 ];

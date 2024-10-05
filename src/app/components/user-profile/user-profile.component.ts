@@ -4,13 +4,19 @@ import { Task } from '../../model/task';
 import { PriorityPipe } from '../../Pipes/priority.pipe';
 import { CommonModule } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TeamsService } from '../../services/teams.service';
+import { ActivatedRoute } from '@angular/router';
+import { Team } from '../../model/team';
+import { Subscription } from 'rxjs';
+import { TeamMember } from '../../model/TeamMember';
+import { TruncateTextPipe } from '../../Pipes/truncateText.pipe';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [PriorityPipe, CommonModule],
+  imports: [PriorityPipe, CommonModule,TruncateTextPipe],
   templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.css'] // تأكد من تصحيح اسم الملف
+  styleUrls: ['./user-profile.component.css']
 })
 export class UserProfileComponent implements OnInit {
   selectedTask: any;
@@ -19,10 +25,23 @@ export class UserProfileComponent implements OnInit {
   userName: string = localStorage.getItem("userName") as string;
   email: string = localStorage.getItem("email") as string;
   roles: string = localStorage.getItem("roles") as string;
+  pageSize: number = 10;
+  currentPage: number = 1;
+  teams: Team[] = [];
+  totalItems: number = 0;
+  subscription!: Subscription;
 
-  constructor(private taskServices: TaskService, private modalService: NgbModal) {}
+  constructor(
+    private taskServices: TaskService,
+    private modalService: NgbModal,
+    private teamService : TeamsService,
+    private route: ActivatedRoute,
+  ) {}
 
   ngOnInit(): void {
+    this.currentPage = Number(this.route.snapshot.queryParamMap.get('pageNumber')) || 1;
+    this.pageSize = Number(this.route.snapshot.queryParamMap.get('pageSize')) || 10;
+    this.getTeams();
     this.getTaskByUser();
   }
 
@@ -42,23 +61,44 @@ export class UserProfileComponent implements OnInit {
       }
     });
   }
+  getTeams(): void {
+    this.subscription = this.teamService.getAll(this.currentPage, this.pageSize)
+      .subscribe({
+        next: (response) => {
+
+          const userId = localStorage.getItem('userId');
+          
+          this.teams = response.data.filter((team: Team) => {
+            return team.teamMembers && team.teamMembers.some((member: TeamMember) => member.userId === userId);
+          });
+  
+          this.totalItems = this.teams.length;
+          this.pageSize = response.pageSize;
+          this.currentPage = response.pageNumber;
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      });
+  }
+  
 
   onSubTaskSelected(sub: any, event: Event) {
-    const inputElement = event.target as HTMLInputElement; // تحويل الـ event.target إلى HTMLInputElement
-    sub.isCompleted = inputElement.checked; // تحديث حالة isCompleted
+    const inputElement = event.target as HTMLInputElement;
+    sub.isCompleted = inputElement.checked;
   }
 
   saveSubTasks() {
-    // إعداد قائمة للتحديث بناءً على العناصر المحددة
+
     const updatedSubTasksTrue = this.selectedTask.subTaskDtos.filter((sub: any) => {
-      return sub.isCompleted; // أخذ فقط المهام الفرعية المحددة
+      return sub.isCompleted; 
     });
     updatedSubTasksTrue.forEach((sub: any) => {
-      this.updateSubTask(sub.subTaskId); // تحديث المهام الفرعية المحددة
+      this.updateSubTask(sub.subTaskId);
     });
 
 
-    this.closeModel(); // إغلاق المودال بعد الحفظ
+    this.closeModel(); 
   }
 
   updateSubTask(subTaskId: string) {

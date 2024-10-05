@@ -15,7 +15,7 @@ export class PriorityPipe implements PipeTransform {
       case 2:
         return 'High';
       default:
-        return 'Unknown'; // في حال كانت القيمة غير معروفة
+        return 'Unknown';
     }
   }
 
