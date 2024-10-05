@@ -1,70 +1,151 @@
-<div class="card shadow-lg border-primary mb-5" style="margin-top: 50px; margin-left: 50px; margin-right: 50px;">
-    <div class="card-header bg-primary text-white">
-      <h4 class="card-title">User List</h4>
+<div class="container-fluid">
+  <div class="card" style="height: auto;">
+    <div class="card-header d-sm-flex d-block">
+      <div class="mr-auto mb-sm-0 mb-3">
+        <h4 class="card-title mb-2">User Listing</h4>
+        <span>Lorem Ipsum sit amet</span>
+      </div>
+      <a href="javascript:void(0);" class="btn btn-info light mr-3"><i
+          class="las la-download scale3 mr-2"></i>Import Csv</a>
+      <a href="javascript:void(0);" class="btn btn-info">+ Add User</a>
     </div>
     <div class="card-body">
       <div class="table-responsive">
-        <table class="table header-border table-hover verticle-middle">
-          <thead>
-            <tr>
-              <th scope="col">User</th>
-              <th scope="col">Email</th>
-              <th scope="col">Role</th>
-              <th scope="col">Manage Role</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let user of users; let i = index">
-              <td>{{ user.userName }}</td>
-              <td>{{ user.email }}</td>
-              <td>{{ user.roles }}</td>
-              <td>
-                <button class="btn btn-primary" (click)="openRoleModal(user, roleModal)">Manage Role</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div id="ListDatatableView_wrapper"
+          class="dataTables_wrapper no-footer"><table
+            class="table style-1 dataTable no-footer" id="ListDatatableView"
+            role="grid" aria-describedby="ListDatatableView_info">
+            <thead>
+              <tr role="row"><th class="sorting_asc" tabindex="0"
+                  aria-controls="ListDatatableView" rowspan="1" colspan="1"
+                  aria-sort="ascending"
+                  aria-label="#: activate to sort column descending"
+                  style="width: 27.8594px;">#</th><th class="sorting"
+                  tabindex="0" aria-controls="ListDatatableView" rowspan="1"
+                  colspan="1"
+                  aria-label="USER: activate to sort column ascending"
+                  style="width: 192.453px;">USER</th><th class="sorting"
+                  tabindex="0" aria-controls="ListDatatableView" rowspan="1"
+                  colspan="1"
+                  aria-label="EMAIL: activate to sort column ascending"
+                  style="width: 84.0625px;">EMAIL</th><th class="sorting"
+                  tabindex="0" aria-controls="ListDatatableView" rowspan="1"
+                  colspan="1"
+                  aria-label="DATE: activate to sort column ascending"
+                  style="width: 89.5469px;">ROLE</th>
+                  <th class="sorting"
+                  tabindex="0" aria-controls="ListDatatableView" rowspan="1"
+                  colspan="1"
+                  aria-label="ACTION: activate to sort column ascending"
+                  style="width: 99.75px;">MANAGE ROLE</th>
+                </tr>
+            </thead>
+            <tbody>
+              @for (user of users; track $index) {
+                <tr role="row" class="odd">
+                  <td class="sorting_1">
+                    <h6>1.</h6>
+                  </td>
+                  <td>
+                    <div class="media style-1">
+                      <img src="../../../../assets/TemplateDahboard/images/logo.png" class="img-fluid mr-2" alt>
+                      <div class="media-body">
+                        <h6>{{user.userName}}</h6>
+                        <span><a href="/cdn-cgi/l/email-protection"
+                            class="__cf_email__"
+                            data-cfemail="6c060304020803092c0b010d0500420f0301">[email&nbsp;protected]</a></span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      <h6>{{user.email}}</h6>
+                      <span>COde:En</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      <h6 class="text-primary">{{user.roles}}</h6>
+                      <span>Paid</span>
+                    </div>
+                  </td>
+  
+                  <td>
+                    <div class="d-flex action-button" (click)="openRoleModal(user, roleModal)">
+                      <a href="javascript:void(0);"
+                        class="btn btn-info btn-xs light px-2">
+                        <svg width="20" height="20" viewBox="0 0 24 24"
+                          fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M17 3C17.2626 2.73735 17.5744 2.52901 17.9176 2.38687C18.2608 2.24473 18.6286 2.17157 19 2.17157C19.3714 2.17157 19.7392 2.24473 20.0824 2.38687C20.4256 2.52901 20.7374 2.73735 21 3C21.2626 3.26264 21.471 3.57444 21.6131 3.9176C21.7553 4.26077 21.8284 4.62856 21.8284 5C21.8284 5.37143 21.7553 5.73923 21.6131 6.08239C21.471 6.42555 21.2626 6.73735 21 7L7.5 20.5L2 22L3.5 16.5L17 3Z"
+                            stroke="#fff" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                        </svg>
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table><div class="dataTables_info" id="ListDatatableView_info"
+            role="status" aria-live="polite">Showing 1 to 10 of 14
+            entries</div><div class="dataTables_paginate paging_simple_numbers"
+            id="ListDatatableView_paginate"><a
+              class="paginate_button previous disabled"
+              aria-controls="ListDatatableView" data-dt-idx="0" tabindex="0"
+              id="ListDatatableView_previous"><i class="fa fa-angle-double-left"
+                aria-hidden="true"></i></a><span><a
+                class="paginate_button current"
+                aria-controls="ListDatatableView" data-dt-idx="1"
+                tabindex="0">1</a><a class="paginate_button "
+                aria-controls="ListDatatableView" data-dt-idx="2"
+                tabindex="0">2</a></span><a class="paginate_button next"
+              aria-controls="ListDatatableView" data-dt-idx="3" tabindex="0"
+              id="ListDatatableView_next"><i class="fa fa-angle-double-right"
+                aria-hidden="true"></i></a></div></div>
       </div>
     </div>
   </div>
-  
-  <!-- Modal for Managing Roles -->
-  <ng-template #roleModal let-modal>
-    <div class="modal fade show" tabindex="-1" style="display: block;">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Manage Roles for {{ selectedUser?.userName }}</h5>
-            <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
-          </div>
-          <div class="modal-body">
-            <form [formGroup]="roleForm" (ngSubmit)="saveRoles()">
-              <!-- Add formArrayName here -->
-              <div formArrayName="roles">
-                @for (item of selectedUserRoles.controls; track $index) {
-                  <div>
-                    <div class="form-check">
-                      <input
-                        type="checkbox"
-                        class="form-check-input"
-                        id="role{{ $index }}"
-                        [formControlName]="$index"
-                      />
-                      <label class="form-check-label" for="role{{ $index }}">
-                        {{ roles[$index]?.displayValue }}
-                      </label>
-                    </div>
-                  </div>
-                }
+</div>
+
+<!-- Modal for Managing Roles -->
+<ng-template #roleModal let-modal>
+  <div class="modal fade show" tabindex="-1" style="display: block;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Manage Roles for {{ selectedUser?.userName
+            }}</h5>
+          <button type="button" class="btn-close"
+            (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="roleForm" (ngSubmit)="saveRoles()">
+            <!-- Add formArrayName here -->
+            <div formArrayName="roles">
+              @for (item of selectedUserRoles.controls; track $index) {
+              <div>
+                <div class="form-check">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="role{{ $index }}"
+                    [formControlName]="$index" />
+                  <label class="form-check-label" for="role{{ $index }}">
+                    {{ roles[$index]?.displayValue }}
+                  </label>
+                </div>
               </div>
-              <div class="mt-3 text-end">
-                <button type="submit" class="btn btn-primary">Save Roles</button>
-                <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Close click')">Cancel</button>
-              </div>
-            </form>
-          </div>
+              }
+            </div>
+            <div class="mt-3 text-end">
+              <button type="submit" class="btn btn-primary">Save Roles</button>
+              <button type="button" class="btn btn-secondary"
+                (click)="modal.dismiss('Close click')">Cancel</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
-  </ng-template>
-  
+  </div>
+</ng-template>

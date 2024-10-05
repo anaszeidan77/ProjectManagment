@@ -183,7 +183,7 @@ console.log(error);
     )
   }
   getAllProjects(){
-    this.projectsService.getAll().subscribe({
+    this.projectsService.getAll(1,10).subscribe({
       next:(response)=>{
         this.projects=response.data;
       },

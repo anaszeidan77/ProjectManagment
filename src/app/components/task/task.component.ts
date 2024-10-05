@@ -55,7 +55,7 @@ export class TaskComponent implements OnInit {
   }
 
   getAllProjects() {
-    this.projectService.getAll().subscribe({
+    this.projectService.getAll(1,10).subscribe({
       next: (response: any) => {
         this.projects = response;
       },

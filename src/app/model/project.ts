@@ -8,12 +8,27 @@ export interface Project{
     startDate:Date;
     endDate:Date;
     budget:number;
+    totalProgressPercentageProject:number;
     status:number;
     createdBy:string;
     createdAt:Date;
     isDeleted:boolean;
     documents: Document[];
-    resources: any[];
+    resources: Resource[];
     tasks: Task[];
     teams: Team[];
 }
+  
+  export interface Document {
+    documentId: string;
+    documentName: string;
+    type: number;
+    documentURL: string;
+    uploadedDate: string;
+    createdBy: string;
+    createdAt: string;
+    isDeleted: boolean;
+  }
+  
+  export interface Resource {
+  }
