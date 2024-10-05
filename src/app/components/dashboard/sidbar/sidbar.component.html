@@ -16,7 +16,7 @@
     </div>
     <ul class="metismenu" id="menu">
       <li class="nav-label first">Main Menu</li>
-      <li><a class="has-arrow ai-icon" href="javascript:void()"
+      <li><a [routerLink]="['dashboard']" class="has-arrow ai-icon" href="javascript:void()"
           aria-expanded="false">
           <i class="flaticon-144-layout"></i>
           <span class="nav-text">Dashboard</span>
@@ -26,73 +26,34 @@
         </ul>
 
       </li>
-      <li class="nav-label">Apps</li>
-      <li><a class="has-arrow ai-icon" href="javascript:void()"
-          aria-expanded="false">
-          <i class="flaticon-077-menu-1"></i>
-          <span class="nav-text">Apps</span>
+      <li class="nav-label">User Manager</li>
+      <li>
+        <a [routerLink]="['users']" class="has-arrow ai-icon" href="javascript:void()"
+           aria-expanded="false">
+          <i class="fas fa-user"></i> <!-- أيقونة المستخدم -->
+          <span class="nav-text">User Manager</span>
         </a>
-        <ul aria-expanded="false">
-
-        </ul>
+        <ul aria-expanded="false"></ul>
       </li>
-
-      <li><a class="has-arrow ai-icon" href="javascript:void()"
-          aria-expanded="false">
-          <i class="flaticon-061-puzzle"></i>
-          <span class="nav-text">Charts</span>
+      <li class="nav-label">Tasks</li>
+      <li>
+        <a [routerLink]="['tasks']" class="has-arrow ai-icon" href="javascript:void()"
+           aria-expanded="false">
+          <i class="fas fa-tasks"></i> <!-- أيقونة المهام -->
+          <span class="nav-text">Tasks</span>
         </a>
-        <ul aria-expanded="false">
-
-        </ul>
+        <ul aria-expanded="false"></ul>
       </li>
-      <li class="nav-label">components</li>
-      <li><a class="has-arrow ai-icon" href="javascript:void()"
-          aria-expanded="false">
-          <i class="flaticon-003-diamond"></i>
-          <span class="nav-text">Bootstrap</span>
+      <li class="nav-label">Teams</li>
+      <li>
+        <a [routerLink]="['teams']" class="has-arrow ai-icon" href="javascript:void()"
+           aria-expanded="false">
+          <i class="fas fa-users"></i> <!-- أيقونة الفريق -->
+          <span class="nav-text">Teams</span>
         </a>
-        <ul aria-expanded="false">
-
-        </ul>
+        <ul aria-expanded="false"></ul>
       </li>
-      <li><a class="has-arrow ai-icon" href="javascript:void()"
-          aria-expanded="false">
-          <i class="flaticon-053-heart"></i>
-          <span class="nav-text">Plugins</span>
-        </a>
-        <ul aria-expanded="false">
-
-        </ul>
-      </li>
-
-      <li><a class="has-arrow ai-icon" href="javascript:void()"
-          aria-expanded="false">
-          <i class="flaticon-044-file"></i>
-          <span class="nav-text">Forms</span>
-        </a>
-        <ul aria-expanded="false">
-
-        </ul>
-      </li>
-      <li><a class="has-arrow ai-icon" href="javascript:void()"
-          aria-expanded="false">
-          <i class="flaticon-381-network"></i>
-          <span class="nav-text">Table</span>
-        </a>
-        <ul aria-expanded="false">
-
-        </ul>
-      </li>
-      <li><a class="has-arrow ai-icon" href="javascript:void()"
-          aria-expanded="false">
-          <i class="flaticon-049-copy"></i>
-          <span class="nav-text">Pages</span>
-        </a>
-        <ul aria-expanded="false">
-
-        </ul>
-      </li>
+      
     </ul>
     <div class="copyright">
       <p><strong>Zenix Crypto Admin Dashboard</strong> © 2021 All Rights

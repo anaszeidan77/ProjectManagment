@@ -23,6 +23,7 @@ export class TaskComponent implements OnInit {
   projects: any[] = [];
   tasks: Task[] = [];
   selectedTask: Task | undefined;
+  showTaskForm: boolean = false;
   formGroup: FormGroup;
   selectedPriority: number | null = null;
 
@@ -74,6 +75,9 @@ export class TaskComponent implements OnInit {
         console.log('Task data fetching completed');
       }
     });
+  }
+  toggleAddTask() {
+    this.showTaskForm = !this.showTaskForm;
   }
 
   openSubtasksModal(modal: any, task: Task): void {
@@ -210,6 +214,8 @@ export class TaskComponent implements OnInit {
   
 
   deleteTask(taskId?: string): void {
+    console.log(taskId);
+    
     this.taskService.deleteTask(taskId).subscribe({
       next: () => {
         this.loadTasks();

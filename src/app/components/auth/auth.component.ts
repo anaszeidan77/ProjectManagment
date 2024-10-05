@@ -57,11 +57,16 @@ export class AuthComponent {
     }
   
     const loginInfo = this.loginForm.value;
-  
+    
     this.authService.login(loginInfo).subscribe({
       next: (res) => {
         if (res) {
-          alert('Logged in as ' + res.email);
+          // localStorage.setItem("token",res.token)
+          // localStorage.setItem("userName",res.username)
+          // localStorage.setItem("userId",res.userId);
+          // localStorage.setItem("email",res.email);
+          // localStorage.setItem("roles",res.roles.toString());
+          alert('Logged saccsed');
           this.router.navigate(['/dashboard']); // Adjust the route as needed
         } else {
           alert('Invalid credentials');
