@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, TemplateRef, ElementRef, Renderer2 } from
 import { FormBuilder, FormGroup, FormArray, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TaskService } from '../../services/task.service';
 import { SubTask, Task } from '../../model/task';
-import { NgbDropdownModule, NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProjectsService } from '../../services/projects.service';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
@@ -52,31 +52,11 @@ export class TaskComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private modalService: NgbModal,
+
     private projectService: ProjectsService,
-    private userService : UserService,
-    private renderer: Renderer2
-  ){
-
-  }
-  initEditForm() {
-    this.editTaskForm = this.fb.group({
-      taskId: [''],
-      taskName: ['', Validators.required],
-      description: ['', Validators.required],
-      dueDate: ['', Validators.required],
-      status: [0, Validators.required],
-      priority: [0, Validators.required],
-      isCompleted: [false, Validators.required],
-      projectId: ['', Validators.required],
-      userId: ['', Validators.required],
-      createdBy: ['', Validators.required],
-      isDeleted: [false],
-      subTaskDtos: this.fb.array([])
-    });
-  }
-  
-  initAddForm() {
-    this.addTaskForm = this.fb.group({
+    private userService : UserService
+  ) {
+    this.formGroup = this.fb.group({
       taskName: ['', Validators.required],
       description: ['', Validators.required],
       dueDate: ['', Validators.required],
@@ -88,65 +68,17 @@ export class TaskComponent implements OnInit {
       subTaskDtos: this.fb.array([])
     });
   }
-  
 
-  
-createSubTask(): FormGroup {
-  return this.fb.group({
-      subTaskName: ['', Validators.required],
-      description: ['', Validators.required],
-      subTaskProgressPercentage: [0, Validators.required],
-      isCompleted: [false, Validators.required],
-      taskId: ['']
-  });
-}
-
-  closeModal() {
-    if (this.closeButton) {
-      this.renderer.selectRootElement(this.closeButton.nativeElement).click();
-    }
-  }
-  get subTaskFormArray(): FormArray {
-    return this.editTaskForm.get('subTaskDtos') as FormArray;
-  }
-  addSubTask() {
-    this.subTaskFormArray.push(this.createSubTask());
+  ngOnInit(): void {
+    this.loadTasks();
+    this.getAllProjects();
+    this.getAllUser();
   }
 
-  removeSubTask(index: number) {
-    const subTasks = this.editTaskForm.get('subTaskDtos') as FormArray;
-    subTasks.removeAt(index);
-  }
-
-  get addSubTaskFormArray(): FormArray {
-    return this.addTaskForm.get('subTaskDtos') as FormArray;
-  }
-  addSubTaskToAddForm() {
-    this.addSubTaskFormArray.push(this.createSubTask());
-  }
-  
-  removeSubTaskFromAddForm(index: number) {
-    const subTasks = this.addTaskForm.get('subTaskDtos') as FormArray;
-    subTasks.removeAt(index);
-  }  
-  
-  getAllUsers(){
-    this.userService.getAll().subscribe(
-      {
-        next:(response)=>{
-          this.users=response;
-        
-        },
-        error:(error)=>{
-
-        }
-      }
-    )
-  }
-  getAllProjects(){
+  getAllProjects() {
     this.projectService.getAll(1,10).subscribe({
-      next:(response)=>{
-        this.projects=response.data;
+      next: (response: any) => {
+        this.projects = response;
       },
       error:(error)=>{
         

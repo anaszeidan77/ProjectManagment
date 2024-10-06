@@ -13,11 +13,13 @@ export class TaskService {
   constructor(private http :HttpClient) { }
 
 
-  getTasks(pageNumber: number, pageSize: number):Observable<PaginatedResponse<Task>>{
-    let params = new HttpParams()
-    .set('pageNumber', pageNumber.toString())
-    .set('pageSize', pageSize.toString());
-    return this.http.get<PaginatedResponse<Task>>(this.apiUrl, { params });
+  getTasks():Observable<Task[]>{
+    return this.http.get<Task[]>(this.apiUrl)
+    .pipe(
+      map((respose : any)=>respose.data),
+      catchError(this.handleError<Task[]>('getTasks',[]))
+
+    );
   }
   
   getTasksById(id:string):Observable<Task>{
@@ -29,14 +31,16 @@ export class TaskService {
   }
 
   addTask(task:Task):Observable<Task>{
-    return this.http.post<Task>(this.apiUrl,task,this.httpOptions)
+    return this.http.post<Task>(`${environment.url}/Tasks`,task,this.httpOptions)
     .pipe(
       catchError(this.handleError<Task>('addTask',))
     );
   }
   updateTask(id : string,task:Task): Observable<any> {
     const url = `${this.apiUrl}/${id}`;
-    return this.http.put(url, task, this.httpOptions)
+    console.log('Update URL:', url); 
+    console.log(task.taskId)
+    return this.http.put(`${environment.url}/Tasks/${id}`, task, this.httpOptions)
     .pipe(
       catchError(this.handleError<any>('updateTask'))
     );
