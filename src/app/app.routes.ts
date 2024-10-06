@@ -6,11 +6,15 @@ import { TeamComponent } from './components/team/team.component';
 import { TeamDetailsComponent } from './components/team-details/team-details.component';
 import { TaskComponent } from './components/task/task.component';
 import { authGuard } from './guards/auth.guard';
+import { RoleListComponent } from './components/role-list/role-list.component';
+import { ManagePermissionsComponent } from './components/manage-permissions/manage-permissions.component';
 
 export const routes: Routes =
 [
   {path:'tasks',component:TaskComponent},
   {path:'teams',component:TeamComponent},
+  {path:'roles',component:RoleListComponent},
+  {path:'ManagePermissions/:Id',component:ManagePermissionsComponent},
   {path:'TeamDetails/:Id',component:TeamDetailsComponent},
   {
     path: 'dashboard',

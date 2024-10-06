@@ -1,95 +1,166 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, ElementRef, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TaskService } from '../../services/task.service';
 import { SubTask, Task } from '../../model/task';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProjectsService } from '../../services/projects.service';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { User } from '../../model/user';
 import { TruncateTextPipe } from '../../Pipes/truncateText.pipe';
+import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { Project } from '../../model/project';
 
 @Component({
   selector: 'app-task',
   standalone: true,
-  imports: [FormsModule, CommonModule, ReactiveFormsModule,TruncateTextPipe],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule,TruncateTextPipe,NgbModule,NgbDropdownModule],
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.css']
 })
 export class TaskComponent implements OnInit {
-  @ViewChild('editTaskModal') editTaskModal!: TemplateRef<any>;
+  
+  @ViewChild('addModal', { static: false }) addModal!:ElementRef ;
 
-  projects: any[] = [];
-  tasks: Task[] = [];
-  selectedTask: Task | undefined;
-  formGroup: FormGroup;
-  selectedPriority?: number | null = null;
-  users : User[]=[];
-  userId : string = localStorage.getItem("userId") as string;
-
+  @ViewChild('closeButton', { static: false }) closeButton!: ElementRef;
+  totalItems: number = 0;
+  pageSize: number = 10;
+  currentPage: number = 1;
+  subscription!: Subscription;
+  addTaskForm!:FormGroup;
+  editTaskForm!: FormGroup;
+  selectedTaskId!: string;
+  listTask:Task[]=[];
+  tasks:Task[]=[];
+  users:User[]=[];
+  projects:Project[]=[];
+  ngOnInit(): void {
+    this.currentPage = Number(this.route.snapshot.queryParamMap.get('pageNumber')) || 1;
+    this.pageSize = Number(this.route.snapshot.queryParamMap.get('pageSize')) || 10;
+  
+    this.initEditForm();
+    this.initAddForm();
+  
+    this.getAllTasks();
+    this.getAllUsers();
+    this.getAllProjects();
+  }
+  
   constructor(
     private taskService: TaskService,
     private fb: FormBuilder,
+    private route: ActivatedRoute,
     private modalService: NgbModal,
     private projectService: ProjectsService,
-    private userService : UserService
-  ) {
-    this.formGroup = this.fb.group({
+    private userService : UserService,
+    private renderer: Renderer2
+  ){
+
+  }
+  initEditForm() {
+    this.editTaskForm = this.fb.group({
+      taskId: [''],
       taskName: ['', Validators.required],
       description: ['', Validators.required],
       dueDate: ['', Validators.required],
-      priority: [],
-      projectId: [''],
-      userId: [''],
-      createdBy: [this.userId],
-      status: [''],
+      status: [0, Validators.required],
+      priority: [0, Validators.required],
+      isCompleted: [false, Validators.required],
+      projectId: ['', Validators.required],
+      userId: ['', Validators.required],
+      createdBy: ['', Validators.required],
       isDeleted: [false],
       subTaskDtos: this.fb.array([])
     });
   }
+  
+  initAddForm() {
+    this.addTaskForm = this.fb.group({
+      taskName: ['', Validators.required],
+      description: ['', Validators.required],
+      dueDate: ['', Validators.required],
+      status: [0, Validators.required],
+      priority: [0, Validators.required],
+      projectId: ['', Validators.required],
+      userId: ['', Validators.required],
+      isDeleted: [false],
+      subTaskDtos: this.fb.array([])
+    });
+  }
+  
 
-  ngOnInit(): void {
-    this.loadTasks();
-    this.getAllProjects();
-    this.getAllUser();
+  
+createSubTask(): FormGroup {
+  return this.fb.group({
+      subTaskName: ['', Validators.required],
+      description: ['', Validators.required],
+      subTaskProgressPercentage: [0, Validators.required],
+      isCompleted: [false, Validators.required],
+      taskId: ['']
+  });
+}
+
+  closeModal() {
+    if (this.closeButton) {
+      this.renderer.selectRootElement(this.closeButton.nativeElement).click();
+    }
+  }
+  get subTaskFormArray(): FormArray {
+    return this.editTaskForm.get('subTaskDtos') as FormArray;
+  }
+  addSubTask() {
+    this.subTaskFormArray.push(this.createSubTask());
   }
 
-  getAllProjects() {
-    this.projectService.getAll(1,10).subscribe({
-      next: (response: any) => {
-        this.projects = response;
-      },
-      error: (error) => {
-        console.log(error);
+  removeSubTask(index: number) {
+    const subTasks = this.editTaskForm.get('subTaskDtos') as FormArray;
+    subTasks.removeAt(index);
+  }
+
+  get addSubTaskFormArray(): FormArray {
+    return this.addTaskForm.get('subTaskDtos') as FormArray;
+  }
+  addSubTaskToAddForm() {
+    this.addSubTaskFormArray.push(this.createSubTask());
+  }
+  
+  removeSubTaskFromAddForm(index: number) {
+    const subTasks = this.addTaskForm.get('subTaskDtos') as FormArray;
+    subTasks.removeAt(index);
+  }  
+  
+  getAllUsers(){
+    this.userService.getAll().subscribe(
+      {
+        next:(response)=>{
+          this.users=response;
+        
+        },
+        error:(error)=>{
+
+        }
       }
-    });
+    )
   }
-  getAllUser() {
-    this.userService.getAll().subscribe({
+  getAllProjects(){
+    this.projectService.getAll(1,10).subscribe({
+      next:(response)=>{
+        this.projects=response.data;
+      },
+      error:(error)=>{
+        
+      }
+    })
+  }
+
+  getAllTasks(): void {
+    this.subscription= this.taskService.getTasks(this.currentPage,this.pageSize).subscribe({
       next: (response) => {
-        this.users = response;
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
-  }
-
-  loadTasks(): void {
-    this.taskService.getTasks().subscribe({
-      next: (response: any) => {
-        const tasks = response.data ? response.data : response;
-
-        this.tasks = tasks.map((task: Task) => {
-          if (!Array.isArray(task.subTaskDtos)) {
-            if (task.subTaskDtos && typeof task.subTaskDtos === 'object') {
-              task.subTaskDtos = Object.values(task.subTaskDtos);
-            } else {
-              task.subTaskDtos = [];
-            }
-          }
-          return task;
-        });
+        this.listTask=response.data
+        this.totalItems = response.totalItems;
+        this.pageSize = response.pageSize;
+        this.currentPage = response.pageNumber;
       },
       error: (error) => {
         console.error('Error fetching tasks', error);
@@ -100,172 +171,145 @@ export class TaskComponent implements OnInit {
     });
   }
 
-  openSubtasksModal(modal: any, task: Task): void {
-    this.selectedTask = JSON.parse(JSON.stringify(task));
-
-    if (!Array.isArray(this.selectedTask?.subTaskDtos)) {
-      if (this.selectedTask?.subTaskDtos && typeof this.selectedTask?.subTaskDtos === 'object') {
-        this.selectedTask.subTaskDtos = Object.values(this.selectedTask.subTaskDtos);
-      } else {
-        this.selectedTask!.subTaskDtos = [];
-      }
+  updateTask() {
+    const user: string = localStorage.getItem("userName") as string;
+    console.log("Form Values:", this.editTaskForm.value);
+    console.log(this.selectedTaskId);
+  
+    if (!this.editTaskForm.valid) {
+      console.error('Form is invalid');
+      return;
     }
+  
+    // تعديل المهام الفرعية لإزالة الحقول غير الضرورية
+    const subTaskDtos = this.editTaskForm.get('subTaskDtos')?.value.map((subTask: SubTask) => ({
+      subTaskName: subTask.subTaskName,
+      description: subTask.description,
+      subTaskProgressPercentage: subTask.subTaskProgressPercentage,
+      isCompleted: subTask.isCompleted,
+      taskId: this.selectedTaskId // نستخدم selectedTaskId
+    })) || [];
+  
+    const updateTask: Task = {
+      taskId: this.selectedTaskId,
+      status: Number(this.editTaskForm.value.status),
+      priority: Number(this.editTaskForm.value.priority),
+      taskName: this.editTaskForm.value.taskName,
+      description: this.editTaskForm.value.description,
+      dueDate: this.editTaskForm.value.dueDate, // تحويل التاريخ إلى صيغة ISO
+      isCompleted: this.editTaskForm.value.isCompleted,
+      projectId: this.editTaskForm.value.projectId,
+      userId: this.editTaskForm.value.userId,
+      createdBy: user,
+      isDeleted: this.editTaskForm.value.isDeleted,
+      subTaskDtos: subTaskDtos
+    };
+  
+    console.log('Payload being sent:', updateTask);
+  
+    this.taskService.updateTask(this.selectedTaskId, updateTask).subscribe({
+      next: (response) => {
+        this.closeModal();
+        console.log('Task updated successfully', response);
+      },
+      error: (error) => {
+        console.error('Error updating task', error);
+        console.log('Validation errors:', error.error.errors);
+      }
+    });
+  }
+  
+  
+  addTask() {
+    const user: string = localStorage.getItem("userName") as string;
+  
+    if (!this.addTaskForm.valid) {
+      console.error('Form is invalid');
+      return;
+    }
+  
+    const subTaskDtos = this.editTaskForm.get('subTaskDtos')?.value.map((subTask: SubTask) => ({
+      subTaskName: subTask.subTaskName,
+      description: subTask.description,
+      subTaskProgressPercentage: subTask.subTaskProgressPercentage,
+      isCompleted: subTask.isCompleted,
+      taskId: this.selectedTaskId // تأكد من استخدام selectedTaskId الصحيح
+    })) || [];
+  
+    const newTask: Task = {
+      status: Number(this.addTaskForm.value.status),
+      priority: Number(this.addTaskForm.value.priority),
+      taskName: this.addTaskForm.value.taskName,
+      description: this.addTaskForm.value.description,
+      dueDate: this.addTaskForm.value.dueDate, // تحويل التاريخ إلى صيغة ISO
+      projectId: this.addTaskForm.value.projectId,
+      userId: this.addTaskForm.value.userId,
+      createdBy: user,
+      isDeleted: this.addTaskForm.value.isDeleted,
+      subTaskDtos: subTaskDtos
+    };
+  
+    console.log('Payload being sent:', newTask);
+  
+    this.taskService.addTask(newTask).subscribe({
+      next: (response: Task) => {
+        console.log('Task added successfully', response);
+        this.getAllTasks();
+        this.closeModal();
+      },
+      error: (error) => {
+        console.error('Error adding task', error);
+        console.log('Validation errors:', error.error.errors);
+      }
+    });
+  }
+  
 
+  
+  openEditModal(task: Task) {
+    this.selectedTaskId = task.taskId!;
+    // تعبئة الحقول الرئيسية للمهمة
+    this.editTaskForm.patchValue({
+      taskId: task.taskId,
+      taskName: task.taskName,
+      description: task.description,
+      priority: task.priority,
+      status: task.status,
+      dueDate: task.dueDate,
+      userId: task.userId,
+      projectId: task.projectId,
+      isCompleted: task.isCompleted,
+      createdBy: task.createdBy,
+      isDeleted: task.isDeleted,
+    });
+  
+    // تفريغ الـ FormArray الحالي قبل تعبئته بالمهام الفرعية
+    this.subTaskFormArray.clear();
+  
+    // تعبئة المهام الفرعية في الـ FormArray
+    if (task.subTaskDtos && task.subTaskDtos.length > 0) {
+      task.subTaskDtos.forEach(subTask => {
+        const subTaskFormGroup = this.fb.group({
+          subTaskId: [subTask.subTaskId],
+          subTaskName: [subTask.subTaskName, Validators.required],
+          description: [subTask.description, Validators.required],
+          subTaskProgressPercentage: [subTask.subTaskProgressPercentage, Validators.required],
+          isCompleted: [subTask.isCompleted],
+          taskId: [subTask.taskId]
+        });
+        this.subTaskFormArray.push(subTaskFormGroup);
+      });
+    }
+  }
+  
+  openSubtasksModal(modal: any, task: Task): void {
     this.modalService.open(modal);
   }
 
-  addField(): void {
-    const control = this.fb.group({
-      subTaskName: [''],
-      description: [''],
-      subTaskProgressPercentage: [0],
-      isCompleted: [false],
-      subTaskId: ['']
-    });
-    this.subTasksArray.push(control);
-  }
+  openAddModal(): void {
+    this.initAddForm(); // Initialize the add task form
+    this.modalService.open(this.addModal); // Open the add modal
+}
 
-  get subTasksArray(): FormArray {
-    return this.formGroup.get('subTaskDtos') as FormArray;
-  }
 
-  removeField(index: number): void {
-    this.subTasksArray.removeAt(index);
-  }
-
-  trackById(index: number, task: Task): string | undefined {
-    return task.taskId;
-  }
-
-  selectPriority(value: number) {
-    this.selectedPriority = value;
-    this.formGroup.patchValue({ priority: value });
-  }
-
-  openAddTaskModal(): void {
-    this.selectedTask = undefined;
-    this.formGroup.reset();
-    this.formGroup.setControl('subTaskDtos', this.fb.array([]));
-    this.modalService.open(this.editTaskModal);
-  }
-
-  updateTask(task: Task): void {
-    console.log('Task received in updateTask:', task);
-    console.log('Task ID:', task.taskId);
-
-    this.selectedTask = JSON.parse(JSON.stringify(task));
-
-    this.formGroup.reset();
-    this.formGroup.setControl('subTaskDtos', this.fb.array([]));
-
-    this.formGroup.patchValue({
-      taskId: this.selectedTask?.taskId,
-      taskName: this.selectedTask?.taskName,
-      description: this.selectedTask?.description,
-      dueDate: this.selectedTask?.dueDate,
-      priority: this.selectedTask?.priority,
-      projectId: this.selectedTask?.projectId,
-      userId: this.selectedTask?.userId,
-      status: this.selectedTask?.status,
-      isDeleted: this.selectedTask?.isDeleted
-    });
-
-    this.selectedPriority = this.selectedTask?.priority;
-
-    if (!Array.isArray(this.selectedTask?.subTaskDtos)) {
-      if (this.selectedTask?.subTaskDtos && typeof this.selectedTask?.subTaskDtos === 'object') {
-        this.selectedTask.subTaskDtos = Object.values(this.selectedTask.subTaskDtos);
-      } else {
-        this.selectedTask!.subTaskDtos = [];
-      }
-    }
-
-    if (this.selectedTask?.subTaskDtos && this.selectedTask.subTaskDtos.length > 0) {
-      const subTasksFormArray = this.formGroup.get('subTaskDtos') as FormArray;
-      this.selectedTask?.subTaskDtos.forEach(subTask => {
-        subTasksFormArray.push(this.fb.group({
-          subTaskName: [subTask.subTaskName],
-          description: [subTask.description],
-          subTaskProgressPercentage: [subTask.subTaskProgressPercentage],
-          isCompleted: [subTask.isCompleted],
-          subTaskId: [subTask.subTaskId]
-        }));
-      });
-    }
-
-    this.modalService.open(this.editTaskModal);
-  }
-
-  saveTask(): void {
-    if (this.formGroup.valid) {
-      const formData = this.formGroup.value;
-      console.log('Form Data:', formData);
-
-      // تحويل subTaskDtos إلى مصفوفة إذا كانت كائن
-      const subTaskDtos = Array.isArray(formData.subTaskDtos)
-        ? formData.subTaskDtos
-        : Object.values(formData.subTaskDtos || {});
-
-      const payload: Task = {
-        taskId: this.selectedTask?.taskId,
-        taskName: formData.taskName,
-        description: formData.description,
-        dueDate: formData.dueDate,
-        priority: formData.priority,
-        projectId: formData.projectId,
-        userId: formData.userId,
-        createdBy: this.userId,
-        status: formData.status,
-        isDeleted: formData.isDeleted || false,
-        subTaskDtos: subTaskDtos.map((subTask: SubTask) => ({
-          subTaskId: subTask.subTaskId || null,
-          subTaskName: subTask.subTaskName,
-          description: subTask.description,
-          subTaskProgressPercentage: subTask.subTaskProgressPercentage,
-          isCompleted: subTask.isCompleted
-        }))
-      };
-
-      console.log('Payload being sent:', payload);
-
-      if (this.selectedTask) {
-        // تحديث المهمة
-        this.taskService.updateTask(payload.taskId!, payload).subscribe({
-          next: () => {
-            this.loadTasks();
-            this.modalService.dismissAll();
-          },
-          error: (error) => {
-            console.error('Error updating task', error);
-          }
-        });
-      } else {
-        // إضافة مهمة جديدة
-        this.taskService.addTask(payload).subscribe({
-          next: () => {
-            this.loadTasks();
-            this.modalService.dismissAll();
-            this.formGroup.reset();
-            this.formGroup.setControl('subTaskDtos', this.fb.array([]));
-          },
-          error: (error) => {
-            console.error('Error adding task', error);
-          }
-        });
-      }
-    } else {
-      console.log('Form is invalid. Please fill in all required fields.');
-    }
-  }
-
-  deleteTask(taskId?: string): void {
-    this.taskService.deleteTask(taskId).subscribe({
-      next: () => {
-        this.loadTasks();
-      },
-      error: (error) => {
-        console.error('Error deleting task', error);
-      }
-    });
-  }
 }

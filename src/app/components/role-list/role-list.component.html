@@ -1,0 +1,46 @@
+<!-- roles.component.html -->
+<div class="container mt-4">
+    <h2 class="mb-3">Role List</h2>
+    <!-- add-role.component.html -->
+<div class="container mt-4">
+    <h2 class="mb-3">إضافة دور جديد</h2>
+    <form [formGroup]="roleForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="name" class="form-label">اسم الدور</label>
+        <input
+          type="text"
+          id="name"
+          formControlName="name"
+          class="form-control"
+          [ngClass]="{'is-invalid': roleForm.get('name')?.invalid && roleForm.get('name')?.touched}"
+        />
+        <div *ngIf="roleForm.get('name')?.invalid && roleForm.get('name')?.touched" class="invalid-feedback">
+          اسم الدور مطلوب
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">إضافة</button>
+    </form>
+  </div>
+  
+    <table class="table table-bordered">
+      <thead class="table-light">
+        <tr>
+          <th>#</th>
+          <th>Role Name</th>
+          <th> Manage Permissions </th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (role of roles; track $index) {
+            <tr>
+                <td>{{ $index + 1 }}</td>
+                <td>{{ role.name }}</td>
+                <td> <button class="btn btn-primary" (click)="ManagePermissions(role.id!)">
+                    Manage Permissions
+                </button> </td>
+              </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  

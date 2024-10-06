@@ -1,8 +1,9 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
 import { Task } from '../model/task';
 import { environment } from '../../environments/environment';
+import { PaginatedResponse } from '../model/PaginatedResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +13,11 @@ export class TaskService {
   constructor(private http :HttpClient) { }
 
 
-  getTasks():Observable<Task[]>{
-    return this.http.get<Task[]>(this.apiUrl)
-    .pipe(
-      map((respose : any)=>respose.data),
-      catchError(this.handleError<Task[]>('getTasks',[]))
-
-    );
+  getTasks(pageNumber: number, pageSize: number):Observable<PaginatedResponse<Task>>{
+    let params = new HttpParams()
+    .set('pageNumber', pageNumber.toString())
+    .set('pageSize', pageSize.toString());
+    return this.http.get<PaginatedResponse<Task>>(this.apiUrl, { params });
   }
   
   getTasksById(id:string):Observable<Task>{

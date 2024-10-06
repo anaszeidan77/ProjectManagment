@@ -1,324 +1,390 @@
-<div class="container mt-4">
+<div
+  class="card-header border-0 d-flex justify-content-between align-items-center">
+  <button type="button" class="btn btn-primary" data-toggle="modal"
+    data-target="#addModal">
+    Add
+  </button>
+  <h3 class="mb-0 title">List of Tasks</h3>
+</div>
+
+<div class="continar">
   <div class="row">
-    <div class="col-12 mb-4 text-end">
-      <button class="btn btn-primary" (click)="openAddTaskModal()">
-        Add New Task
-      </button>
-    </div>
-
-    <!-- قائمة المهام -->
-    <div class="main">
-      <div class="row">
-        <!-- تحقق من وجود المهام -->
-        <ng-container *ngIf="tasks && tasks.length; else noTasks">
-          <!-- تكرار على المهام وعرضها في البطاقات -->
-          <div class="col-md-4" *ngFor="let item of tasks; trackBy: trackById">
-
-            <!-- تفاصيل المهمة -->
-            <div class="pt-2">
-              <div class="two">
-                <div class="d-flex justify-content-end px-3 pt-1">
-                  <!-- أيقونة النجمة -->
-                  <i class="mdi mdi-star-outline pr-1 star"></i>
-
-                  <div class="dropdown">
-                    <span type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                      aria-haspopup="true" aria-expanded="false">
-                      <i class="mdi mdi-dots-horizontal dot"></i>
-                    </span>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                      @if(!item.isDeleted){
-                        <button class="delete-btn" (click)="deleteTask(item.taskId)">
-                          <i class="fas fa-trash-alt"></i>
-                        </button>
-                      }
-      
-                      <button type="button" class="view-btn" data-toggle="modal"
-                        data-target="#exampleModalCenterEdit">
-                        <i class="fa fa-eye" aria-hidden="true"></i>
-                      </button>
-                      <button type="button" class="edit-btn" (click)="updateTask(item)" data-toggle="modal"
-                        data-target="#editModal">
-                        <i class="fas fa-edit"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="px-3 pt-3">
-                  <h3 class="name">{{ item.taskName }}</h3>
-                  <p class="quote2">{{ item.description | truncateText:4  }}</p>
-                </div>
-                <div
-                  class="d-flex justify-content-start px-3 align-items-center">
-                  <i class="mdi mdi-view-comfy task"></i>
-                  <!-- <span class="quote2 pl-2">المهمة: {{ getTaskStatus(item.status) }}</span> -->
-                </div>
-                <div
-                  class="d-flex justify-content-between px-3 align-items-center pb-3">
-                  <div class="d-flex justify-content-start align-items-center">
-                    <i class="mdi mdi-calendar-clock date"></i>
-                    <span class="quote2 pl-2">التاريخ: {{ item.dueDate |
-                      date:'dd.MM.yyyy' }}</span>
-                  </div>
-                  <div class="d-flex justify-content-end">
-                    <button
-                      class="btn btn-primary btn-sm"
-                      (click)="openSubtasksModal(subtasksModal,item)">
-                      <i class="fas fa-tasks me-1"></i> sub task
-                    </button>
-
-                  </div>
-                </div>
-              </div>
-              <ng-template #subtasksModal let-modal>
-                <div class="modal fade show" tabindex="-1"
-                  style="display: block;" aria-modal="true" role="dialog">
-                  <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title">المهام الفرعية</h5>
-                        <button type="button" class="btn-close"
-                          (click)="modal.dismiss('Cross click')"></button>
-                      </div>
-                      <div class="modal-body">
-                        <div *ngIf="selectedTask">
-                          <h6 class="mb-3">المهام الفرعية لـ {{
-                            selectedTask.taskName }}</h6>
-                          <div class="table-responsive">
-                            <table class="table table-hover table-bordered">
-                              <thead class="table-light">
-                                <tr>
-                                  <th>#</th>
-                                  <th>اسم المهمة الفرعية</th>
-                                  <th>التقدم (%)</th>
-                                  <th>مكتملة</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr
-                                  *ngFor="let st of selectedTask.subTaskDtos; let i = index">
-                                  <td>{{ i + 1 }}</td>
-                                  <td>{{ st.subTaskName }}</td>
-                                  <td>
-                                    <div class="progress" style="height: 5px;">
-                                      <div
-                                        class="progress-bar"
-                                        role="progressbar"
-                                        [style.width]="st.subTaskProgressPercentage + '%'"
-                                        [ngClass]="{
-                                              'bg-success': st.subTaskProgressPercentage
-
-                                            }">
-                                      </div>
-                                    </div>
-                                    <small>{{ st.subTaskProgressPercentage
-                                      }}%</small>
-                                  </td>
-                                  <td>
-                                    <i
-                                      [ngClass]="{
-                                            'fas fa-check-circle text-success': st.isCompleted,
-                                            'fas fa-times-circle text-danger': !st.isCompleted
-                                          }">
-                                    </i>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button
-                          type="button"
-                          class="btn btn-secondary"
-                          (click)="modal.dismiss('Close click')">
-                          إغلاق
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </ng-template>
+    <!-- Check for existing tasks -->
+    <!-- Loop over tasks and display them in cards -->
+    @for (task of listTask; track $index) {
+    <div class="col-md-4">
+      <!-- Task details -->
+      <div class="pt-2">
+        <div class="two">
+          <div class="d-flex justify-content-end px-3 pt-1">
+            <!-- أيقونة الهمبرغر والقائمة المنسدلة باستخدام ng-bootstrap -->
+            <div ngbDropdown class="dropdown me-3">
+              <button class="btn btn-primary" id="dropdownMenuButton"
+                ngbDropdownToggle>
+                <i class="fas fa-bars"></i>
+              </button>
+              <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+                <li>
+                  <button class="dropdown-item" (click)="openEditModal(task)"
+                    data-toggle="modal"
+                    data-target="#editModal">
+                    <i class="fas fa-edit me-2"></i> Update
+                  </button>
+                </li>
+                <li>
+                  <button class="dropdown-item text-danger">
+                    <i class="fas fa-trash-alt me-2"></i> Delete
+                  </button>
+                </li>
+              </ul>
             </div>
           </div>
-        </ng-container>
 
-        <!-- قالب لعدم وجود مهام -->
-        <ng-template #noTasks>
-          <div class="col-12">
-            <h3 class="text-center">لا توجد مهام متاحة</h3>
+          <div class="px-3 pt-3">
+            <h5 class="name">{{ task.taskName | truncateText:2}}</h5>
+            <p class="quote2">{{ task.description | truncateText:4 }}</p>
+          </div>
+          <div
+            class="d-flex justify-content-start px-3 align-items-center">
+            <i class="mdi mdi-view-comfy task"></i>
+            <!-- <span class="quote2 pl-2">Task: {{ getTaskStatus(item.status) }}</span> -->
+          </div>
+          <div
+            class="d-flex justify-content-between px-3 align-items-center pb-3">
+            <div class="d-flex justify-content-start align-items-center">
+              <i class="mdi mdi-calendar-clock date"></i>
+              <span class="quote2 pl-2">Date: {{ task.dueDate |
+                date:'dd.MM.yyyy' }}</span>
+            </div>
+            <div class="d-flex justify-content-end">
+              <button
+                class="btn btn-primary btn-sm"
+                (click)="openSubtasksModal(subtasksModal, task)">
+                <i class="fas fa-tasks me-1"></i> Subtasks
+              </button>
+            </div>
+          </div>
+        </div>
+        <ng-template #subtasksModal let-modal>
+          <div class="modal fade show" tabindex="-1"
+            style="display: block;" aria-modal="true" role="dialog">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Subtasks</h5>
+                  <button type="button" class="btn-close"
+                    (click)="modal.dismiss('Cross click')"></button>
+                </div>
+                <div class="modal-body">
+                  <div>
+                    <h6 class="mb-3">Subtasks for {{ task.taskName }}</h6>
+                    <div class="table-responsive">
+                      <table class="table table-hover table-bordered">
+                        <thead class="table-light">
+                          <tr>
+                            <th>#</th>
+                            <th>Subtask Name</th>
+                            <th>Completed</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @for (subTask of task.subTaskDtos; track $index) {
+                          <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ subTask.subTaskName }}</td>
+                            <td>
+                              <i
+                                [ngClass]="{
+                                              'fas fa-check-circle text-success': subTask.isCompleted,
+                                              'fas fa-times-circle text-danger': !subTask.isCompleted
+                                            }">
+                              </i>
+                            </td>
+                          </tr>
+                          }
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    (click)="modal.dismiss('Close click')">
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </ng-template>
+      </div>
+    </div>
+    }
+
+    <!-- Template for no tasks -->
+    <ng-template #noTasks>
+      <div class="col-12">
+        <h3 class="text-center">No tasks available</h3>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<div #addModal class="modal fade" id="addModal" tabindex="-1" role="dialog"
+  aria-labelledby="addModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addModalLabel">Add Task</h5>
+        <button #closeButton type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="addTask()" [formGroup]="addTaskForm"
+          class="container">
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <label for="addTaskName" class="form-label">Task Name</label>
+              <input type="text" id="addTaskName" formControlName="taskName"
+                class="form-control" placeholder="Enter Task Name">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <label for="addDescription" class="form-label">Description</label>
+              <textarea id="addDescription" formControlName="description"
+                class="form-control" rows="3"
+                placeholder="Enter Description"></textarea>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <label for="addDueDate" class="form-label">Due Date</label>
+              <input type="date" id="addDueDate" formControlName="dueDate"
+                class="form-control">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="addStatus" class="form-label">Status</label>
+              <select id="addStatus" formControlName="status"
+                class="form-select">
+                <option [value]="0">Not Started</option>
+                <option [value]="1">In Progress</option>
+                <option [value]="2">Completed</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="addPriority" class="form-label">Priority</label>
+              <select id="addPriority" formControlName="priority"
+                class="form-select">
+                <option [value]="0">Low</option>
+                <option [value]="1">Medium</option>
+                <option [value]="2">High</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <label for="addProjectSelect" class="form-label">Project</label>
+              <select id="addProjectSelect" formControlName="projectId"
+                class="form-select">
+                <option disabled selected>Select Project</option>
+                <option *ngFor="let project of projects"
+                  [value]="project.projectId">{{ project.projectName }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <label for="addUserSelect" class="form-label">Assigned
+                User</label>
+              <select class="form-select" id="addUserSelect"
+                formControlName="userId">
+                <option disabled selected>Select User</option>
+                <option *ngFor="let user of users" [value]="user.id">{{
+                  user.userName }}</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Subtasks Section -->
+          <div formArrayName="subTaskDtos">
+            <div
+              *ngFor="let subTask of addSubTaskFormArray.controls; let i = index"
+              [formGroupName]="i">
+              <!-- حقول المهام الفرعية -->
+              <h5> subTask {{ i + 1 }}</h5>
+              <div class="row mb-2">
+                <div class="col-md-12">
+                  <label class="form-label">Name SubTask</label>
+                  <input type="text" formControlName="subTaskName"
+                    class="form-control" placeholder="Enter Name SubTask">
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-md-12">
+                  <label class="form-label">description</label>
+                  <textarea formControlName="description" class="form-control"
+                    rows="2" placeholder="enter description"></textarea>
+                </div>
+              </div>
+              <!-- باقي الحقول -->
+              <button (click)="removeSubTaskFromAddForm(i)"
+                class="btn btn-danger">Remove Subtask</button>
+            </div>
+            <button (click)="addSubTaskToAddForm()"
+              class="btn btn-primary mb-3">Add Subtask</button>
+          </div>
+
+          <!-- Control Buttons -->
+          <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary"
+              data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 </div>
 
-<!-- مودال إضافة/تعديل المهمة -->
-<ng-template #editTaskModal let-modal>
-  <div class="modal fade show" tabindex="-1" style="display: block;">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">
-            {{ selectedTask ? 'Edit Task' : 'Add New Task' }}
-          </h5>
-          <button
-            type="button"
-            class="btn-close"
-            aria-label="Close"
-            (click)="modal.dismiss('Cross click')"></button>
-        </div>
-        <div class="modal-body">
-          <form [formGroup]="formGroup" (ngSubmit)="saveTask()">
-            <div class="row g-3">
-              <div class="col-md-6">
-                <label for="taskName" class="form-label">Task Name</label>
-                <input
-                  type="text"
-                  id="taskName"
-                  formControlName="taskName"
-                  class="form-control" />
-              </div>
-              <div class="col-md-6">
-                <label for="dueDate" class="form-label">Due Date</label>
-                <input
-                  type="date"
-                  id="dueDate"
-                  formControlName="dueDate"
-                  class="form-control" />
-              </div>
-              <div class="col-md-12">
-                <label for="description" class="form-label">Description</label>
-                <textarea
-                  id="description"
-                  formControlName="description"
-                  class="form-control"></textarea>
-              </div>
-              <div class="col-md-4">
-                <label class="form-label">Priority</label>
-                <div class="btn-group w-100" role="group">
-                  <input
-                    type="radio"
-                    class="btn-check"
-                    name="priority"
-                    id="priorityLow"
-                    [value]="0"
-                    formControlName="priority" />
-                  <label class="btn btn-outline-success"
-                    for="priorityLow">Low</label>
-
-                  <input
-                    type="radio"
-                    class="btn-check"
-                    name="priority"
-                    id="priorityMedium"
-                    [value]="1"
-                    formControlName="priority" />
-                  <label class="btn btn-outline-warning"
-                    for="priorityMedium">Medium</label>
-
-                  <input
-                    type="radio"
-                    class="btn-check"
-                    name="priority"
-                    id="priorityHigh"
-                    [value]="2"
-                    formControlName="priority" />
-                  <label class="btn btn-outline-danger"
-                    for="priorityHigh">High</label>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <label for="projectId" class="form-label">Project</label>
-                <select
-                  id="projectId"
-                  formControlName="projectId"
-                  class="form-select">
-                  <option
-                    *ngFor="let project of projects"
-                    [value]="project.projectId">
-                    {{ project.projectName }}
-                  </option>
-                </select>
-              </div>
-              <div class="col-md-4">
-                <label for="userId" class="form-label">User ID</label>
-                <select id="userId" formControlName="userId"
-                  class="form-select">
-                  <option *ngFor="let user of users" [value]="user.id">
-                    {{user.userName}}
-                  </option>
-                </select>
-
-              </div>
-            </div>
-
-            <!-- قسم المهام الفرعية -->
-            <div formArrayName="subTaskDtos" class="mt-4">
-              <h5>Subtasks</h5>
-              <div
-                *ngFor="
-                  let subTask of subTasksArray.controls;
-                  let i = index
-                "
-                [formGroupName]="i"
-                class="border rounded p-3 mb-3">
-                <div class="row g-3 align-items-end">
-                  <div class="col-md-4">
-                    <label for="subTaskName{{ i }}" class="form-label">Subtask
-                      Name</label>
-                    <input
-                      type="text"
-                      id="subTaskName{{ i }}"
-                      formControlName="subTaskName"
-                      class="form-control" />
-                  </div>
-                </div>
-                <div class="col-md-2">
-
-                  <div class="col-md-2 text-end">
-                    <button
-                      type="button"
-                      class="btn btn-danger"
-                      (click)="removeField(i)">
-                      Remove
-                    </button>
-                  </div>
-                  <div class="col-md-12">
-                    <label for="description{{ i }}"
-                      class="form-label">Description</label>
-                    <textarea
-                      id="description{{ i }}"
-                      formControlName="description"
-                      class="form-control"></textarea>
-                  </div>
-                </div>
-              </div>
-              <button
-                type="button"
-                (click)="addField()"
-                class="btn btn-secondary">
-                Add Subtask
-              </button>
-            </div>
-
-            <div class="mt-4 text-end">
-              <button type="submit" class="btn btn-primary">
-                {{ selectedTask ? 'Update Task' : 'Save Task' }}
-              </button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                (click)="modal.dismiss('Cancel')">
-                Cancel
-              </button>
-            </div>
-          </form>
-        </div>
+<div #editModal class="modal fade" id="editModal" tabindex="-1" role="dialog"
+  aria-labelledby="editModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Edit Task</h5>
+        <button #closeButton type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
+      <div class="modal-body">
+        <form (ngSubmit)="updateTask()" [formGroup]="editTaskForm"
+          class="container">
+
+          <!-- Task Name -->
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <label for="editTaskName" class="form-label">Task Name</label>
+              <input type="text" id="editTaskName" formControlName="taskName"
+                class="form-control"
+                placeholder="Enter Task Name">
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <label for="editDescription"
+                class="form-label">Description</label>
+              <textarea id="editDescription" formControlName="description"
+                class="form-control" rows="3"
+                placeholder="Enter Description"></textarea>
+            </div>
+          </div>
+
+          <!-- Due Date -->
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <label for="editDueDate" class="form-label">Due Date</label>
+              <input type="date" id="editDueDate" formControlName="dueDate"
+                class="form-control">
+            </div>
+          </div>
+
+          <!-- Status and Priority -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="editStatus" class="form-label">Status</label>
+              <select id="editStatus" formControlName="status"
+                class="form-select">
+                <option [value]="0">Not Started</option>
+                <option [value]="1">In Progress</option>
+                <option [value]="2">Completed</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="editPriority" class="form-label">Priority</label>
+              <select id="editPriority" formControlName="priority"
+                class="form-select">
+                <option [value]="0">Low</option>
+                <option [value]="1">Medium</option>
+                <option [value]="2">High</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Select Project -->
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <label for="editProjectSelect" class="form-label">Project</label>
+              <select id="editProjectSelect" formControlName="projectId"
+                class="form-select">
+                <option disabled selected>Select Project</option>
+                <option *ngFor="let project of projects"
+                  [value]="project.projectId">{{ project.projectName }}</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Select Assigned User -->
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <label for="editUserSelect" class="form-label">Assigned
+                User</label>
+              <select class="form-select" id="editUserSelect"
+                formControlName="userId">
+                <option disabled selected>Select User</option>
+                <option *ngFor="let user of users" [value]="user.id">{{
+                  user.userName }}</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Subtasks Section -->
+          <!-- قسم المهام الفرعية -->
+          <div formArrayName="subTaskDtos">
+            <div
+              *ngFor="let subTask of subTaskFormArray.controls; let i = index"
+              [formGroupName]="i" class="border p-2 mb-2">
+              <h5> subTask {{ i + 1 }}</h5>
+              <div class="row mb-2">
+                <div class="col-md-12">
+                  <label class="form-label">Name SubTask</label>
+                  <input type="text" formControlName="subTaskName"
+                    class="form-control" placeholder="Enter Name SubTask">
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-md-12">
+                  <label class="form-label">description</label>
+                  <textarea formControlName="description" class="form-control"
+                    rows="2" placeholder="enter description"></textarea>
+                </div>
+              </div>
+              <button type="button" class="btn btn-danger"
+                (click)="removeSubTask(i)">Remove SubTask</button>
+            </div>
+            <button type="button" class="btn btn-primary mb-3"
+              (click)="addSubTask()">Add subTask</button>
+          </div>
+
+          <!-- Control Buttons -->
+          <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary"
+              data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+
     </div>
   </div>
-</ng-template>
+</div>
