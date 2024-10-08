@@ -1,3 +1,11 @@
+<div
+    class="card-header border-0 d-flex justify-content-between align-items-center">
+    <button type="button" class="btn btn-primary" data-toggle="modal"
+        data-target="#addProjectModal">
+        Add
+    </button>
+</div>
+
 <div class="container-fluid">
     <div class="row">
         @for (project of projects; track $index) {
@@ -9,18 +17,24 @@
                         <div class="d-flex mb-4 align-items-start">
                             <!-- أيقونة الهمبرغر والقائمة المنسدلة باستخدام ng-bootstrap -->
                             <div ngbDropdown class="dropdown me-3">
-                                <button class="btn btn-primary" id="dropdownMenuButton" ngbDropdownToggle>
+                                <button class="btn btn-primary"
+                                    id="dropdownMenuButton" ngbDropdownToggle>
                                     <i class="fas fa-bars"></i>
                                 </button>
-                                <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+                                <ul ngbDropdownMenu
+                                    aria-labelledby="dropdownMenuButton">
                                     <li>
-                                        <button class="dropdown-item" >
-                                            <i class="fas fa-edit me-2"></i> Update
+                                        <button class="dropdown-item">
+                                            <i class="fas fa-edit me-2"></i>
+                                            Update
                                         </button>
                                     </li>
                                     <li>
-                                        <button class="dropdown-item text-danger" >
-                                            <i class="fas fa-trash-alt me-2"></i> Delete
+                                        <button
+                                            class="dropdown-item text-danger">
+                                            <i
+                                                class="fas fa-trash-alt me-2"></i>
+                                            Delete
                                         </button>
                                     </li>
                                 </ul>
@@ -122,5 +136,204 @@
             </div>
         </div>
         }
+    </div>
+</div>
+
+<!-- modal add project -->
+<div #addProjectModal class="modal fade" id="addProjectModal" tabindex="-1"
+    role="dialog"
+    aria-labelledby="addProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addProjectModalLabel">Add
+                    Project</h5>
+                <button #closeButton type="button" class="close"
+                    data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="add()" [formGroup]="addprojectForm"
+                    class="container">
+                    <!-- projectName -->
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="projectName" class="form-label">Project
+                                Name</label>
+                            <input type="text" id="projectName"
+                                formControlName="projectName"
+                                class="form-control"
+                                placeholder="Enter Project Name">
+                        </div>
+                    </div>
+                    <!-- description -->
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="description"
+                                class="form-label">Description</label>
+                            <textarea id="description"
+                                formControlName="description"
+                                class="form-control" rows="3"
+                                placeholder="Enter Description"></textarea>
+                        </div>
+                    </div>
+                    <!-- startDate and endDate -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="startDate" class="form-label">Start
+                                Date</label>
+                            <input type="date" id="startDate"
+                                formControlName="startDate"
+                                class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="endDate" class="form-label">End
+                                Date</label>
+                            <input type="date" id="endDate"
+                                formControlName="endDate"
+                                class="form-control">
+                        </div>
+                    </div>
+                    <!-- budget -->
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="budget"
+                                class="form-label">Budget</label>
+                            <input type="number" id="budget"
+                                formControlName="budget"
+                                class="form-control" placeholder="Enter Budget">
+                        </div>
+                    </div>
+                    <!-- status -->
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="status"
+                                class="form-label">Status</label>
+                            <select id="status" formControlName="status"
+                                class="form-select">
+                                <option [value]="0">Not Started</option>
+                                <option [value]="1">In Progress</option>
+                                <option [value]="2">Completed</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- المستندات -->
+                    <div formArrayName="documents">
+                        <div
+                            *ngFor="let document of documentsFormArray.controls; let i = index"
+                            [formGroupName]="i">
+                            <h5>Document {{ i + 1 }}</h5>
+                            <!-- documentName -->
+                            <div class="row mb-2">
+                                <div class="col-md-12">
+                                    <label class="form-label">Document
+                                        Name</label>
+                                    <input type="text"
+                                        formControlName="documentName"
+                                        class="form-control"
+                                        placeholder="Enter Document Name">
+                                </div>
+                            </div>
+                            <!-- type -->
+                            <div class="row mb-2">
+                                <div class="col-md-12">
+                                    <label class="form-label">Type</label>
+                                    <input type="number" formControlName="type"
+                                        class="form-control"
+                                        placeholder="Enter Type">
+                                </div>
+                            </div>
+                            <!-- documentURL -->
+                            <div class="row mb-2">
+                                <div class="col-md-12">
+                                    <label class="form-label">Document
+                                        URL</label>
+                                    <input type="text"
+                                        formControlName="documentURL"
+                                        class="form-control"
+                                        placeholder="Enter Document URL">
+                                </div>
+                            </div>
+                            <!-- uploadedDate -->
+                            <div class="row mb-2">
+                                <div class="col-md-12">
+                                    <label class="form-label">Uploaded
+                                        Date</label>
+                                    <input type="date"
+                                        formControlName="uploadedDate"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <button (click)="removeDocument(i)"
+                                class="btn btn-danger mb-3">Remove
+                                Document</button>
+                        </div>
+                    </div>
+
+                    <!-- الموارد -->
+                    <div formArrayName="resources">
+                        <div
+                            *ngFor="let resource of resourcesFormArray.controls; let i = index"
+                            [formGroupName]="i">
+                            <h5>Resource {{ i + 1 }}</h5>
+                            <!-- resourceName -->
+                            <div class="row mb-2">
+                                <div class="col-md-12">
+                                    <label class="form-label">Resource
+                                        Name</label>
+                                    <input type="text"
+                                        formControlName="resourceName"
+                                        class="form-control"
+                                        placeholder="Enter Resource Name">
+                                </div>
+                            </div>
+                            <!-- type -->
+                            <div class="row mb-2">
+                                <div class="col-md-12">
+                                    <label class="form-label">Type</label>
+                                    <input type="number" formControlName="type"
+                                        class="form-control"
+                                        placeholder="Enter Type">
+                                </div>
+                            </div>
+                            <!-- resourceStatus -->
+                            <div class="row mb-2">
+                                <div class="col-md-12">
+                                    <label class="form-label">Resource
+                                        Status</label>
+                                    <input type="text"
+                                        formControlName="resourceStatus"
+                                        class="form-control"
+                                        placeholder="Enter Resource Status">
+                                </div>
+                            </div>
+                            <button (click)="removeResource(i)"
+                                class="btn btn-danger mb-3">Remove
+                                Resource</button>
+                        </div>
+
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6"><button (click)="addResource()"
+                                class="btn btn-primary mb-3">Add
+                                Resource</button></div>
+                        <div class="col-md-6"><button (click)="addDocument()"
+                                class="btn btn-primary mb-3">Add
+                                Document</button></div>
+                    </div>
+
+                    <!-- أزرار التحكم -->
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">Close</button>
+                        <button type="submit"
+                            class="btn btn-primary">Save</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
     </div>
 </div>

@@ -1,25 +1,27 @@
-import { Component, OnInit, ViewChild, TemplateRef, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, ElementRef, Renderer2, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TaskService } from '../../services/task.service';
 import { SubTask, Task } from '../../model/task';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProjectsService } from '../../services/projects.service';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { User } from '../../model/user';
 import { TruncateTextPipe } from '../../Pipes/truncateText.pipe';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Project } from '../../model/project';
+import { StatusPipe } from '../../Pipes/status.pipe';
+import { ConfirmModalComponent } from '../shared/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-task',
   standalone: true,
-  imports: [FormsModule, CommonModule, ReactiveFormsModule,TruncateTextPipe,NgbModule,NgbDropdownModule],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule,TruncateTextPipe,NgbModule,NgbDropdownModule,StatusPipe],
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.css']
 })
-export class TaskComponent implements OnInit {
+export class TaskComponent implements OnInit,OnDestroy {
   
   @ViewChild('addModal', { static: false }) addModal!:ElementRef ;
 
@@ -35,9 +37,14 @@ export class TaskComponent implements OnInit {
   tasks:Task[]=[];
   users:User[]=[];
   projects:Project[]=[];
+
+
+  tasksOnProgress: Task[] = [];
+  tasksCompleted: Task[] = [];
+  tasksOverdue: Task[] = [];
   ngOnInit(): void {
     this.currentPage = Number(this.route.snapshot.queryParamMap.get('pageNumber')) || 1;
-    this.pageSize = Number(this.route.snapshot.queryParamMap.get('pageSize')) || 10;
+    this.pageSize = Number(this.route.snapshot.queryParamMap.get('pageSize')) || 20;
   
     this.initEditForm();
     this.initAddForm();
@@ -45,6 +52,11 @@ export class TaskComponent implements OnInit {
     this.getAllTasks();
     this.getAllUsers();
     this.getAllProjects();
+    console.log(this.tasksCompleted);
+    
+  }
+  viweDetails(taskId:string):void{
+    this.router.navigate(['/task-details',taskId])
   }
   
   constructor(
@@ -52,11 +64,32 @@ export class TaskComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private modalService: NgbModal,
-
+    private router :Router,
     private projectService: ProjectsService,
-    private userService : UserService
-  ) {
-    this.formGroup = this.fb.group({
+    private userService : UserService,
+    private renderer: Renderer2
+  ){
+
+  }
+  initEditForm() {
+    this.editTaskForm = this.fb.group({
+      taskId: [this.selectedTaskId,''],
+      taskName: ['', Validators.required],
+      description: ['', Validators.required],
+      dueDate: ['', Validators.required],
+      status: [0, Validators.required],
+      priority: [0, Validators.required],
+      isCompleted: [false, Validators.required],
+      projectId: ['', Validators.required],
+      userId: ['', Validators.required],
+      createdBy: ['', Validators.required],
+      isDeleted: [false],
+      subTaskDtos: this.fb.array([])
+    });
+  }
+  
+  initAddForm() {
+    this.addTaskForm = this.fb.group({
       taskName: ['', Validators.required],
       description: ['', Validators.required],
       dueDate: ['', Validators.required],
@@ -68,17 +101,69 @@ export class TaskComponent implements OnInit {
       subTaskDtos: this.fb.array([])
     });
   }
+  
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+  
+createSubTask(): FormGroup {
+  return this.fb.group({
+      subTaskName: ['', Validators.required],
+      description: ['', Validators.required],
+      subTaskProgressPercentage: [0, Validators.required],
+      isCompleted: [false, Validators.required],
+      taskId: ['']
+  });
+}
 
-  ngOnInit(): void {
-    this.loadTasks();
-    this.getAllProjects();
-    this.getAllUser();
+  closeModal() {
+    if (this.closeButton) {
+      this.renderer.selectRootElement(this.closeButton.nativeElement).click();
+    }
+  }
+  get subTaskFormArray(): FormArray {
+    return this.editTaskForm.get('subTaskDtos') as FormArray;
+  }
+  addSubTask() {
+    this.subTaskFormArray.push(this.createSubTask());
   }
 
-  getAllProjects() {
+  removeSubTask(index: number) {
+    const subTasks = this.editTaskForm.get('subTaskDtos') as FormArray;
+    subTasks.removeAt(index);
+  }
+
+  get addSubTaskFormArray(): FormArray {
+    return this.addTaskForm.get('subTaskDtos') as FormArray;
+  }
+  addSubTaskToAddForm() {
+    this.addSubTaskFormArray.push(this.createSubTask());
+  }
+  
+  removeSubTaskFromAddForm(index: number) {
+    const subTasks = this.addTaskForm.get('subTaskDtos') as FormArray;
+    subTasks.removeAt(index);
+  }  
+  
+  getAllUsers(){
+    this.userService.getAll().subscribe(
+      {
+        next:(response)=>{
+          this.users=response;
+        
+        },
+        error:(error)=>{
+
+        }
+      }
+    )
+  }
+  getAllProjects(){
     this.projectService.getAll(1,10).subscribe({
-      next: (response: any) => {
-        this.projects = response;
+      next:(response)=>{
+        this.projects=response.data;
       },
       error:(error)=>{
         
@@ -93,6 +178,7 @@ export class TaskComponent implements OnInit {
         this.totalItems = response.totalItems;
         this.pageSize = response.pageSize;
         this.currentPage = response.pageNumber;
+        this.filterTasks();
       },
       error: (error) => {
         console.error('Error fetching tasks', error);
@@ -106,50 +192,60 @@ export class TaskComponent implements OnInit {
   updateTask() {
     const user: string = localStorage.getItem("userName") as string;
     console.log("Form Values:", this.editTaskForm.value);
-    console.log(this.selectedTaskId);
+    console.log("Selected Task ID:", this.selectedTaskId);
   
     if (!this.editTaskForm.valid) {
       console.error('Form is invalid');
       return;
     }
   
-    // تعديل المهام الفرعية لإزالة الحقول غير الضرورية
-    const subTaskDtos = this.editTaskForm.get('subTaskDtos')?.value.map((subTask: SubTask) => ({
-      subTaskName: subTask.subTaskName,
-      description: subTask.description,
-      subTaskProgressPercentage: subTask.subTaskProgressPercentage,
-      isCompleted: subTask.isCompleted,
-      taskId: this.selectedTaskId // نستخدم selectedTaskId
-    })) || [];
+    // تجهيز المهام الفرعية
+    const subTaskDtos = this.editTaskForm.get('subTaskDtos')?.value.map((subTask: SubTask) => {
+      const mappedSubTask: any = {
+        subTaskName: subTask.subTaskName,
+        description: subTask.description,
+        subTaskProgressPercentage: subTask.subTaskProgressPercentage,
+        isCompleted: subTask.isCompleted
+        // لا تضيف taskId هنا
+      };
+      if (subTask.subTaskId) {
+        mappedSubTask.subTaskId = subTask.subTaskId; // فقط للمهام الفرعية الموجودة مسبقًا
+      }
+      return mappedSubTask;
+    }) || [];
   
-    const updateTask: Task = {
-      taskId: this.selectedTaskId,
+    // تجهيز الحمولة المرسلة بدون taskId و createdBy
+    const updateTaskPayload: any = {
       status: Number(this.editTaskForm.value.status),
       priority: Number(this.editTaskForm.value.priority),
       taskName: this.editTaskForm.value.taskName,
       description: this.editTaskForm.value.description,
-      dueDate: this.editTaskForm.value.dueDate, // تحويل التاريخ إلى صيغة ISO
+      dueDate: new Date(this.editTaskForm.value.dueDate).toISOString(), // تحويل التاريخ إلى صيغة ISO
       isCompleted: this.editTaskForm.value.isCompleted,
       projectId: this.editTaskForm.value.projectId,
       userId: this.editTaskForm.value.userId,
-      createdBy: user,
       isDeleted: this.editTaskForm.value.isDeleted,
       subTaskDtos: subTaskDtos
     };
   
-    console.log('Payload being sent:', updateTask);
+    console.log('Payload being sent:', updateTaskPayload);
   
-    this.taskService.updateTask(this.selectedTaskId, updateTask).subscribe({
+    this.taskService.updateTask(this.selectedTaskId, updateTaskPayload).subscribe({
       next: (response) => {
         this.closeModal();
         console.log('Task updated successfully', response);
+        this.getAllTasks(); // تحديث القائمة بعد التعديل
       },
       error: (error) => {
         console.error('Error updating task', error);
-        console.log('Validation errors:', error.error.errors);
+        if (error.error) {
+          console.log('Validation errors:', error.error.errors);
+        }
       }
     });
   }
+  
+  
   
   
   addTask() {
@@ -160,20 +256,20 @@ export class TaskComponent implements OnInit {
       return;
     }
   
-    const subTaskDtos = this.editTaskForm.get('subTaskDtos')?.value.map((subTask: SubTask) => ({
+    const subTaskDtos = this.addTaskForm.get('subTaskDtos')?.value.map((subTask: SubTask) => ({
       subTaskName: subTask.subTaskName,
       description: subTask.description,
       subTaskProgressPercentage: subTask.subTaskProgressPercentage,
-      isCompleted: subTask.isCompleted,
-      taskId: this.selectedTaskId // تأكد من استخدام selectedTaskId الصحيح
+      isCompleted: subTask.isCompleted
     })) || [];
+    console.log("sub task", subTaskDtos);
   
     const newTask: Task = {
       status: Number(this.addTaskForm.value.status),
       priority: Number(this.addTaskForm.value.priority),
       taskName: this.addTaskForm.value.taskName,
       description: this.addTaskForm.value.description,
-      dueDate: this.addTaskForm.value.dueDate, // تحويل التاريخ إلى صيغة ISO
+      dueDate:  new Date(this.addTaskForm.value.dueDate).toISOString(),
       projectId: this.addTaskForm.value.projectId,
       userId: this.addTaskForm.value.userId,
       createdBy: user,
@@ -195,12 +291,43 @@ export class TaskComponent implements OnInit {
       }
     });
   }
+  deleteTask(taskId: string) {    
+    const modalRef = this.modalService.open(ConfirmModalComponent);
+    modalRef.componentInstance.message = 'Are you sure you want to delete this task?';
+  
+    modalRef.result.then((result) => {
+      if (result === 'delete') {
+        this.taskService.delete(taskId)
+          .subscribe({
+            next: (response) => {
+              console.log('Task deleted successfully');
+              const index = this.listTask.findIndex(task => task.taskId === taskId);
+              if (index !== -1) {
+                this.listTask.splice(index, 1);
+              }
+              // this.toastr.success('Task deleted successfully', 'Success');
+            },
+            error: (error) => {
+              console.error('Error deleting task:', error);
+              // تسجيل الخطأ مع تفاصيل الرسالة
+              if (error.error) {
+                console.error('Error message from server:', error.error);
+              }
+              // this.toastr.error('Error deleting task', 'Error');
+            }
+          });
+      }
+    });
+  }
+  
+
+  
+
   
 
   
   openEditModal(task: Task) {
     this.selectedTaskId = task.taskId!;
-    // تعبئة الحقول الرئيسية للمهمة
     this.editTaskForm.patchValue({
       taskId: task.taskId,
       taskName: task.taskName,
@@ -215,10 +342,8 @@ export class TaskComponent implements OnInit {
       isDeleted: task.isDeleted,
     });
   
-    // تفريغ الـ FormArray الحالي قبل تعبئته بالمهام الفرعية
     this.subTaskFormArray.clear();
   
-    // تعبئة المهام الفرعية في الـ FormArray
     if (task.subTaskDtos && task.subTaskDtos.length > 0) {
       task.subTaskDtos.forEach(subTask => {
         const subTaskFormGroup = this.fb.group({
@@ -239,9 +364,13 @@ export class TaskComponent implements OnInit {
   }
 
   openAddModal(): void {
-    this.initAddForm(); // Initialize the add task form
-    this.modalService.open(this.addModal); // Open the add modal
+    this.initAddForm(); 
+    this.modalService.open(this.addModal);
 }
 
-
+  filterTasks(): void {
+    this.tasksOnProgress = this.listTask.filter(task => task.status === 0); // In progres
+    this.tasksCompleted = this.listTask.filter(task => task.status ===1); // Completed
+    this.tasksOverdue = this.listTask.filter(task => task.status===2); // ovreow
+  }
 }

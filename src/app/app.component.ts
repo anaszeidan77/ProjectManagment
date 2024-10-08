@@ -14,11 +14,21 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { TaskComponent } from "./components/task/task.component";
 import { ModalService } from './services/modal.service';
 import { AuthComponent} from "./components/auth/auth.component";
+import { LoderService } from './services/loder.service';
+import { Observable } from 'rxjs';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, DashboardComponent, CommonModule, ReactiveFormsModule, CardComponent, ButtonComponent, TextControlComponent, TableComponent, TaskComponent],
+  imports: [RouterOutlet,
+    DashboardComponent,
+    CommonModule,
+    ReactiveFormsModule,
+    CardComponent,
+    ButtonComponent,
+    TextControlComponent,
+    TableComponent, TaskComponent, AuthComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -29,17 +39,19 @@ handleSubmit($event: Event) {
 
 }
 
+  isLoggedIn$!: Observable<boolean>;
   readonly PageLayout = PageLayout;
   title = 'ProjectManagment';
-
   constructor(public pageLayoutService:PageLayoutService,
     private testService:TestService,
     private modalService: ModalService,
+    public loderService:LoderService,
+    private authService:AuthService,
     private fb: FormBuilder){}
   ngOnInit(): void {
     this.initForm();
     // this.loadTasks(this.pageNumber, this.pageSize);
-  
+    this.isLoggedIn$ = this.authService.isLoggedIn$;
   }
 
   form!: FormGroup;

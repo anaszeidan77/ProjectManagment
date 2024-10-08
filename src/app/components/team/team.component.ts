@@ -73,7 +73,6 @@ export class TeamComponent implements OnInit,OnDestroy {
 
   }
   viewDetails(teamId:string) {
-
     this.router.navigate(['/TeamDetails',teamId])
   }
 

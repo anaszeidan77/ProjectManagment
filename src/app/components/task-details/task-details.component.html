@@ -1,0 +1,56 @@
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Task Details</h2>
+
+    <div class="task-card">
+        <h5 class="text-primary">#{{ task.taskId }}</h5>
+        <h4 class="font-weight-bold">{{ task.taskName }}</h4>
+        <p class="text-muted">Description: {{ task.description }}</p>
+        <p>
+            <strong>Due Date:</strong> {{ task.dueDate | date:'dd.MM.yyyy'
+            }}<br>
+            <strong>Priority:</strong> {{ task.priority |priority}}<br>
+            <strong>Status:</strong> <span class="badge badge-success"
+                [style.background-color]="(task.status | status).color">
+                {{ (task.status | status).text }}</span>
+        </p>
+    </div>
+
+    <div class="card" style="height: auto;">
+        <div class="card-header">
+            <h4 class="card-title">Subtask List</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-responsive-sm">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Subtask Name</th>
+                            <th>Completed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (subTask of task.subTaskDtos; track $index) {
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ subTask.subTaskName }}</td>
+                            <td>
+                                <i [ngClass]="{
+                                'fas fa-check-circle text-success': subTask.isCompleted,
+                                'fas fa-times-circle text-danger': !subTask.isCompleted
+                            }"></i>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+    <div class="d-flex justify-content-between mt-4">
+        <a href="/tasks" class="btn btn-secondary">Back to Tasks</a>
+        <button class="btn btn-danger">Delete Task</button>
+    </div>
+</div>

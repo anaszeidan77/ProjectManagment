@@ -12,9 +12,6 @@ export interface register{
 }
 
 export interface jwt{
-    userId?:string;
- 
-}
 // message?:string;
 // isAuthenticated:boolean;
 // username:string;
@@ -23,3 +20,5 @@ export interface jwt{
 // token:string;
 // expiresOn:string;
 // refreshTokenExpiration:string;
+ 
+}

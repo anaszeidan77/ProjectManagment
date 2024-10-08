@@ -1,88 +1,102 @@
 <div class="row justify-content-center h-100 align-items-center">
-  <div class="col-md-6">
-    <div class="authincation-content">
+  <div class="col-md-8">
+    <div class="authincation-content" style="height: auto;">
       <div class="row no-gutters">
-        <div class="col-xl-12">
+        <!-- الجانب الأيسر: صورة SVG -->
+        <div class="col-xl-6 d-none d-xl-block">
+          <img src="../../../assets/TemplateDahboard/images/login.svg" alt="Beautiful Image" class="img-fluid">
+        </div>
+
+        <!-- الجانب الأيمن: النماذج -->
+        <div class="col-xl-6">
           <div class="auth-form">
 
             <!-- أزرار التبديل بين النماذج -->
             <div class="form-toggle-buttons text-center mb-4">
-              <button class="btn btn-link" [class.active]="isLoginMode" (click)="showLoginForm()">Sign In</button>
+              <button type="button" class="btn btn-link" [class.active]="isLoginMode" (click)="showLoginForm()">Sign In</button>
               |
-              <button class="btn btn-link" [class.active]="!isLoginMode" (click)="showRegisterForm()">Create Account</button>
+              <button type="button" class="btn btn-link" [class.active]="!isLoginMode" (click)="showRegisterForm()">Create Account</button>
             </div>
 
-            <!-- نموذج تسجيل الدخول -->
-              @if(isLoginMode){
-            <div>
-              <h4 class="text-center mb-4">Sign in to your account</h4>
-              <form class="form" [formGroup]="loginForm" (ngSubmit)="onLogin()">
-                <div class="form-group">
-                  <label class="mb-1"><strong>Email</strong></label>
-                  <input type="email" formControlName="email" class="form-control" required>
+            <!-- النماذج -->
+            <div class="forms-container">
+              <!-- نموذج تسجيل الدخول -->
+              <div class="form-content login-form" [ngClass]="{'active': isLoginMode}">
+                <h4 class="text-center mb-4">Sign in to your account</h4>
+                <form class="form" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+                  <div class="form-group">
+                    <label class="mb-1"><strong>Email</strong></label>
+                    <input type="email" formControlName="email" class="form-control" required>
+                  </div>
+                  <div class="form-group position-relative">
+                    <label class="mb-1"><strong>Password</strong></label>
+                    <input [type]="hidePassword ? 'password' : 'text'" formControlName="password" class="form-control" required>
+                    <i class="fa fa-eye toggle-password" (click)="togglePasswordVisibility()"></i>
+                  </div>
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn-block">Sign Me In</button>
+                  </div>
+                </form>
+                <div class="new-account mt-3">
+                  <p>Don't have an account? <a class="text-primary" (click)="showRegisterForm()">Sign up</a></p>
                 </div>
-                <div class="form-group">
-                  <label class="mb-1"><strong>Password</strong></label>
-                  <input type="password" formControlName="password" class="form-control" required>
+              </div>
+
+              <!-- نموذج التسجيل -->
+              <div class="form-content register-form" [ngClass]="{'active': !isLoginMode}">
+                <h4 class="text-center mb-4">Create an account</h4>
+                <form class="form" [formGroup]="registerForm" (ngSubmit)="onRegister()">
+                  <!-- حقل الاسم الأول والاسم الثاني في نفس السطر -->
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label class="mb-1"><strong>First Name</strong></label>
+                      <input type="text" formControlName="firstName" class="form-control" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label class="mb-1"><strong>Last Name</strong></label>
+                      <input type="text" formControlName="lastName" class="form-control" required>
+                    </div>
+                  </div>
+
+                  <!-- حقل البريد الإلكتروني واسم المستخدم في نفس السطر -->
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label class="mb-1"><strong>Email</strong></label>
+                      <input type="email" formControlName="email" class="form-control" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label class="mb-1"><strong>Username</strong></label>
+                      <input type="text" formControlName="username" class="form-control" required>
+                    </div>
+                  </div>
+
+                  <!-- حقل كلمة المرور وتأكيد كلمة المرور في نفس السطر -->
+                  <div class="form-row">
+                    <div class="form-group col-md-6 position-relative">
+                      <label class="mb-1"><strong>Password</strong></label>
+                      <input [type]="hidePassword ? 'password' : 'text'" formControlName="password" class="form-control" required minlength="8">
+                      <i class="fa fa-eye toggle-password" (click)="togglePasswordVisibility()"></i>
+                    </div>
+                    <div class="form-group col-md-6 position-relative">
+                      <label class="mb-1"><strong>Confirm Password</strong></label>
+                      <input [type]="hideConfirmPassword ? 'password' : 'text'" formControlName="confirmPassword" class="form-control" required minlength="8">
+                      <i class="fa fa-eye toggle-confirm-password" (click)="toggleConfirmPasswordVisibility()"></i>
+                    </div>
+                  </div>
+
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+                  </div>
+                </form>
+                <div class="existing-account mt-3">
+                  <p>Already have an account? <a class="text-primary" (click)="showLoginForm()">Sign in</a></p>
                 </div>
-                <!-- إضافة أي حقول إضافية لنموذج تسجيل الدخول هنا -->
-                <div class="text-center">
-                  <button type="submit" class="btn btn-primary btn-block">Sign Me In</button>
-                </div>
-              </form>
-              <div class="new-account mt-3">
-                <p>Don't have an account? <a class="text-primary" (click)="showRegisterForm()">Sign up</a></p>
               </div>
             </div>
-          }
-            <!-- نموذج التسجيل -->
-          @if (!isLoginMode) {
-            <div >
-              <h4 class="text-center mb-4">Create an account</h4>
-              <form class="form" [formGroup]="registerForm">
-                <div class="form-group">
-                  <label class="mb-1"><strong>First Name</strong></label>
-                  <input type="text" formControlName="firstName" class="form-control" required>
-                </div>
-                <div class="form-group">
-                  <label class="mb-1"><strong>Last Name</strong></label>
-                  <input type="text" formControlName="lastName" class="form-control" required>
-                </div>
-                <div class="form-group">
-                  <label class="mb-1"><strong>Username</strong></label>
-                  <input type="text" formControlName="username" class="form-control" required>
-                </div>
-                <div class="form-group">
-                  <label class="mb-1"><strong>Email</strong></label>
-                  <input type="email" formControlName="email" class="form-control" required>
-                </div>
-                <!-- حقل كلمة المرور لنموذج التسجيل -->
-                <div class="form-group">
-                  <label class="mb-1"><strong>Password</strong></label>
-                  <input
-                    type="password"
-                    formControlName="password"
-                    class="form-control"
-                    required
-                    minlength="8">
-                </div>
-
-                <!-- إضافة أي حقول إضافية لنموذج التسجيل هنا -->
-                <div class="text-center">
-                  <button type="submit" (click)="onRegister()" class="btn btn-primary btn-block">Create Account</button>
-                </div>
-              </form>
-              <div class="existing-account mt-3">
-                <p>Already have an account? <a class="text-primary" (click)="showLoginForm()">Sign in</a></p>
-              </div>
-            </div>
-          }
-
-            <!-- محتوى اختياري: يمكنك إضافة أي محتوى مشترك هنا -->
+            <!-- نهاية النماذج -->
 
           </div>
         </div>
       </div>
     </div>
-  </div>
 </div>

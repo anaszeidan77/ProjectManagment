@@ -1,135 +1,483 @@
-<div
-  class="card-header border-0 d-flex justify-content-between align-items-center">
-  <button type="button" class="btn btn-primary" data-toggle="modal"
-    data-target="#addModal">
-    Add
-  </button>
-  <h3 class="mb-0 title">List of Tasks</h3>
-</div>
-
-<div class="continar">
+<div class="container">
   <div class="row">
-    <!-- Check for existing tasks -->
-    <!-- Loop over tasks and display them in cards -->
-    @for (task of listTask; track $index) {
-    <div class="col-md-4">
-      <!-- Task details -->
-      <div class="pt-2">
-        <div class="two">
-          <div class="d-flex justify-content-end px-3 pt-1">
-            <!-- أيقونة الهمبرغر والقائمة المنسدلة باستخدام ng-bootstrap -->
-            <div ngbDropdown class="dropdown me-3">
-              <button class="btn btn-primary" id="dropdownMenuButton"
-                ngbDropdownToggle>
-                <i class="fas fa-bars"></i>
-              </button>
-              <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
-                <li>
-                  <button class="dropdown-item" (click)="openEditModal(task)"
-                    data-toggle="modal"
-                    data-target="#editModal">
-                    <i class="fas fa-edit me-2"></i> Update
+    <div class="project-nav">
+      <div class="card-action card-tabs mr-auto">
+        <ul class="nav nav-tabs style-2">
+          <li class="nav-item">
+            <a href="#navpills-1" class="nav-link active" data-toggle="tab"
+              aria-expanded="false">All Tasks <span
+                class="badge badge-pill shadow-primary badge-primary">{{
+                totalItems }}</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="#navpills-2" class="nav-link" data-toggle="tab"
+              aria-expanded="false">On Progress <span
+                class="badge badge-pill badge-info shadow-info">{{
+                tasksOnProgress.length }}</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="#navpills-3" class="nav-link" data-toggle="tab"
+              aria-expanded="true">Completed <span
+                class="badge badge-pill badge-warning shadow-warning">{{
+                tasksCompleted.length }}</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="#navpills-4" class="nav-link" data-toggle="tab"
+              aria-expanded="true">Overdue <span
+                class="badge badge-pill badge-danger shadow-danger">{{
+                tasksOverdue.length }}</span></a>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="card-header border-0 d-flex justify-content-between align-items-center">
+        <button type="button" class="btn btn-primary" data-toggle="modal"
+          data-target="#addModal">+ New Task</button>
+      </div>
+    </div>
+    <div class="tab-content project-list-group" id="myTabContent">
+      <div class="tab-pane fade active show" id="navpills-1">
+        <ng-container *ngFor="let task of listTask; let i = index">
+          <div class="card" style="height: auto;">
+            <div class="project-info">
+              <div class="col-xl-3 my-2 col-lg-4 col-sm-6">
+                <p class="text-primary mb-1">#P-000441425</p>
+                <h5 class="title font-w600 mb-2">
+                  <a class="text-black" (click)="viweDetails(task.taskId!)">{{task.taskName}}</a>
+                </h5>
+                <div class="text-dark">
+                  <i class="fa fa-calendar-o mr-3" aria-hidden="true"></i>
+                  Date: {{ task.dueDate | date:'dd.MM.yyyy'}}
+                </div>
+              </div>
+              <div class="col-xl-2 my-2 col-lg-4 col-sm-6">
+                {{ task.description }} - {{task.isDeleted}}
+              </div>
+              <div class="col-xl-3 my-2 col-lg-6 col-sm-6">
+                <div class="d-flex justify-content-end">
+                  <button class="btn btn-primary btn-sm" (click)="openSubtasksModal(subtasksModal, task)">
+                    <i class="fas fa-tasks me-1"></i> Subtasks
                   </button>
-                </li>
-                <li>
-                  <button class="dropdown-item text-danger">
-                    <i class="fas fa-trash-alt me-2"></i> Delete
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </div>
+                </div>
+              </div>
+              <div class="col-xl-2 my-2 col-lg-6 col-sm-6">
+                <div class="d-flex project-status align-items-center">
+                  <span class="badge d-sm-inline-block d-none" [style.background-color]="(task.status | status).color">
+                    {{ (task.status | status).text }}
+                  </span>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    
+                  <div ngbDropdown class="dropdown me-3" >
+                    <button class="btn btn-primary" id="dropdownMenuButton" ngbDropdownToggle>
+                      <i class="fas fa-bars"></i>
+                    </button>
+                    <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton" style="position: relative;" class="dropdown-menu position-absolute zindex-dropdown">
+                      <li>
+                        <button class="dropdown-item text-danger"  (click)="deleteTask(task.taskId!)">
+                          <i class="fas fa-trash-alt me-2"></i> Delete
+                        </button>
+                      </li>
+                      <li>
+                        <button class="dropdown-item" (click)="openEditModal(task)">
+                          <i class="fas fa-edit me-2"></i> Update
+                        </button>
+                      </li>
 
-          <div class="px-3 pt-3">
-            <h5 class="name">{{ task.taskName | truncateText:2}}</h5>
-            <p class="quote2">{{ task.description | truncateText:4 }}</p>
-          </div>
-          <div
-            class="d-flex justify-content-start px-3 align-items-center">
-            <i class="mdi mdi-view-comfy task"></i>
-            <!-- <span class="quote2 pl-2">Task: {{ getTaskStatus(item.status) }}</span> -->
-          </div>
-          <div
-            class="d-flex justify-content-between px-3 align-items-center pb-3">
-            <div class="d-flex justify-content-start align-items-center">
-              <i class="mdi mdi-calendar-clock date"></i>
-              <span class="quote2 pl-2">Date: {{ task.dueDate |
-                date:'dd.MM.yyyy' }}</span>
-            </div>
-            <div class="d-flex justify-content-end">
-              <button
-                class="btn btn-primary btn-sm"
-                (click)="openSubtasksModal(subtasksModal, task)">
-                <i class="fas fa-tasks me-1"></i> Subtasks
-              </button>
-            </div>
-          </div>
-        </div>
-        <ng-template #subtasksModal let-modal>
-          <div class="modal fade show" tabindex="-1"
-            style="display: block;" aria-modal="true" role="dialog">
-            <div class="modal-dialog modal-lg">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">Subtasks</h5>
-                  <button type="button" class="btn-close"
-                    (click)="modal.dismiss('Cross click')"></button>
-                </div>
-                <div class="modal-body">
-                  <div>
-                    <h6 class="mb-3">Subtasks for {{ task.taskName }}</h6>
-                    <div class="table-responsive">
-                      <table class="table table-hover table-bordered">
-                        <thead class="table-light">
-                          <tr>
-                            <th>#</th>
-                            <th>Subtask Name</th>
-                            <th>Completed</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          @for (subTask of task.subTaskDtos; track $index) {
-                          <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ subTask.subTaskName }}</td>
-                            <td>
-                              <i
-                                [ngClass]="{
-                                              'fas fa-check-circle text-success': subTask.isCompleted,
-                                              'fas fa-times-circle text-danger': !subTask.isCompleted
-                                            }">
-                              </i>
-                            </td>
-                          </tr>
-                          }
-                        </tbody>
-                      </table>
-                    </div>
+                    </ul>
                   </div>
-                </div>
-                <div class="modal-footer">
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    (click)="modal.dismiss('Close click')">
-                    Close
-                  </button>
                 </div>
               </div>
             </div>
           </div>
-        </ng-template>
+          <ng-template #subtasksModal let-modal>
+            <div class="modal fade show" tabindex="-1" style="display: block;" aria-modal="true" role="dialog">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Subtasks</h5>
+                    <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div>
+                      <h6 class="mb-3">Subtasks for {{ task.taskName }}</h6>
+                      <div class="table-responsive">
+                        <table class="table table-hover table-bordered">
+                          <thead class="table-light">
+                            <tr>
+                              <th>#</th>
+                              <th>Subtask Name</th>
+                              <th>Completed</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let subTask of task.subTaskDtos; let j = index">
+                              <td>{{ j + 1 }}</td>
+                              <td>{{ subTask.subTaskName }}</td>
+                              <td>
+                                <i [ngClass]="{
+                                  'fas fa-check-circle text-success': subTask.isCompleted,
+                                  'fas fa-times-circle text-danger': !subTask.isCompleted
+                                }"></i>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Close click')">
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </ng-container>
+      </div>
+      <div class="tab-pane fade" id="navpills-2">
+        <ng-container *ngFor="let task of tasksOnProgress; let i = index">
+          <div class="card" style="height: auto;">
+            <div class="project-info">
+              <div class="col-xl-3 my-2 col-lg-4 col-sm-6">
+                <p class="text-primary mb-1">#P-000441425</p>
+                <h5 class="title font-w600 mb-2"><a href="post-details.html"
+                    class="text-black">{{task.taskName}}</a></h5>
+                <div class="text-dark"><i class="fa fa-calendar-o mr-3"
+                    aria-hidden="true"></i>Date: {{ task.dueDate |
+                  date:'dd.MM.yyyy'}}</div>
+              </div>
+              <div class="col-xl-2 my-2 col-lg-4 col-sm-6">
+                {{ task.description | truncateText:4 }}
+              </div>
+              <div class="col-xl-3 my-2 col-lg-6 col-sm-6">
+                <div class="d-flex justify-content-end">
+                  <button class="btn btn-primary btn-sm"
+                    (click)="openSubtasksModal(subtasksModal, task)">
+                    <i class="fas fa-tasks me-1"></i> Subtasks
+                  </button>
+                </div>
+              </div>
+              <div class="col-xl-2 my-2 col-lg-6 col-sm-6">
+                <div class="d-flex project-status align-items-center">
+                  <span class="badge d-sm-inline-block d-none"
+                    [style.background-color]="(task.status | status).color">
+                    {{ (task.status | status).text }}
+                  </span>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <div ngbDropdown class="dropdown me-3">
+                    <button class="btn btn-primary" id="dropdownMenuButton"
+                      ngbDropdownToggle>
+                      <i class="fas fa-bars"></i>
+                    </button>
+                    <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+                      <li>
+                        <button class="dropdown-item"
+                          (click)="openEditModal(task)" data-toggle="modal"
+                          data-target="#editModal">
+                          <i class="fas fa-edit me-2"></i> Update
+                        </button>
+                      </li>
+                      <li>
+                        <button class="dropdown-item text-danger">
+                          <i class="fas fa-trash-alt me-2"></i> Delete
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-template #subtasksModal let-modal>
+            <div class="modal fade show" tabindex="-1"
+              style="display: block;" aria-modal="true" role="dialog">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Subtasks</h5>
+                    <button type="button" class="btn-close"
+                      (click)="modal.dismiss('Cross click')"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div>
+                      <h6 class="mb-3">Subtasks for {{ task.taskName }}</h6>
+                      <div class="table-responsive">
+                        <table class="table table-hover table-bordered">
+                          <thead class="table-light">
+                            <tr>
+                              <th>#</th>
+                              <th>Subtask Name</th>
+                              <th>Completed</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (subTask of task.subTaskDtos; track $index) {
+                            <tr>
+                              <td>{{ $index + 1 }}</td>
+                              <td>{{ subTask.subTaskName }}</td>
+                              <td>
+                                <i
+                                  [ngClass]="{
+                                                'fas fa-check-circle text-success': subTask.isCompleted,
+                                                'fas fa-times-circle text-danger': !subTask.isCompleted
+                                              }">
+                                </i>
+                              </td>
+                            </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      (click)="modal.dismiss('Close click')">
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </ng-container>
+      </div>
+      <div class="tab-pane fade" id="navpills-3">
+        <ng-container *ngFor="let task of tasksCompleted; let i = index">
+          <div class="card" style="height: auto;">
+            <div class="project-info">
+              <div class="col-xl-3 my-2 col-lg-4 col-sm-6">
+                <p class="text-primary mb-1">#P-000441425</p>
+                <h5 class="title font-w600 mb-2"><a href="post-details.html"
+                    class="text-black">{{task.taskName}}</a></h5>
+                <div class="text-dark"><i class="fa fa-calendar-o mr-3"
+                    aria-hidden="true"></i>Date: {{ task.dueDate |
+                  date:'dd.MM.yyyy'}}</div>
+              </div>
+              <div class="col-xl-2 my-2 col-lg-4 col-sm-6">
+                {{ task.description | truncateText:4 }}
+              </div>
+              <div class="col-xl-3 my-2 col-lg-6 col-sm-6">
+                <div class="d-flex justify-content-end">
+                  <button class="btn btn-primary btn-sm"
+                    (click)="openSubtasksModal(subtasksModal, task)">
+                    <i class="fas fa-tasks me-1"></i> Subtasks
+                  </button>
+                </div>
+              </div>
+              <div class="col-xl-2 my-2 col-lg-6 col-sm-6">
+                <div class="d-flex project-status align-items-center">
+                  <span class="badge d-sm-inline-block d-none"
+                    [style.background-color]="(task.status | status).color">
+                    {{ (task.status | status).text }}
+                  </span>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <div ngbDropdown class="dropdown me-3">
+                    <button class="btn btn-primary" id="dropdownMenuButton"
+                      ngbDropdownToggle>
+                      <i class="fas fa-bars"></i>
+                    </button>
+                    <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+                      <li>
+                        <button class="dropdown-item"
+                          (click)="openEditModal(task)" data-toggle="modal"
+                          data-target="#editModal">
+                          <i class="fas fa-edit me-2"></i> Update
+                        </button>
+                      </li>
+                      <li>
+                        <button class="dropdown-item text-danger">
+                          <i class="fas fa-trash-alt me-2"></i> Delete
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-template #subtasksModal let-modal>
+            <div class="modal fade show" tabindex="-1"
+              style="display: block;" aria-modal="true" role="dialog">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Subtasks</h5>
+                    <button type="button" class="btn-close"
+                      (click)="modal.dismiss('Cross click')"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div>
+                      <h6 class="mb-3">Subtasks for {{ task.taskName }}</h6>
+                      <div class="table-responsive">
+                        <table class="table table-hover table-bordered">
+                          <thead class="table-light">
+                            <tr>
+                              <th>#</th>
+                              <th>Subtask Name</th>
+                              <th>Completed</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (subTask of task.subTaskDtos; track $index) {
+                            <tr>
+                              <td>{{ $index + 1 }}</td>
+                              <td>{{ subTask.subTaskName }}</td>
+                              <td>
+                                <i
+                                  [ngClass]="{
+                                                'fas fa-check-circle text-success': subTask.isCompleted,
+                                                'fas fa-times-circle text-danger': !subTask.isCompleted
+                                              }">
+                                </i>
+                              </td>
+                            </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      (click)="modal.dismiss('Close click')">
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </ng-container>
+      </div>
+      <div class="tab-pane fade" id="navpills-4">
+        <ng-container *ngFor="let task of tasksOverdue; let i = index">
+          <div class="card" style="height: auto;">
+            <div class="project-info">
+              <div class="col-xl-3 my-2 col-lg-4 col-sm-6">
+                <p class="text-primary mb-1">#P-000441425</p>
+                <h5 class="title font-w600 mb-2"><a href="post-details.html"
+                    class="text-black">{{task.taskName}}</a></h5>
+                <div class="text-dark"><i class="fa fa-calendar-o mr-3"
+                    aria-hidden="true"></i>Date: {{ task.dueDate |
+                  date:'dd.MM.yyyy'}}</div>
+              </div>
+              <div class="col-xl-2 my-2 col-lg-4 col-sm-6">
+                {{ task.description | truncateText:4 }}
+              </div>
+              <div class="col-xl-3 my-2 col-lg-6 col-sm-6">
+                <div class="d-flex justify-content-end">
+                  <button class="btn btn-primary btn-sm"
+                    (click)="openSubtasksModal(subtasksModal, task)">
+                    <i class="fas fa-tasks me-1"></i> Subtasks
+                  </button>
+                </div>
+              </div>
+              <div class="col-xl-2 my-2 col-lg-6 col-sm-6">
+                <div class="d-flex project-status align-items-center">
+                  <span class="badge d-sm-inline-block d-none"
+                    [style.background-color]="(task.status | status).color">
+                    {{ (task.status | status).text }}
+                  </span>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <!-- HTML -->
+                  <div ngbDropdown class="dropdown me-3" >
+                    <button class="btn btn-primary" id="dropdownMenuButton"
+                      ngbDropdownToggle>
+                      <i class="fas fa-bars"></i>
+                    </button>
+                    <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton"
+                    class="position-absolute zindex-dropdown">
+                      <li>
+                        <button class="dropdown-item"
+                          (click)="openEditModal(task)" data-toggle="modal"
+                          data-target="#editModal">
+                          <i class="fas fa-edit me-2"></i> Update
+                        </button>
+                      </li>
+                      <li>
+                        <button class="dropdown-item text-danger">
+                          <i class="fas fa-trash-alt me-2"></i> Delete
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-template #subtasksModal let-modal>
+            <div class="modal fade show" tabindex="-1"
+              style="display: block;" aria-modal="true" role="dialog">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Subtasks</h5>
+                    <button type="button" class="btn-close"
+                      (click)="modal.dismiss('Cross click')"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div>
+                      <h6 class="mb-3">Subtasks for {{ task.taskName }}</h6>
+                      <div class="table-responsive">
+                        <table class="table table-hover table-bordered">
+                          <thead class="table-light">
+                            <tr>
+                              <th>#</th>
+                              <th>Subtask Name</th>
+                              <th>Completed</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (subTask of task.subTaskDtos; track $index) {
+                            <tr>
+                              <td>{{ $index + 1 }}</td>
+                              <td>{{ subTask.subTaskName }}</td>
+                              <td>
+                                <i
+                                  [ngClass]="{
+                                                'fas fa-check-circle text-success': subTask.isCompleted,
+                                                'fas fa-times-circle text-danger': !subTask.isCompleted
+                                              }">
+                                </i>
+                              </td>
+                            </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      (click)="modal.dismiss('Close click')">
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </ng-container>
       </div>
     </div>
-    }
-
-    <!-- Template for no tasks -->
-    <ng-template #noTasks>
-      <div class="col-12">
-        <h3 class="text-center">No tasks available</h3>
-      </div>
-    </ng-template>
   </div>
+
+  <ng-template #noTasks>
+    <div class="col-12">
+      <h3 class="text-center">No tasks available</h3>
+    </div>
+  </ng-template>
+
 </div>
 
 <div #addModal class="modal fade" id="addModal" tabindex="-1" role="dialog"
@@ -173,9 +521,9 @@
               <label for="addStatus" class="form-label">Status</label>
               <select id="addStatus" formControlName="status"
                 class="form-select">
-                <option [value]="0">Not Started</option>
-                <option [value]="1">In Progress</option>
-                <option [value]="2">Completed</option>
+                <option [value]="0">In Progress</option>
+                <option [value]="1">Completed</option>
+                <option [value]="2">Overdue</option>
               </select>
             </div>
             <div class="col-md-6">

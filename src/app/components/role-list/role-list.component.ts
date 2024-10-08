@@ -63,5 +63,7 @@ export class RoleListComponent implements OnInit{
   ManagePermissions(roleId : string):void{
     this.router.navigate(['/ManagePermissions',roleId]);
   }
+  openMode(model : any){
 
+  }
 }

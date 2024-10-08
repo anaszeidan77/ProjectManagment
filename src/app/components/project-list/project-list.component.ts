@@ -1,5 +1,5 @@
 // project-list.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ProjectsService } from '../../services/projects.service';
 import { ActivatedRoute } from '@angular/router';
 import { Project } from '../../model/project';
@@ -7,31 +7,52 @@ import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common'; // إضافة الاستيراد
 import { StatusPipe } from '../../Pipes/status.pipe';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-project-list',
   standalone: true,
-  imports: [CommonModule,StatusPipe,NgbDropdownModule], // إضافة الوحدات المستوردة
+  imports: [CommonModule,StatusPipe,NgbDropdownModule,FormsModule,ReactiveFormsModule], // إضافة الوحدات المستوردة
   templateUrl: './project-list.component.html',
   styleUrls: ['./project-list.component.css']
 })
-export class ProjectListComponent implements OnInit {
+export class ProjectListComponent implements OnInit,OnDestroy {
   projects: Project[] = [];
   totalItems: number = 0;
   pageSize: number = 10;
   currentPage: number = 1;
+  addprojectForm!:FormGroup;
   subscription!: Subscription;
 
   constructor(
     private projectService: ProjectsService,
     private route: ActivatedRoute,
+    private fb:FormBuilder,
+    
   ) { }
 
   ngOnInit(): void {
     this.currentPage = Number(this.route.snapshot.queryParamMap.get('pageNumber')) || 1;
     this.pageSize = Number(this.route.snapshot.queryParamMap.get('pageSize')) || 10;
     this.getAllProjects();
+    this.initAddForm();
   }
+
+  initAddForm() {
+    this.addprojectForm = this.fb.group({
+      projectId: [''],
+      projectName: ['', Validators.required],
+      description: ['', Validators.required],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+      budget: [0, Validators.required],
+      status: [0, Validators.required],
+      isDeleted: [false, Validators.required],
+      documents: this.fb.array([]),
+      resources: this.fb.array([])
+    });
+  }
+  
 
 // project-list.component.ts
 getAllProjects(): void {
@@ -49,6 +70,80 @@ getAllProjects(): void {
     },
   });
 }
+get documentsFormArray() {
+  return this.addprojectForm.get('documents') as FormArray;
+}
+
+addDocument() {
+  const documentForm = this.fb.group({
+    documentName: ['', Validators.required],
+    type: [0, Validators.required],
+    documentURL: ['', Validators.required],
+    uploadedDate: ['', Validators.required],
+    createdBy: [localStorage.getItem("userName") as string],
+    createdAt: [new Date()],
+    isDeleted: [false]
+  });
+  this.documentsFormArray.push(documentForm);
+}
+
+removeDocument(index: number) {
+  this.documentsFormArray.removeAt(index);
+}
+
+get resourcesFormArray() {
+  return this.addprojectForm.get('resources') as FormArray;
+}
+
+addResource() {
+  const resourceForm = this.fb.group({
+    resourceName: ['', Validators.required],
+    type: [0, Validators.required],
+    resourceStatus: ['', Validators.required],
+    createdBy: [localStorage.getItem("userName") as string],
+    createdAt: [new Date()],
+    isDeleted: [false]
+  });
+  this.resourcesFormArray.push(resourceForm);
+}
+
+removeResource(index: number) {
+  this.resourcesFormArray.removeAt(index);
+}
+
+
+add(): void {
+  if (!this.addprojectForm.valid) {
+    console.log("Data is not valid");
+    return;
+  }
+
+  const newProject: Project = {
+    projectName: this.addprojectForm.value.projectName,
+    description: this.addprojectForm.value.description,
+    startDate: this.addprojectForm.value.startDate,
+    endDate: this.addprojectForm.value.endDate,
+    budget: this.addprojectForm.value.budget,
+    status: this.addprojectForm.value.status,
+    isDeleted: this.addprojectForm.value.isDeleted,
+    createdBy: localStorage.getItem("userName") as string,
+    createdAt: new Date(),
+    documents: this.addprojectForm.value.documents,
+    resources: this.addprojectForm.value.resources
+  };
+
+  this.projectService.addProject(newProject).subscribe(
+    response => {
+      console.log("Project added successfully:", response);
+      // تحديث قائمة المشاريع أو إعادة توجيه المستخدم
+    },
+    error => {
+      console.error("Error adding project:", error);
+    }
+  );
+}
+
+
 
 
   ngOnDestroy(): void {
