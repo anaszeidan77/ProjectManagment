@@ -22,7 +22,11 @@
            
 <div class="container py-5">
   <div class="row">
-    @for (team of teams; track $index) {
+    @for (team of teams |paginate:{
+      id:'teams',
+      itemsPerPage:pageSize,
+      currentPage:currentPage,
+      totalItems:totalItems}; track $index) {
     <div class="col-md-4">
       <div class="card " [ngClass]="{'bg-danger-transparent': team.isDeleted}" style="position: relative;">
         <div class="card-body">
@@ -73,6 +77,14 @@
     </div>
     }
   </div>
+  <div class="d-flex justify-content mt-3">
+    <pagination-controls 
+      (pageChange)="changePage($event)" 
+      id="teams" 
+      class="pagination">
+    </pagination-controls>
+  </div>
+  
 </div>
 
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
-import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -12,19 +12,46 @@ import { CommonModule } from '@angular/common';
 })
 export class HeaderComponent implements OnInit {
 isLoggedIn: boolean = false; // استخدم هذا المتغير لتحديد حالة تسجيل الدخول{
-constructor(private authService : AuthService,private router :Router){}
+currentRoute: string = '';
+today!: string;
+month!: string;
+year!: string;
+constructor(private authService : AuthService,
+            private router: Router,          
+            private activatedRoute: ActivatedRoute){
+              const date = new Date();
+              this.today = date.getUTCDay().toString(); 
+              this.month = date.toLocaleString('default', { month: 'long' }); 
+              this.year = date.getFullYear().toString();
+            }
 
 logout(){
   this.authService.logout()
   this.isLoggedIn =false
+  
   this.router.navigate(['/login'])
 }
   ngOnInit(): void {
-    this.checkLoginStatus(); // تحقق من حالة تسجيل الدخول عند تحميل المكون
+    this.checkLoginStatus();
+    this.getCurrentRoute()
+    console.log(this.currentRoute,'sssssssssss');
+    
   }
 
   checkLoginStatus() {
     // هنا يمكنك استخدام الكود الخاص بك للتحقق من حالة تسجيل الدخول
     this.isLoggedIn = !!localStorage.getItem('token'); // مثال: تحقق من وجود توكن في التخزين المحلي
   }
+  getCurrentRoute(): void {
+    this.router.events.subscribe(() => {
+      let currentRoute = this.activatedRoute.root;
+  
+      while (currentRoute.firstChild) {
+        currentRoute = currentRoute.firstChild;
+      }
+  
+      this.currentRoute = currentRoute.snapshot.url.map(segment => segment.path).join('/');
+    });
+  }
+  
 }

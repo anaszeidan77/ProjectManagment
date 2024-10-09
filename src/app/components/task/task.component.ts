@@ -13,11 +13,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Project } from '../../model/project';
 import { StatusPipe } from '../../Pipes/status.pipe';
 import { ConfirmModalComponent } from '../shared/confirm-modal/confirm-modal.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { PaginationComponent } from '../shared/pagination/pagination.component';
 
 @Component({
   selector: 'app-task',
   standalone: true,
-  imports: [FormsModule, CommonModule, ReactiveFormsModule,TruncateTextPipe,NgbModule,NgbDropdownModule,StatusPipe],
+  imports: [FormsModule,PaginationComponent,NgxPaginationModule, CommonModule, ReactiveFormsModule,TruncateTextPipe,NgbModule,NgbDropdownModule,StatusPipe],
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.css']
 })
@@ -44,7 +46,7 @@ export class TaskComponent implements OnInit,OnDestroy {
   tasksOverdue: Task[] = [];
   ngOnInit(): void {
     this.currentPage = Number(this.route.snapshot.queryParamMap.get('pageNumber')) || 1;
-    this.pageSize = Number(this.route.snapshot.queryParamMap.get('pageSize')) || 20;
+    this.pageSize = Number(this.route.snapshot.queryParamMap.get('pageSize')) || 10;
   
     this.initEditForm();
     this.initAddForm();
@@ -53,6 +55,10 @@ export class TaskComponent implements OnInit,OnDestroy {
     this.getAllUsers();
     this.getAllProjects();
     console.log(this.tasksCompleted);
+    console.log(this.currentPage);
+    console.log(this.pageSize);
+    
+    
     
   }
   viweDetails(taskId:string):void{
@@ -327,6 +333,8 @@ createSubTask(): FormGroup {
 
   
   openEditModal(task: Task) {
+    console.log("aaaaaaaaaaaaaaaa");
+    
     this.selectedTaskId = task.taskId!;
     this.editTaskForm.patchValue({
       taskId: task.taskId,
@@ -373,4 +381,24 @@ createSubTask(): FormGroup {
     this.tasksCompleted = this.listTask.filter(task => task.status ===1); // Completed
     this.tasksOverdue = this.listTask.filter(task => task.status===2); // ovreow
   }
+
+  changePage(event: any): void {
+    this.currentPage = event;
+    
+    // تحديث الـ Query Parameters
+    this.router.navigate(['/tasks'], {
+      queryParams: {
+        pageNumber: this.currentPage,
+        pageSize: this.pageSize
+      },
+    });
+    
+    // استدعاء دالة الحصول على البيانات
+    this.getAllTasks();
+}
+
+  // changePage(event: any): void {
+  //   this.currentPage = event;
+  //   this.getAllTasks();
+  // }
 }

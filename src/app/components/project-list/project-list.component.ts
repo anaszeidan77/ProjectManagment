@@ -1,18 +1,19 @@
 // project-list.component.ts
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ProjectsService } from '../../services/projects.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Project } from '../../model/project';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common'; // إضافة الاستيراد
 import { StatusPipe } from '../../Pipes/status.pipe';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-project-list',
   standalone: true,
-  imports: [CommonModule,StatusPipe,NgbDropdownModule,FormsModule,ReactiveFormsModule], // إضافة الوحدات المستوردة
+  imports: [CommonModule,NgxPaginationModule,StatusPipe,NgbDropdownModule,FormsModule,ReactiveFormsModule], // إضافة الوحدات المستوردة
   templateUrl: './project-list.component.html',
   styleUrls: ['./project-list.component.css']
 })
@@ -28,6 +29,7 @@ export class ProjectListComponent implements OnInit,OnDestroy {
     private projectService: ProjectsService,
     private route: ActivatedRoute,
     private fb:FormBuilder,
+    private router:Router,
     
   ) { }
 
@@ -132,18 +134,31 @@ add(): void {
     resources: this.addprojectForm.value.resources
   };
 
-  this.projectService.addProject(newProject).subscribe(
-    response => {
+  this.projectService.addProject(newProject).subscribe({
+    next:(response)=>{
       console.log("Project added successfully:", response);
-      // تحديث قائمة المشاريع أو إعادة توجيه المستخدم
     },
-    error => {
-      console.error("Error adding project:", error);
+    error:(err) => {
+      console.error("Error adding project:", err);
     }
+  }
   );
 }
 
-
+changePage(event: any): void {
+  this.currentPage = event;
+  
+  // تحديث الـ Query Parameters
+  this.router.navigate(['/projects'], {
+    queryParams: {
+      pageNumber: this.currentPage,
+      pageSize: this.pageSize
+    },
+  });
+  
+  // استدعاء دالة الحصول على البيانات
+  this.getAllProjects();
+}
 
 
   ngOnDestroy(): void {

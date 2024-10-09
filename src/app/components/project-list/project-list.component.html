@@ -8,7 +8,11 @@
 
 <div class="container-fluid">
     <div class="row">
-        @for (project of projects; track $index) {
+        @for (project of projects |paginate:{
+            id:'projects',
+            itemsPerPage:pageSize,
+            currentPage:currentPage,
+            totalItems:totalItems}; track $index) {
         <div class="col-xl-6 col-lg-12">
             <div class="card project-card"
                 style="height: auto;width: auto; margin-top: 10px;">
@@ -136,6 +140,9 @@
             </div>
         </div>
         }
+        <div >
+            <pagination-controls (pageChange)="changePage($event)" id="projects"></pagination-controls>
+          </div>
     </div>
 </div>
 

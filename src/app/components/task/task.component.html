@@ -37,7 +37,11 @@
     </div>
     <div class="tab-content project-list-group" id="myTabContent">
       <div class="tab-pane fade active show" id="navpills-1">
-        <ng-container *ngFor="let task of listTask; let i = index">
+        <ng-container *ngFor="let task of listTask |paginate:{
+          id:'tasks',
+          itemsPerPage:pageSize,
+          currentPage:currentPage,
+          totalItems:totalItems}" >
           <div class="card" style="height: auto;">
             <div class="project-info">
               <div class="col-xl-3 my-2 col-lg-4 col-sm-6">
@@ -51,11 +55,11 @@
                 </div>
               </div>
               <div class="col-xl-2 my-2 col-lg-4 col-sm-6">
-                {{ task.description }} - {{task.isDeleted}}
+                {{ task.description }}
               </div>
               <div class="col-xl-3 my-2 col-lg-6 col-sm-6">
                 <div class="d-flex justify-content-end">
-                  <button class="btn btn-primary btn-sm" (click)="openSubtasksModal(subtasksModal, task)">
+                  <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#subtasksModal" (click)="openSubtasksModal(subtasksModal, task)">
                     <i class="fas fa-tasks me-1"></i> Subtasks
                   </button>
                 </div>
@@ -73,16 +77,15 @@
                     </button>
                     <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton" style="position: relative;" class="dropdown-menu position-absolute zindex-dropdown">
                       <li>
-                        <button class="dropdown-item text-danger"  (click)="deleteTask(task.taskId!)">
-                          <i class="fas fa-trash-alt me-2"></i> Delete
-                        </button>
-                      </li>
-                      <li>
-                        <button class="dropdown-item" (click)="openEditModal(task)">
+                        <button class="dropdown-item" (click)="openEditModal(task)" data-toggle="modal" data-target="#editModal">
                           <i class="fas fa-edit me-2"></i> Update
                         </button>
                       </li>
-
+                      <li>
+                        <button class="dropdown-item text-danger" (click)="deleteTask(task.taskId!)">
+                          <i class="fas fa-trash-alt me-2"></i> Delete
+                        </button>
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -90,7 +93,8 @@
             </div>
           </div>
           <ng-template #subtasksModal let-modal>
-            <div class="modal fade show" tabindex="-1" style="display: block;" aria-modal="true" role="dialog">
+            <div #subtasksModal class="modal fade" id="addModal" tabindex="-1" role="dialog"
+            aria-labelledby="addModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -468,6 +472,9 @@
             </div>
           </ng-template>
         </ng-container>
+      </div>
+      <div >
+        <pagination-controls (pageChange)="changePage($event)" id="tasks"></pagination-controls>
       </div>
     </div>
   </div>

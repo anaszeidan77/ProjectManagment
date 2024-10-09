@@ -18,7 +18,7 @@ export class TaskService {
     let params = new HttpParams()
     .set('pageNumber', pageNumber.toString())
     .set('pageSize', pageSize.toString());
-    return this.http.get<PaginatedResponse<Task>>(this.apiUrl, { params });
+    return this.http.get<PaginatedResponse<Task>>(this.apiUrl, { params: params });
 
   }
   

@@ -15,12 +15,14 @@ import { Project } from '../../model/project';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmModalComponent } from '../shared/confirm-modal/confirm-modal.component';
 import { UserService } from '../../services/user.service';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { PaginationComponent } from '../shared/pagination/pagination.component';
 
 @Component({
   selector: 'app-team',
   standalone: true,
   imports: [CommonModule, TestPipe, TruncateTextPipe,
-     TeamMembersCountPipe,RouterModule,ReactiveFormsModule],
+     TeamMembersCountPipe,RouterModule,ReactiveFormsModule,NgxPaginationModule,PaginationComponent],
   templateUrl: './team.component.html',
   styleUrl: './team.component.css'
 })
@@ -29,7 +31,7 @@ export class TeamComponent implements OnInit,OnDestroy {
   @ViewChild('addModal', { static: false }) addModal!: ElementRef; 
   @ViewChild('closeButton', { static: false }) closeButton!: ElementRef; 
 
-
+  pages: number[] = [];
   usersEdit:User[]=[]
   users:User[]=[];
   projects:Project[]=[];
@@ -152,13 +154,16 @@ console.log(error);
 
 
   changePage(pageNumber: number): void {
-    this.router.navigate([], {
+    this.router.navigate(['/teams'], {
       relativeTo: this.route,
       queryParams: { pageNumber: pageNumber, pageSize: this.pageSize },
       queryParamsHandling: 'merge'
     });
     this.currentPage = pageNumber;
     this.getTeams();
+  }
+  generatePages() {
+    this.pages = Array.from({ length: this.totalItems }, (_, i) => i + 1);
   }
   ngOnDestroy(): void {
     if (this.subscription) {
@@ -269,6 +274,7 @@ console.log(error);
       });
   
     }
+
 }
 
 
