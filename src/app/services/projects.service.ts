@@ -10,6 +10,7 @@ import { environment } from '../../environments/environment';
 })
 export class ProjectsService {
 
+  private urll='https://localhost:7058/api/Projects';
   private apiUrl = `${environment.url}/Projects`;
   constructor(private http:HttpClient) { }
 
@@ -19,17 +20,24 @@ export class ProjectsService {
       .set('pageNumber', pageNumber.toString())
       .set('pageSize', pageSize.toString());
 
-      return this.http.get<PaginatedResponse<Project>>(this.apiUrl,{params});
+      return this.http.get<PaginatedResponse<Project>>(this.urll,{params});
     }
-
-    addProject(project:Project):Observable<Project>{
-      return this.http.post<Project>(this.apiUrl,project);
+    
+    addProject(project: FormData): Observable<any> {
+ 
+      
+      return this.http.post(this.urll, project);
     }
-
-    getById(id:string):Observable<Project>{
-      return this.http.get<Project>(`${this.apiUrl}/${id}`)
-    }
-
+    delete(projectId: string): Observable<any> {
+      
+      return this.http.delete(`${this.urll}/${projectId}`);
+  }
+  updateProject(projectId: string, formData: FormData): Observable<any> {
+    return this.http.put(`${this.urll}/${projectId}`, formData);
+  }
+  getProjectById(projectId: string): Observable<Project> {
+    return this.http.get<Project>(`${this.urll}/${projectId}`);
+  }
   // getAll(pageNumber: number=1, pageSize: number=10): Observable<any> {
 
   //   let params = new HttpParams()

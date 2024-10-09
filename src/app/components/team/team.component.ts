@@ -116,7 +116,7 @@ export class TeamComponent implements OnInit,OnDestroy {
       next:(response)=>{
         console.log('sussess');
         this.closeModal()
-      
+      this.getTeams();
         console.log('Model ',this.addModal);
         
       },

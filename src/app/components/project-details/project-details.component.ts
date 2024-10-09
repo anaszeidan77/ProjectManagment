@@ -34,7 +34,7 @@ export class PrjectDetailsComponent implements OnInit{
   }
 
   getProjectById(){
-    this.projectService.getById(this.projectId).subscribe({
+    this.projectService.getProjectById(this.projectId).subscribe({
       next:(response)=>{
         console.log("response ",response);
         this.project=response;
