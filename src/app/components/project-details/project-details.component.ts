@@ -8,11 +8,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StatusPipe } from '../../Pipes/status.pipe';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { TruncateTextPipe } from '../../Pipes/truncateText.pipe';
 
 @Component({
   selector: 'app-prject-details',
   standalone: true,
-  imports: [CommonModule,FormsModule,StatusPipe,NgbDropdownModule],
+  imports: [CommonModule,FormsModule,StatusPipe,NgbDropdownModule,TruncateTextPipe],
   templateUrl: './project-details.component.html',
   styleUrl: './project-details.component.css'
 })
