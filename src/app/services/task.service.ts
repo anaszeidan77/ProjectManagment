@@ -1,8 +1,9 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { Task } from '../model/task';
 import { environment } from '../../environments/environment';
+import { PaginatedResponse } from '../model/PaginatedResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +13,13 @@ export class TaskService {
   constructor(private http :HttpClient) { }
 
 
-  getTasks():Observable<Task[]>{
-    return this.http.get<Task[]>(`${environment.url}/Tasks`)
-    .pipe(
-      map((respose : any)=>respose.data),
-      catchError(this.handleError<Task[]>('getTasks',[]))
 
-    );
+  getTasks(pageNumber: number, pageSize: number):Observable<PaginatedResponse<Task>>{
+    let params = new HttpParams()
+    .set('pageNumber', pageNumber.toString())
+    .set('pageSize', pageSize.toString());
+    return this.http.get<PaginatedResponse<Task>>(this.apiUrl, { params: params });
+
   }
   
   getTasksById(id:string):Observable<Task>{
@@ -46,12 +47,14 @@ export class TaskService {
   }
   
 
-  deleteTask(id?:string):Observable<Task>{
-    const url = `${this.apiUrl}/${id}`;
-    return this.http.delete<Task>(url)
-    .pipe(
-      catchError(this.handleError<Task>('deleteTask'))
-    )
+  // خدمة الحذف
+  delete(Id: string): Observable<Task> {
+    return this.http.delete<Task>(`${this.apiUrl}/${Id}`).pipe(
+      catchError(err => {
+        console.error('Error in delete method:', err);
+        return throwError(err); // إرسال الخطأ إلى المراقب
+      })
+    );
   }
 
   getTaskByUserId(userId:string):Observable<Task[]>{

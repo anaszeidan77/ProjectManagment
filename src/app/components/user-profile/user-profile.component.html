@@ -106,6 +106,7 @@
                                         <a class="nav-link px-4"
                                             data-toggle="tab"
                                             role="tab" aria-selected="false"
+                                            href="#team-tab"
                                             tabindex="-1">
                                             <span class="d-block d-sm-none"><i
                                                     class="mdi mdi-account-group-outline"></i></span>
@@ -204,7 +205,8 @@
                         </div><!-- end row -->
                     </div><!-- end tab pane -->
 
-                    <div class="tab-pane" id="team-tab" role="tabpanel">
+                    <div class="tab-pane active show" id="team-tab"
+                    role="tabpanel">
                         <h4 class="card-title mb-4">Teams</h4>
                         <div class="row">
                             @for (team of teams; track $index) {

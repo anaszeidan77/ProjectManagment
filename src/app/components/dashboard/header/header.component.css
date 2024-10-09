@@ -1,0 +1,14 @@
+.brand-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none; /* إزالة خط تحت الرابط */
+  }
+  
+  .brand-logo img {
+    border-radius: 50%; /* جعل الأيقونة دائرية إذا لزم الأمر */
+  }
+  
+  .brand-logo span {
+    margin-left: 10px; /* مسافة بين الأيقونة والنص */
+  }
+  

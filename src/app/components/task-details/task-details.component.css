@@ -1,0 +1,11 @@
+
+.task-card {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.subtask-table th, .subtask-table td {
+    vertical-align: middle;
+}

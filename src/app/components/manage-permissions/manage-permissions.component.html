@@ -1,0 +1,22 @@
+<!-- manage-permissions.component.html -->
+<div class="container mt-4">
+    <h2 class="mb-3">إدارة السماحيات للدور: {{ roleName }}</h2>
+    <table class="table table-bordered">
+      <thead class="table-light">
+        <tr>
+          <th>اسم السماحية</th>
+          <th>محدد</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let claim of roleClaims">
+          <td>{{ claim.displayValue }}</td>
+          <td class="text-center">
+            <input type="checkbox" [(ngModel)]="claim.isSelected" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="btn btn-primary mt-3" (click)="saveChanges()">حفظ التغييرات</button>
+  </div>
+  

@@ -8,4 +8,72 @@
   .form-toggle-buttons .btn.active {
     text-decoration: underline;
   }
+  .authincation-content .col-xl-6 {
+    background-color: #f8f9fa;
+  }
+/* لضبط الحاوية */
+.auth-form {
+  position: relative;
+  overflow: hidden;
+  min-height: 500px;
+}
+
+/* تنسيق الحاوية للنماذج */
+.forms-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* تنسيق كل نموذج */
+.form-content {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.5s ease-in-out;
+}
+
+/* عند تفعيل النموذج */
+.form-content.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* إخفاء النموذج غير النشط */
+.form-content:not(.active) {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+/* تنسيق لأزرار التبديل */
+.form-toggle-buttons .btn-link.active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/* تحسين لتجربة المستخدم */
+@media (max-width: 767px) {
+  .authincation-content {
+    padding: 20px;
+  }
+  .col-xl-6.d-none.d-xl-block {
+    display: none !important;
+  }
+}
+.position-relative {
+  position: relative;
+}
+
+.toggle-password,
+.toggle-confirm-password {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #6c757d;
+}
   
