@@ -1,354 +1,365 @@
-<div
-    class="card-header border-0 d-flex justify-content-between align-items-center">
-    <button type="button" class="btn btn-primary" data-toggle="modal"
-        data-target="#addProjectModal">
-        Add
-    </button>
-</div>
+<!-- View Projects -->
 
 <div class="container-fluid">
+    <div class="card-header border-0 d-flex justify-content-between align-items-center bg-primary">
+      <h3 class="mb-0 title">list of Projects</h3>
+      <button type="button" class="btn" 
+      data-toggle="modal"  data-target="#exampleModal">
+        Add
+      </button>
+  
+    
+    </div>
     <div class="row">
-        @for (project of projects |paginate:{
-            id:'projects',
-            itemsPerPage:pageSize,
-            currentPage:currentPage,
-            totalItems:totalItems}; track $index) {
-        <div class="col-xl-6 col-lg-12">
-            <div class="card project-card"
-                style="height: auto;width: auto; margin-top: 10px;">
-                <div class="card-body">
-                    <div class="d-flex mb-4 align-items-start">
-                        <div class="d-flex mb-4 align-items-start">
-                            <!-- أيقونة الهمبرغر والقائمة المنسدلة باستخدام ng-bootstrap -->
-                            <div ngbDropdown class="dropdown me-3">
-                                <button class="btn btn-primary"
-                                    id="dropdownMenuButton" ngbDropdownToggle>
-                                    <i class="fas fa-bars"></i>
-                                </button>
-                                <ul ngbDropdownMenu
-                                    aria-labelledby="dropdownMenuButton">
-                                    <li>
-                                        <button class="dropdown-item">
-                                            <i class="fas fa-edit me-2"></i>
-                                            Update
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button
-                                            class="dropdown-item text-danger">
-                                            <i
-                                                class="fas fa-trash-alt me-2"></i>
-                                            Delete
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button
-                                            class="dropdown-item" (click)="navigateProjectDetails(project.projectId!)">
-                                            <i
-                                                class="fas fa-eye-alt me-2"></i>
-                                            Show
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="mr-auto">
-                            <h5 class="title font-w600 mb-2"><a
-                                    href="post-details.html"
-                                    class="text-black">{{project.projectName}}</a></h5>
-                            <span>{{project.projectName}}</span>
-                        </div>
-                        <span class="badge d-sm-inline-block d-none"
-                            [style.background-color]="(project.status | status).color">
-                            {{ (project.status | status).text }}
-                        </span>
-
-                    </div>
-                    <p class="mb-4">{{project.description}}</p>
-                    <div class="row mb-4">
-                        <div class="col-sm-6 mb-sm-0 mb-3 d-flex">
-                            <div class="dt-icon bgl-info mr-3">
-                                <svg width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M19 5H18V3C18 2.73478 17.8946 2.48043 17.7071 2.29289C17.5196 2.10536 17.2652 2 17 2C16.7348 2 16.4804 2.10536 16.2929 2.29289C16.1054 2.48043 16 2.73478 16 3V5H8V3C8 2.73478 7.89464 2.48043 7.70711 2.29289C7.51957 2.10536 7.26522 2 7 2C6.73478 2 6.48043 2.10536 6.29289 2.29289C6.10536 2.48043 6 2.73478 6 3V5H5C4.20435 5 3.44129 5.31607 2.87868 5.87868C2.31607 6.44129 2 7.20435 2 8V9H22V8C22 7.20435 21.6839 6.44129 21.1213 5.87868C20.5587 5.31607 19.7957 5 19 5Z"
-                                        fill="#92caff"></path>
-                                    <path
-                                        d="M2 19C2 19.7956 2.31607 20.5587 2.87868 21.1213C3.44129 21.6839 4.20435 22 5 22H19C19.7957 22 20.5587 21.6839 21.1213 21.1213C21.6839 20.5587 22 19.7956 22 19V11H2V19Z"
-                                        fill="#51A6F5"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <span>Start Date</span>
-                                <p class="mb-0 pt-1 font-w500 text-black">{{
-                                    project.startDate | date:'EEEE, MMM d, y'
-                                    }}</p>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 d-flex">
-                            <div class="dt-icon mr-3 bgl-danger">
-                                <svg width="19" height="24" viewBox="0 0 19 24"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M18.6601 8.6858C18.5437 8.44064 18.2965 8.28427 18.025 8.28427H10.9728L15.2413 1.06083C15.3697 0.843469 15.3718 0.573844 15.2466 0.354609C15.1214 0.135375 14.8884 -9.37014e-05 14.6359 4.86277e-08L8.61084 0.000656299C8.3608 0.000750049 8.12957 0.1335 8.00362 0.349453L0.0958048 13.905C-0.0310859 14.1224 -0.0319764 14.3911 0.0934142 14.6094C0.218805 14.8277 0.451352 14.9624 0.703117 14.9624H7.71037L5.66943 23.1263C5.58955 23.4457 5.74213 23.7779 6.03651 23.9255C6.13691 23.9757 6.24459 24 6.35123 24C6.55729 24 6.75923 23.9094 6.89638 23.7413L18.5699 9.43186C18.7415 9.22148 18.7766 8.93105 18.6601 8.6858V8.6858Z"
-                                        fill="#FF4C41"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <span>End Data</span>
-                                <p class="mb-0 pt-1 font-w500 text-black">{{
-                                    project.endDate| date:'EEEE, MMM d, y'
-                                    }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex flex-wrap align-items-center">
-                        <div class="mr-auto mb-4">
-                            <p class="mb-2 font-w500 text-black">Members</p>
-                            <ul class="users-lg">
-                                @for (item of project.teams; track $index) {
-                                <li><img
-                                        src="../../../assets/TemplateDahboard/images/logo.png"
-                                        alt></li>
-                                }
-                            </ul>
-                        </div>
-                        <div class="d-flex align-items-center mb-4">
-                            <div class="text-center border-bx mr-3">
-                                <span>Budget</span>
-                                <p
-                                    class="mb-0 pt-1 font-w500 text-black">${{project.budget}}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <div>Questions:<span
-                                    class="text-black ml-3 font-w600">56</span></div>
-                            <div>Comments:<span
-                                    class="text-black ml-3 font-w600">200</span></div>
-                        </div>
-                        <div class="col-6">
-                            <h6>Progress
-                                <span
-                                    class="pull-right">{{project.totalProgressPercentageProject}}%</span>
-                            </h6>
-                            <div class="progress ">
-                                <div
-                                    class="progress-bar bg-info progress-animated"
-                                    [style.width.%]="project.totalProgressPercentageProject"
-                                    style="height:6px;"
-                                    role="progressbar"></div>
-                            </div>
-                        </div>
-                    </div>
+      @for (project of projects |paginate:{
+        id:'projects',
+        itemsPerPage:pageSize,
+        currentPage:currentPage,
+        totalItems:totalItems}; track $index) {
+      <div class="col-xl-6 col-lg-12">
+        <div class="card project-card" style="height: auto;width: auto; margin-top: 10px;">
+          <div class="card-body">
+            <div class="d-flex mb-4 align-items-start">
+              <div class="d-flex mb-4 align-items-start">
+  
+                <div ngbDropdown class="dropdown me-3">
+                  <button class="btn btn-primary" id="dropdownMenuButton" ngbDropdownToggle>
+                    <i class="fas fa-bars"></i>
+                  </button>
+                  <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+                    <li>
+                      <button (click)="loadProjectData(project.projectId)" class="dropdown-item" data-toggle="modal"
+                        data-target="#exampleModal">
+                        <i class="fas fa-edit me-2"></i> Update
+                      </button>
+  
+                    </li>
+                    <li>
+                      <button (click)="delete(project.projectId)" class="dropdown-item text-danger">
+                        <i class="fas fa-trash-alt me-2"></i> Delete
+                      </button>
+                    </li>
+                    <li>
+                        <button (click)="projectDetails(project.projectId)" class="dropdown-item text-danger">
+                          <i class="fas fa-trash-alt me-2"></i> show
+                        </button>
+                      </li>
+                  </ul>
                 </div>
+              </div>
+              <div class="mr-auto">
+                <h5 class="title font-w600 mb-2"><a href="post-details.html"
+                    class="text-black">{{project.projectName}}</a></h5>
+                <span>{{project.projectName}}</span>
+              </div>
+              <span class="badge d-sm-inline-block d-none" [style.background-color]="(project.status | status).color">
+                {{ (project.status | status).text }}
+              </span>
+  
             </div>
-        </div>
-        }
-        <div >
-            <pagination-controls (pageChange)="changePage($event)" id="projects"></pagination-controls>
+            <p class="mb-4">{{project.description}}</p>
+            <div class="row mb-4">
+              <div class="col-sm-6 mb-sm-0 mb-3 d-flex">
+                <div class="dt-icon bgl-info mr-3">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M19 5H18V3C18 2.73478 17.8946 2.48043 17.7071 2.29289C17.5196 2.10536 17.2652 2 17 2C16.7348 2 16.4804 2.10536 16.2929 2.29289C16.1054 2.48043 16 2.73478 16 3V5H8V3C8 2.73478 7.89464 2.48043 7.70711 2.29289C7.51957 2.10536 7.26522 2 7 2C6.73478 2 6.48043 2.10536 6.29289 2.29289C6.10536 2.48043 6 2.73478 6 3V5H5C4.20435 5 3.44129 5.31607 2.87868 5.87868C2.31607 6.44129 2 7.20435 2 8V9H22V8C22 7.20435 21.6839 6.44129 21.1213 5.87868C20.5587 5.31607 19.7957 5 19 5Z"
+                      fill="#92caff"></path>
+                    <path
+                      d="M2 19C2 19.7956 2.31607 20.5587 2.87868 21.1213C3.44129 21.6839 4.20435 22 5 22H19C19.7957 22 20.5587 21.6839 21.1213 21.1213C21.6839 20.5587 22 19.7956 22 19V11H2V19Z"
+                      fill="#51A6F5"></path>
+                  </svg>
+                </div>
+                <div>
+                  <span>Start Date</span>
+                  <p class="mb-0 pt-1 font-w500 text-black">{{
+                    project.startDate | date:'EEEE, MMM d, y'
+                    }}</p>
+                </div>
+              </div>
+              <div class="col-sm-6 d-flex">
+                <div class="dt-icon mr-3 bgl-danger">
+                  <svg width="19" height="24" viewBox="0 0 19 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M18.6601 8.6858C18.5437 8.44064 18.2965 8.28427 18.025 8.28427H10.9728L15.2413 1.06083C15.3697 0.843469 15.3718 0.573844 15.2466 0.354609C15.1214 0.135375 14.8884 -9.37014e-05 14.6359 4.86277e-08L8.61084 0.000656299C8.3608 0.000750049 8.12957 0.1335 8.00362 0.349453L0.0958048 13.905C-0.0310859 14.1224 -0.0319764 14.3911 0.0934142 14.6094C0.218805 14.8277 0.451352 14.9624 0.703117 14.9624H7.71037L5.66943 23.1263C5.58955 23.4457 5.74213 23.7779 6.03651 23.9255C6.13691 23.9757 6.24459 24 6.35123 24C6.55729 24 6.75923 23.9094 6.89638 23.7413L18.5699 9.43186C18.7415 9.22148 18.7766 8.93105 18.6601 8.6858V8.6858Z"
+                      fill="#FF4C41"></path>
+                  </svg>
+                </div>
+                <div>
+                  <span>End Data</span>
+                  <p class="mb-0 pt-1 font-w500 text-black">{{
+                    project.endDate| date:'EEEE, MMM d, y'
+                    }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex flex-wrap align-items-center">
+              <div class="mr-auto mb-4">
+                <p class="mb-2 font-w500 text-black">Members</p>
+                <ul class="users-lg">
+                  @for (item of project.teams; track $index) {
+                  <li><img src="../../../assets/TemplateDahboard/images/logo.png" alt></li>
+                  }
+                </ul>
+              </div>
+              <div class="d-flex align-items-center mb-4">
+                <div class="text-center border-bx mr-3">
+                  <span>Budget</span>
+                  <p class="mb-0 pt-1 font-w500 text-black">${{project.budget}}</p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <div>Questions:<span class="text-black ml-3 font-w600">56</span></div>
+                <div>Comments:<span class="text-black ml-3 font-w600">200</span></div>
+              </div>
+              <div class="col-6">
+                <h6>Progress
+                  <span class="pull-right">{{project.totalProgressPercentageProject}}%</span>
+                </h6>
+                <div class="progress ">
+                  <div class="progress-bar bg-info progress-animated"
+                    [style.width.%]="project.totalProgressPercentageProject" style="height:6px;" role="progressbar"></div>
+                </div>
+              </div>
+            </div>
           </div>
-    </div>
-</div>
-
-<!-- modal add project -->
-<div #addProjectModal class="modal fade" id="addProjectModal" tabindex="-1"
-    role="dialog"
-    aria-labelledby="addProjectModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addProjectModalLabel">Add
-                    Project</h5>
-                <button #closeButton type="button" class="close"
-                    data-dismiss="modal"
-                    aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form (ngSubmit)="add()" [formGroup]="addprojectForm"
-                    class="container">
-                    <!-- projectName -->
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label for="projectName" class="form-label">Project
-                                Name</label>
-                            <input type="text" id="projectName"
-                                formControlName="projectName"
-                                class="form-control"
-                                placeholder="Enter Project Name">
-                        </div>
-                    </div>
-                    <!-- description -->
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label for="description"
-                                class="form-label">Description</label>
-                            <textarea id="description"
-                                formControlName="description"
-                                class="form-control" rows="3"
-                                placeholder="Enter Description"></textarea>
-                        </div>
-                    </div>
-                    <!-- startDate and endDate -->
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="startDate" class="form-label">Start
-                                Date</label>
-                            <input type="date" id="startDate"
-                                formControlName="startDate"
-                                class="form-control">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="endDate" class="form-label">End
-                                Date</label>
-                            <input type="date" id="endDate"
-                                formControlName="endDate"
-                                class="form-control">
-                        </div>
-                    </div>
-                    <!-- budget -->
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label for="budget"
-                                class="form-label">Budget</label>
-                            <input type="number" id="budget"
-                                formControlName="budget"
-                                class="form-control" placeholder="Enter Budget">
-                        </div>
-                    </div>
-                    <!-- status -->
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label for="status"
-                                class="form-label">Status</label>
-                            <select id="status" formControlName="status"
-                                class="form-select">
-                                <option [value]="0">Not Started</option>
-                                <option [value]="1">In Progress</option>
-                                <option [value]="2">Completed</option>
-                            </select>
-                        </div>
-                    </div>
-                    <!-- المستندات -->
-                    <div formArrayName="documents">
-                        <div
-                            *ngFor="let document of documentsFormArray.controls; let i = index"
-                            [formGroupName]="i">
-                            <h5>Document {{ i + 1 }}</h5>
-                            <!-- documentName -->
-                            <div class="row mb-2">
-                                <div class="col-md-12">
-                                    <label class="form-label">Document
-                                        Name</label>
-                                    <input type="text"
-                                        formControlName="documentName"
-                                        class="form-control"
-                                        placeholder="Enter Document Name">
-                                </div>
-                            </div>
-                            <!-- type -->
-                            <div class="row mb-2">
-                                <div class="col-md-12">
-                                    <label class="form-label">Type</label>
-                                    <input type="number" formControlName="type"
-                                        class="form-control"
-                                        placeholder="Enter Type">
-                                </div>
-                            </div>
-                            <!-- documentURL -->
-                            <div class="row mb-2">
-                                <div class="col-md-12">
-                                    <label class="form-label">Document
-                                        URL</label>
-                                    <input type="text"
-                                        formControlName="documentURL"
-                                        class="form-control"
-                                        placeholder="Enter Document URL">
-                                </div>
-                            </div>
-                            <!-- uploadedDate -->
-                            <div class="row mb-2">
-                                <div class="col-md-12">
-                                    <label class="form-label">Uploaded
-                                        Date</label>
-                                    <input type="date"
-                                        formControlName="uploadedDate"
-                                        class="form-control">
-                                </div>
-                            </div>
-                            <button (click)="removeDocument(i)"
-                                class="btn btn-danger mb-3">Remove
-                                Document</button>
-                        </div>
-                    </div>
-
-                    <!-- الموارد -->
-                    <div formArrayName="resources">
-                        <div
-                            *ngFor="let resource of resourcesFormArray.controls; let i = index"
-                            [formGroupName]="i">
-                            <h5>Resource {{ i + 1 }}</h5>
-                            <!-- resourceName -->
-                            <div class="row mb-2">
-                                <div class="col-md-12">
-                                    <label class="form-label">Resource
-                                        Name</label>
-                                    <input type="text"
-                                        formControlName="resourceName"
-                                        class="form-control"
-                                        placeholder="Enter Resource Name">
-                                </div>
-                            </div>
-                            <!-- type -->
-                            <div class="row mb-2">
-                                <div class="col-md-12">
-                                    <label class="form-label">Type</label>
-                                    <input type="number" formControlName="type"
-                                        class="form-control"
-                                        placeholder="Enter Type">
-                                </div>
-                            </div>
-                            <!-- resourceStatus -->
-                            <div class="row mb-2">
-                                <div class="col-md-12">
-                                    <label class="form-label">Resource
-                                        Status</label>
-                                    <input type="text"
-                                        formControlName="resourceStatus"
-                                        class="form-control"
-                                        placeholder="Enter Resource Status">
-                                </div>
-                            </div>
-                            <button (click)="removeResource(i)"
-                                class="btn btn-danger mb-3">Remove
-                                Resource</button>
-                        </div>
-
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6"><button (click)="addResource()"
-                                class="btn btn-primary mb-3">Add
-                                Resource</button></div>
-                        <div class="col-md-6"><button (click)="addDocument()"
-                                class="btn btn-primary mb-3">Add
-                                Document</button></div>
-                    </div>
-
-                    <!-- أزرار التحكم -->
-                    <div class="d-flex justify-content-between">
-                        <button type="button" class="btn btn-secondary"
-                            data-dismiss="modal">Close</button>
-                        <button type="submit"
-                            class="btn btn-primary">Save</button>
-                    </div>
-
-                </form>
-            </div>
         </div>
+      </div>
+      }
+      <div class="d-flex justify-content mt-3">
+        <pagination-controls 
+          (pageChange)="changePage($event)" 
+          id="projects" 
+          class="pagination">
+        </pagination-controls>
+      </div>
     </div>
-</div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+   aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add New Project</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!--  Modal Add  -->
+  <div class="container mt-4">
+    
+  
+    <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+      <!-- Project Information -->
+      <div class="form-group">
+        <label for="projectName">Project Name</label>
+        <input type="text" id="projectName" class="form-control" formControlName="projectName">
+      </div>
+  
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" class="form-control" formControlName="description"></textarea>
+      </div>
+  
+      <div class="form-group">
+        <label for="startDate">Start Date</label>
+        <input type="date" id="startDate" class="form-control" formControlName="startDate">
+      </div>
+  
+      <div class="form-group">
+        <label for="endDate">End Date</label>
+        <input type="date" id="endDate" class="form-control" formControlName="endDate">
+      </div>
+  
+      <div class="form-group">
+        <label for="budget">Budget</label>
+        <input type="number" id="budget" class="form-control" formControlName="budget">
+      </div>
+  
+      <div class="form-group">
+        <label for="status">Status</label>
+        <select id="status" class="form-control" formControlName="status">
+          <option value="0">Planned</option>
+          <option value="1">In Progress</option>
+          <option value="2">Completed</option>
+        </select>
+      </div>
+  
+      <!-- Documents Section  *ngFor="let document of documents.controls; let i = index"-->
+      <h3>Documents</h3>
+      <div formArrayName="documents">
+        @for (document of documents.controls; track $index) {
+        <div  [formGroupName]="$index" class="border p-3 mb-2">
+          <div class="form-group">
+            <label for="documentName">Document Name</label>
+            <input type="text" id="documentName" class="form-control" formControlName="documentName">
+          </div>
+  
+          <div class="form-group">
+            <label for="type">Type</label>
+            <input type="number" id="type" class="form-control" formControlName="type">
+          </div>
+  
+          <div class="form-group">
+            <label for="documentURL">Document URL</label>
+            <input type="file" id="documentURL" (change)="onFileChange($event)" class="form-control" />
+          </div>
+  
+          <div class="form-group">
+            <label for="uploadedDate">Uploaded Date</label>
+            <input type="date" id="uploadedDate" class="form-control" formControlName="uploadedDate">
+          </div>
+  
+          <!-- <div class="form-group">
+            <label for="createdBy">Created By</label>
+            <input type="text" id="createdBy" class="form-control" formControlName="createdBy">
+          </div> -->
+  
+          <button class="btn btn-outline-danger" (click)="removeDocument($index)" type="button">Remove Document</button>
+        </div>
+      }
+        <button class="btn btn-outline-primary" (click)="addDocument()" type="button">Add Document</button>
+      </div>
+  
+      <div class="modal-footer justify-content-between align-items-center">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-secondary">Add</button>
+      </div>
+    </form>
+  </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <!-- Modal Edit -->
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Project</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+  
+          <div class="container mt-4">
+            <form [formGroup]="projectFormEdit" (ngSubmit)="Update()">
+              <!-- Project Information -->
+              <div class="form-group">
+                <label for="projectName">Project Name</label>
+                <input type="text" id="projectName" class="form-control" formControlName="projectName">
+              </div>
+  
+              <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" class="form-control" formControlName="description"></textarea>
+              </div>
+  
+              <div class="form-group">
+                <label for="startDate">Start Date</label>
+                <input type="date" id="startDate" class="form-control" formControlName="startDate">
+              </div>
+  
+              <div class="form-group">
+                <label for="endDate">End Date</label>
+                <input type="date" id="endDate" class="form-control" formControlName="endDate">
+              </div>
+  
+              <div class="form-group">
+                <label for="budget">Budget</label>
+                <input type="number" id="budget" class="form-control" formControlName="budget">
+              </div>
+  
+              <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" class="form-control" formControlName="status">
+                  <option value="0">Planned</option>
+                  <option value="1">In Progress</option>
+                  <option value="2">Completed</option>
+                </select>
+              </div>
+  
+              <!-- Documents Section as Table -->
+              <h3>Documents</h3>
+              <table class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>Document Name</th>
+                    <th>Type</th>
+                    <th>Uploaded Date</th>
+                    <th>Document Preview</th>
+                    <!-- <th>Actions</th>*ngFor="let document of documentsEdit.controls; let i = index" -->
+                  </tr>
+                </thead>
+                <tbody formArrayName="documents">
+                  @for (document of documentsEdit.controls; track $index) {
+                  <tr  [formGroupName]="$index">
+                    <td>
+                      <input type="text" class="form-control" formControlName="documentName">
+                    </td>
+                    <td>
+                      <input type="number" class="form-control" formControlName="type">
+                    </td>
+                    <td>
+                      <input type="date" class="form-control" formControlName="uploadedDate">
+                    </td>
+                    <td>
+                        @if(document.get('documentURL')?.value){
+                      <div >
+                        @if(isImage(document.get('documentURL')?.value)){
+                        <img  
+                        [src]="document.get('documentURL')?.value" alt="Document Image"
+                         style="max-width: 100px; max-height: 100px;" />
+                        }
+                        @if(!isImage(document.get('documentURL')?.value)){
+                       
+                        <a [href]="document.get('documentURL')?.value" target="_blank">View File</a>
+                      }
+                      </div>
+                    }
+                
+                      <input type="file" (change)="onFileChangeEdit($event, $index)" class="form-control mt-2" />
+                    </td>
+              
+                  </tr>
+                }
+                </tbody>
+              </table>
+  
+   
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+          
+            </form>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>

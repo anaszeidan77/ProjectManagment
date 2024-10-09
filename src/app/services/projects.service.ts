@@ -20,23 +20,23 @@ export class ProjectsService {
       .set('pageNumber', pageNumber.toString())
       .set('pageSize', pageSize.toString());
 
-      return this.http.get<PaginatedResponse<Project>>(this.urll,{params});
+      return this.http.get<PaginatedResponse<Project>>(this.apiUrl,{params});
     }
     
     addProject(project: FormData): Observable<any> {
  
       
-      return this.http.post(this.urll, project);
+      return this.http.post(this.apiUrl, project);
     }
     delete(projectId: string): Observable<any> {
       
-      return this.http.delete(`${this.urll}/${projectId}`);
+      return this.http.delete(`${this.apiUrl}/${projectId}`);
   }
   updateProject(projectId: string, formData: FormData): Observable<any> {
-    return this.http.put(`${this.urll}/${projectId}`, formData);
+    return this.http.put(`${this.apiUrl}/${projectId}`, formData);
   }
   getProjectById(projectId: string): Observable<Project> {
-    return this.http.get<Project>(`${this.urll}/${projectId}`);
+    return this.http.get<Project>(`${this.apiUrl}/${projectId}`);
   }
   // getAll(pageNumber: number=1, pageSize: number=10): Observable<any> {
 

@@ -39,8 +39,7 @@ logout(){
   }
 
   checkLoginStatus() {
-    // هنا يمكنك استخدام الكود الخاص بك للتحقق من حالة تسجيل الدخول
-    this.isLoggedIn = !!localStorage.getItem('token'); // مثال: تحقق من وجود توكن في التخزين المحلي
+    this.isLoggedIn = !!localStorage.getItem('token');
   }
   getCurrentRoute(): void {
     this.router.events.subscribe(() => {

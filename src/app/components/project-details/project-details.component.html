@@ -181,27 +181,27 @@
 
             <!-- معلومات المستند مع الأيقونات بجانب النصوص -->
             <div class="flex-grow-1 mb-3 mb-md-0">
-              <h5 class="card-title mb-3">{{ document.documentName }}</h5>
+              <h5 class="card-title mb-3">{{ document.name }}</h5>
 
               <p class="card-text d-flex align-items-center mb-2">
                 <i class="bi bi-person-fill fs-5 text-secondary me-1"></i>
-                <strong>Created by:</strong> {{ document.createdBy }}
+                <strong>Created by:</strong> {{ document.size }}
               </p>
               <p class="card-text d-flex align-items-center">
                 <i class="bi bi-calendar-fill fs-5 text-success me-1"></i>
-                <strong>Uploaded on:</strong> {{ document.uploadedDate |
+                <strong>Uploaded on:</strong> {{ document.lastModified|
                 date:'medium' }}
               </p>
             </div>
 
             <!-- الأزرار مرتبة عموديًا -->
             <div class="d-flex flex-column align-items-start">
-              <a [href]="document.documentURL" target="_blank"
+              <a [href]="document.name" target="_blank"
                 class="btn btn-secondary mb-2">
                 <i class="bi bi-eye-fill me-1"></i>
               </a>
               <button
-                (click)="downloadDocument(document.documentURL, document.documentName)"
+                (click)="downloadDocument(document.name)"
                 class="btn btn-primary">
                 <i class="bi bi-download me-1"></i>
               </button>

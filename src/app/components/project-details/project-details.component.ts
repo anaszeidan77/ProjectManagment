@@ -27,7 +27,7 @@ export class PrjectDetailsComponent implements OnInit{
   }
   ngOnInit(): void {
     this.route.params.subscribe(params=>{
-      this.projectId=params['Id']
+      this.projectId=params['id']
       console.log('taskid',this.projectId);
       this.getProjectById()
     });
@@ -44,10 +44,10 @@ export class PrjectDetailsComponent implements OnInit{
   viweTaskDetails(taskId:string):void{
     this.router.navigate(['/task-details',taskId])
   }
-  downloadDocument(documentURL: string,docsName:string): void {
+  downloadDocument(documentURL: string): void {
     const a = document.createElement('a');
     a.href = documentURL; // استخدم الرابط المباشر
-    a.download = `${this.project.projectName}-${docsName}`; // يمكنك وضع اسم الملف هنا إذا كنت تريد
+    a.download = `${this.project.projectName}-${documentURL}`; // يمكنك وضع اسم الملف هنا إذا كنت تريد
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
