@@ -160,6 +160,10 @@ changePage(event: any): void {
   this.getAllProjects();
 }
 
+navigateProjectDetails(id : string){
+  this.router.navigate(['/project-details',id])
+}
+
 
   ngOnDestroy(): void {
     if (this.subscription) {
@@ -167,3 +171,4 @@ changePage(event: any): void {
     }
   }
 }
+

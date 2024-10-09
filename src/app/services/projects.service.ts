@@ -26,6 +26,10 @@ export class ProjectsService {
       return this.http.post<Project>(this.apiUrl,project);
     }
 
+    getById(id:string):Observable<Project>{
+      return this.http.get<Project>(`${this.apiUrl}/${id}`)
+    }
+
   // getAll(pageNumber: number=1, pageSize: number=10): Observable<any> {
 
   //   let params = new HttpParams()

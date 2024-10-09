@@ -63,6 +63,10 @@ export const routes: Routes = [
             loadComponent: () => import('./components/task-details/task-details.component').then(td => td.TaskDetailsComponent)
           },
           {
+            path: 'project-details/:Id',
+            loadComponent: () => import('./components/project-details/project-details.component').then(pd => pd.PrjectDetailsComponent)
+          },
+          {
             path: '',
             redirectTo: 'dashboard',
             pathMatch: 'full'
