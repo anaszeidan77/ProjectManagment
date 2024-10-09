@@ -150,7 +150,7 @@ export class TaskComponent implements OnInit {
   openAddTaskModal(): void {
     this.selectedTask = undefined;
     this.formGroup.reset();
-    this.formGroup.setControl('subTaskDtos', this.fb.array([]));
+   // this.formGroup.setControl('subTaskDtos', this.fb.array([]));
     this.modalService.open(this.editTaskModal);
   }
 

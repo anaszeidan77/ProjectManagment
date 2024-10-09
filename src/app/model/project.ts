@@ -5,20 +5,20 @@ export interface Project{
     projectId:string;
     projectName:string;
     description:string;
-    startDate:Date;
-    endDate:Date;
+    startDate:Date|string  |null;
+    endDate:Date|string  |null;
     budget:number;
     totalProgressPercentageProject:number;
     status:number;
     createdBy:string;
     createdAt:Date;
     isDeleted:boolean;
-    documents: Document[];
+    documents: File[];
     resources: Resource[];
     tasks: Task[];
     teams: Team[];
 }
-  
+
   export interface Document {
     documentId: string;
     documentName: string;
@@ -29,6 +29,12 @@ export interface Project{
     createdAt: string;
     isDeleted: boolean;
   }
-  
+
   export interface Resource {
+    resourceName: string;
+    type: number;
+    resourceStatus: string;
+    createdBy: string;
+    createdAt: Date;
+    isDeleted: boolean;
   }
