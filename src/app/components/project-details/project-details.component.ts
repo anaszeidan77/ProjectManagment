@@ -47,10 +47,12 @@ export class PrjectDetailsComponent implements OnInit{
   downloadDocument(documentURL: string): void {
     const a = document.createElement('a');
     a.href = documentURL; // استخدم الرابط المباشر
-    a.download = `${this.project.projectName}-${documentURL}`; // يمكنك وضع اسم الملف هنا إذا كنت تريد
+    a.download = documentURL; // يمكنك وضع اسم الملف هنا إذا كنت تريد
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
   }
-  
+  viewTeamDetails(teamId:string) {
+    this.router.navigate(['/TeamDetails',teamId])
+  }
 }

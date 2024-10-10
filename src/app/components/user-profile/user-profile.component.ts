@@ -5,7 +5,7 @@ import { PriorityPipe } from '../../Pipes/priority.pipe';
 import { CommonModule } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TeamsService } from '../../services/teams.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Team } from '../../model/team';
 import { Subscription } from 'rxjs';
 import { TeamMember } from '../../model/TeamMember';
@@ -36,6 +36,7 @@ export class UserProfileComponent implements OnInit {
     private modalService: NgbModal,
     private teamService : TeamsService,
     private route: ActivatedRoute,
+    private router : Router
   ) {}
 
   ngOnInit(): void {
@@ -115,6 +116,9 @@ export class UserProfileComponent implements OnInit {
   openEditModal(task: Task, modal: any): void {
     this.selectedTask = task;
     this.modalService.open(modal);
+  }
+  viewDetails(teamId:string) {
+    this.router.navigate(['/TeamDetails',teamId])
   }
 
   closeModel() {

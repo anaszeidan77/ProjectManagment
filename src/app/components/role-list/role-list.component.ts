@@ -72,6 +72,7 @@ export class RoleListComponent implements OnInit{
   getAllRoles(){
     this.roleServices.getAll().subscribe({
       next:(response)=> {
+        
         this.roles = response;
       },
       error(err) {
@@ -87,11 +88,12 @@ export class RoleListComponent implements OnInit{
 
       this.roleServices.addRole(newRole).subscribe({
         next: (response) => {
+          console.log('تم إضافة الدور بنجاح', response);
           this.getAllRoles()
           this.router.navigate(['/roles']);
         },
         error: (error) => {
-          console.error(error);
+          console.error('حدث خطأ أثناء إضافة الدور', error);
 
         }
       });

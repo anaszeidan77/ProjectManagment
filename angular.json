@@ -32,7 +32,8 @@
             "styles": [
               "src/styles.css",
               "src/assets/TemplateDahboard/vendor/bootstrap-select/dist/css/bootstrap-select.min.css",
-              "src/assets/TemplateDahboard/css/style.css"
+              "src/assets/TemplateDahboard/css/style.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [
               "src/assets/TemplateDahboard/vendor/global/global.min.js",

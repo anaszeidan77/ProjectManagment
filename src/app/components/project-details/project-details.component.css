@@ -22,4 +22,15 @@
   .btn-primary i {
     margin-right: 5px;
   }
-  
+  .btn {
+    min-width: 80px; /* Set a minimum width for buttons */
+    padding: 0.5rem 1rem; /* Add padding for better appearance */
+  }
+
+  .table th, .table td {
+    vertical-align: middle; /* Center-align text vertically in table cells */
+  }
+
+  .avatar-group-item {
+    margin-right: -10px; /* Adjust margin for avatars to reduce space */
+  }
