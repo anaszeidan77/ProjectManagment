@@ -19,6 +19,7 @@ import { ProjectStatisticsComponent } from './components/project-statistics/proj
 import { AuthComponent } from './components/auth/auth.component';
 import { AccessDeniedComponent } from './components/shared/access-denied/access-denied.component';
 import { NotFoundComponent } from './components/shared/not-found/not-found.component';
+import { idExistsGuard } from './guards/id-exists.guard';
 
 
 export const routes: Routes = [
@@ -38,18 +39,18 @@ export const routes: Routes = [
     },
     children: [
       { path: 'teams', component: TeamComponent },
-      { path: 'TeamDetails/:Id', component: TeamDetailsComponent },
+      { path: 'TeamDetails/:Id', component: TeamDetailsComponent,canActivate:[idExistsGuard] },
       { path: 'tasks', component: TaskComponent }, 
       { path: 'Statistics', component: StatisticsComponent },
       { path: 'users', component: UserComponent }, 
-      { path: 'project-details/:id', component: PrjectDetailsComponent }, 
-      { path: 'task-details/:Id', component: TaskDetailsComponent }, 
+      { path: 'project-details/:Id', component: PrjectDetailsComponent ,canActivate:[idExistsGuard]}, 
+      { path: 'task-details/:Id', component: TaskDetailsComponent ,canActivate:[idExistsGuard]}, 
       { path: 'teams/:Id', component: TeamDetailsComponent },
-      { path: 'ManagePermissions/:Id', component: ManagePermissionsComponent },
+      { path: 'ManagePermissions/:Id', component: ManagePermissionsComponent ,canActivate:[idExistsGuard]},
       { path: 'roles', component: RoleListComponent }, 
       { path: 'profile', component: UserProfileComponent }, 
       { path: 'projects', component: ProjectListComponent }, 
-      { path: 'statistics-project-details/:id', component: ProjectStatisticsComponent }, 
+      { path: 'statistics-project-details/:Id', component: ProjectStatisticsComponent ,canActivate:[idExistsGuard]}, 
     
     ]
   },
@@ -58,10 +59,13 @@ export const routes: Routes = [
     path: 'login',
     component: AuthComponent
   },
+  // {
+  //   path: '/not-found',
+  //   component: NotFoundComponent
+  // },
   
   {
     path: '**',
     component: NotFoundComponent
-  
   }
 ];

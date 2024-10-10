@@ -16,7 +16,7 @@ export class ProjectStatisticsComponent implements OnInit{
   StatisticsProject! : ProjectStatisticsDto;
   ngOnInit(): void {
     this.route.params.subscribe(params=>{
-      this.projectId=params['id']
+      this.projectId=params['Id']
       this.getStatisticsByProject()
     });
   }

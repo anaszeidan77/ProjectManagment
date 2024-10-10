@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmModalComponent } from '../shared/confirm-modal/confirm-modal.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-role-list',
@@ -36,12 +37,12 @@ export class RoleListComponent implements OnInit{
               if (index !== -1) {
                 this.roles.splice(index, 1);
               }
-             // this.toastr.success('team deleted successfully', 'Success');
+             this.toastr.success('team deleted successfully', 'Success');
             },
             error: (error) => {
               
               console.error('Error deleting team:', error);
-              //this.toastr.error('Error deleting team','Error')
+              this.toastr.error('Error deleting team','Error')
             }
           });
       }
@@ -60,6 +61,7 @@ export class RoleListComponent implements OnInit{
      private roleServices : RoleService
     ,private router: Router,
     private modalService: NgbModal,
+    private toastr:ToastrService,
     private fb: FormBuilder){
       this.roleForm = this.fb.group({
         name: ['', Validators.required]
@@ -88,12 +90,12 @@ export class RoleListComponent implements OnInit{
 
       this.roleServices.addRole(newRole).subscribe({
         next: (response) => {
-          console.log('تم إضافة الدور بنجاح', response);
+          this.toastr.success("add role success","success")
           this.getAllRoles()
           this.router.navigate(['/roles']);
         },
         error: (error) => {
-          console.error('حدث خطأ أثناء إضافة الدور', error);
+         this.toastr.error("error in add role","error")
 
         }
       });

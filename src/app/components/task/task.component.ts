@@ -15,6 +15,7 @@ import { StatusPipe } from '../../Pipes/status.pipe';
 import { ConfirmModalComponent } from '../shared/confirm-modal/confirm-modal.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { PaginationComponent } from '../shared/pagination/pagination.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-task',
@@ -63,7 +64,7 @@ export class TaskComponent implements OnInit,OnDestroy {
     
   }
   viweDetails(taskId:string):void{
-    this.router.navigate(['/task-details',taskId])
+    this.router.navigate(['/dashboard/task-details',taskId])
   }
   
   constructor(
@@ -74,7 +75,8 @@ export class TaskComponent implements OnInit,OnDestroy {
     private router :Router,
     private projectService: ProjectsService,
     private userService : UserService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private toastr:ToastrService
   ){
 
   }
@@ -240,11 +242,11 @@ createSubTask(): FormGroup {
     this.taskService.updateTask(this.selectedTaskId, updateTaskPayload).subscribe({
       next: (response) => {
         this.closeModal();
-        console.log('Task updated successfully', response);
-        this.getAllTasks(); // تحديث القائمة بعد التعديل
+        this.toastr.success('Task updated successfully');
+        this.getAllTasks();
       },
       error: (error) => {
-        console.error('Error updating task', error);
+        this.toastr.error('Error updating task');
         if (error.error) {
           console.log('Validation errors:', error.error.errors);
         }
@@ -288,12 +290,12 @@ createSubTask(): FormGroup {
   
     this.taskService.addTask(newTask).subscribe({
       next: (response: Task) => {
-        console.log('Task added successfully', response);
-        this.getAllTasks();
         this.closeModal();
+        this.getAllTasks();
+        this.toastr.success('Task updated successfully');
       },
       error: (error) => {
-        console.error('Error adding task', error);
+        this.toastr.error('Error updating task');
         console.log('Validation errors:', error.error.errors);
       }
     });
@@ -307,7 +309,7 @@ createSubTask(): FormGroup {
         this.taskService.delete(taskId)
           .subscribe({
             next: (response) => {
-              console.log('Task deleted successfully');
+              this.toastr.success('Task delete successfully');
               const index = this.listTask.findIndex(task => task.taskId === taskId);
               if (index !== -1) {
                 this.listTask.splice(index, 1);
@@ -315,7 +317,7 @@ createSubTask(): FormGroup {
               // this.toastr.success('Task deleted successfully', 'Success');
             },
             error: (error) => {
-              console.error('Error deleting task:', error);
+              this.toastr.error('Error delete task');
               // تسجيل الخطأ مع تفاصيل الرسالة
               if (error.error) {
                 console.error('Error message from server:', error.error);

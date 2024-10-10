@@ -17,6 +17,7 @@ import { ConfirmModalComponent } from '../shared/confirm-modal/confirm-modal.com
 import { UserService } from '../../services/user.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { PaginationComponent } from '../shared/pagination/pagination.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-team',
@@ -53,7 +54,8 @@ export class TeamComponent implements OnInit, OnDestroy {
     private user: UserService,
     private fb: FormBuilder,
     private modalService: NgbModal,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private toastr :ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -71,7 +73,7 @@ export class TeamComponent implements OnInit, OnDestroy {
 
   }
   viewDetails(teamId: string) {
-    this.router.navigate(['/TeamDetails', teamId])
+    this.router.navigate(['/dashboard/TeamDetails', teamId])
   }
 
 
@@ -110,14 +112,14 @@ export class TeamComponent implements OnInit, OnDestroy {
 
     this.teamsService.addTeam(teamData).subscribe({
       next: (response) => {
-        console.log('sussess');
         this.closeModal()
         this.getTeams();
+        this.toastr.success('Team Added successfully');
         console.log('Model ', this.addModal);
 
       },
       error: (error) => {
-        console.log('errors');
+        this.toastr.error('Error added team');
 
       }
     })
@@ -155,7 +157,7 @@ export class TeamComponent implements OnInit, OnDestroy {
 
 
   changePage(pageNumber: number): void {
-    this.router.navigate(['/teams'], {
+    this.router.navigate(['dashboard/teams'], {
       relativeTo: this.route,
       queryParams: { pageNumber: pageNumber, pageSize: this.pageSize },
       queryParamsHandling: 'merge'
@@ -206,7 +208,7 @@ export class TeamComponent implements OnInit, OnDestroy {
         this.teamsService.delete(teamId)
           .subscribe({
             next: (response) => {
-
+              this.toastr.success('Team Update successfully');
               console.log('team deleted successfully');
               const index = this.teams.findIndex(team => team.teamId === teamId);
 
@@ -216,7 +218,7 @@ export class TeamComponent implements OnInit, OnDestroy {
               // this.toastr.success('team deleted successfully', 'Success');
             },
             error: (error) => {
-
+              this.toastr.error('Error delete team');
               console.error('Error deleting team:', error);
               //this.toastr.error('Error deleting team','Error')
             }
@@ -251,12 +253,13 @@ export class TeamComponent implements OnInit, OnDestroy {
 
     this.teamsService.update(this.teamId,updatedTeam).subscribe({
       next: (response) => {
-        console.log(response);
+        this.toastr.success('Team Update successfully');
         this.closeModal()
 
         this.getTeams();
       },
       error: (error) => {
+        this.toastr.error('Error update team');
         console.log(error);
       }
     });

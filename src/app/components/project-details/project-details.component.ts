@@ -27,7 +27,7 @@ export class PrjectDetailsComponent implements OnInit{
   }
   ngOnInit(): void {
     this.route.params.subscribe(params=>{
-      this.projectId=params['id']
+      this.projectId=params['Id']
       console.log('taskid',this.projectId);
       this.getProjectById()
     });

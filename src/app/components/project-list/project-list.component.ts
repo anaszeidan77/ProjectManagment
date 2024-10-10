@@ -9,6 +9,7 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SubTask } from '../../model/task';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -39,7 +40,8 @@ export class ProjectListComponent implements OnInit {
     private projectService: ProjectsService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private router:Router
+    private router:Router,
+    private toastr:ToastrService,
   ) { }
 
   initFormAdd() {
@@ -111,10 +113,12 @@ export class ProjectListComponent implements OnInit {
   delete(projectId: string) {
     this.projectService.delete(projectId).subscribe({
       next: (response) => {
+        this.toastr.success("success delete user")
         console.log('suss');
 
       },
       error: (error) => {
+        this.toastr.error("error in delete")
         console.log(error);
 
       }
@@ -179,8 +183,8 @@ export class ProjectListComponent implements OnInit {
     console.log('data : ', this.projectForm.value);
 
     this.projectService.addProject(formData).subscribe({
-      next: () => alert('Project added successfully!'),
-      error: err => console.error('Error:', err)
+      next: () => this.toastr.success('Project added successfully!'),
+      error: err => this.toastr.error('Project added error!')
     });
   }
 
@@ -279,8 +283,8 @@ export class ProjectListComponent implements OnInit {
 
 
     this.projectService.updateProject(this.projectId, formData).subscribe({
-      next: () => console.log('Update successful'),
-      error: err => console.error('Error updating project:', err)
+      next: () => this.toastr.success('Project Update successfully!'),
+      error: err => this.toastr.error('Error updating project:')
     });
   }
 
