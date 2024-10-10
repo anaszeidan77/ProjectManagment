@@ -32,6 +32,7 @@ export class ProjectListComponent implements OnInit {
   projectFormEdit!: FormGroup;
   documentFiles: File[] = [];
   projectId!: string;
+  createBy:any;
   //resources: Resource[] = [];
 
   constructor(
@@ -72,6 +73,7 @@ export class ProjectListComponent implements OnInit {
     });
   }
   ngOnInit(): void {
+    this.createBy=localStorage.getItem('userId');
     this.currentPage = Number(this.route.snapshot.queryParamMap.get('pageNumber')) || 1;
     this.pageSize = Number(this.route.snapshot.queryParamMap.get('pageSize')) || 10;
     this.getAllProjects();
@@ -83,7 +85,7 @@ export class ProjectListComponent implements OnInit {
 
 
   getAllProjects(): void {
-    this.subscription = this.projectService.getAll(this.currentPage, this.pageSize).subscribe({
+    this.subscription = this.projectService.getAll(this.currentPage, this.pageSize,this.createBy).subscribe({
       next: (response) => {
         console.log('API Response:', response);
         this.projects = response.data;

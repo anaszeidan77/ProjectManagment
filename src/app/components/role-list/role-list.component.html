@@ -18,6 +18,7 @@
                         <th>#</th>
                         <th>Role Name</th>
                         <th>Manage Permissions</th>
+                        <th>delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,6 +31,11 @@
                           Manage Permissions
                         </button>
                       </td>
+                      <td>
+                        <button class="delete-btn" (click)="deleteRole(role.id!)">
+                          <i class="fas fa-trash-alt"></i>
+                        </button>
+                      </td>
                   </tr>
                   }
                 </tbody>
@@ -39,7 +45,6 @@
 </div>
 </div>
 
-<!-- add-role.component.html -->
 <div #addModal class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">

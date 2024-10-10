@@ -4,7 +4,8 @@ import { Role } from '../../model/role';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ToastrService } from 'ngx-toastr';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmModalComponent } from '../shared/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-role-list',
@@ -14,13 +15,52 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './role-list.component.css'
 })
 export class RoleListComponent implements OnInit{
+
+
+  deleteRole(roleId: string) {    
+    if(roleId!=null){
+
+   
+    const modalRef = this.modalService.open(ConfirmModalComponent);
+    modalRef.componentInstance.message = 'Are you sure you want to delete this Roles?';
+
+    modalRef.result.then((result) => {
+      if (result === 'delete') {
+        this.roleServices.delete(roleId)
+          .subscribe({
+            next: (response) => {
+     
+              // console.log('team deleted successfully');
+              const index = this.roles.findIndex(role => role.id === roleId);
+            
+              if (index !== -1) {
+                this.roles.splice(index, 1);
+              }
+             // this.toastr.success('team deleted successfully', 'Success');
+            },
+            error: (error) => {
+              
+              console.error('Error deleting team:', error);
+              //this.toastr.error('Error deleting team','Error')
+            }
+          });
+      }
+    });
+
+  }else{
+    console.log('role is null');
+    
+  }
+  }
+
+
   roles : Role[] = [];
   roleForm: FormGroup;
   constructor(
      private roleServices : RoleService
     ,private router: Router,
-     private fb: FormBuilder,
-     private toastr:ToastrService){
+    private modalService: NgbModal,
+    private fb: FormBuilder){
       this.roleForm = this.fb.group({
         name: ['', Validators.required]
       });

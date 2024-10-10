@@ -15,8 +15,10 @@ import { ManagePermissionsComponent } from './components/manage-permissions/mana
 import { RoleListComponent } from './components/role-list/role-list.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { ProjectListComponent } from './components/project-list/project-list.component';
-import { AuthComponent } from './components/auth/auth.component';
 import { ProjectStatisticsComponent } from './components/project-statistics/project-statistics.component';
+import { AuthComponent } from './components/auth/auth.component';
+import { AccessDeniedComponent } from './components/shared/access-denied/access-denied.component';
+
 
 export const routes: Routes = [
   {
@@ -41,9 +43,11 @@ export const routes: Routes = [
   { path: 'roles', component: RoleListComponent }, // استخدام التحميل العادي
   { path: 'profile', component: UserProfileComponent }, // استخدام التحميل العادي
   { path: 'projects', component: ProjectListComponent }, 
+  { path: '/accessDenied', component: AccessDeniedComponent }, 
   { path: 'statistics-project-details/:id', component: ProjectStatisticsComponent }, 
   {
     path: 'login',
     component: AuthComponent // تركه كما هو
   },
 ];
+

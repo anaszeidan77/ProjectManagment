@@ -39,12 +39,13 @@ export class TaskComponent implements OnInit,OnDestroy {
   tasks:Task[]=[];
   users:User[]=[];
   projects:Project[]=[];
-
+  createBy!:any;
 
   tasksOnProgress: Task[] = [];
   tasksCompleted: Task[] = [];
   tasksOverdue: Task[] = [];
   ngOnInit(): void {
+    this.createBy=localStorage.getItem('userId');
     this.currentPage = Number(this.route.snapshot.queryParamMap.get('pageNumber')) || 1;
     this.pageSize = Number(this.route.snapshot.queryParamMap.get('pageSize')) || 10;
   
@@ -167,7 +168,7 @@ createSubTask(): FormGroup {
     )
   }
   getAllProjects(){
-    this.projectService.getAll(1,10).subscribe({
+    this.projectService.getAll(1,10,this.createBy).subscribe({
       next:(response)=>{
         this.projects=response.data;
       },
@@ -178,7 +179,7 @@ createSubTask(): FormGroup {
   }
 
   getAllTasks(): void {
-    this.subscription= this.taskService.getTasks(this.currentPage,this.pageSize).subscribe({
+    this.subscription= this.taskService.getTasks(this.currentPage,this.pageSize,this.createBy).subscribe({
       next: (response) => {
         this.listTask=response.data
         this.totalItems = response.totalItems;

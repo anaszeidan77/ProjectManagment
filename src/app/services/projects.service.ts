@@ -15,11 +15,14 @@ export class ProjectsService {
   constructor(private http:HttpClient) { }
 
 
-    getAll(pageNumber: number, pageSize: number):Observable<PaginatedResponse<Project>>{
+
+    getAll(pageNumber: number, pageSize: number,createBy:string):Observable<PaginatedResponse<Project>>{
       let params = new HttpParams()
       .set('pageNumber', pageNumber.toString())
       .set('pageSize', pageSize.toString());
-
+      if(createBy){
+        params = params.set('CreatedBy', createBy);
+      }
       return this.http.get<PaginatedResponse<Project>>(this.apiUrl,{params});
     }
     

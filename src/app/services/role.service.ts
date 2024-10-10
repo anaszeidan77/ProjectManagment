@@ -26,5 +26,7 @@ export class RoleService {
   updatePermissions(data: any) {
     return this.http.post(`${this.apiUrl}/manage-permissions`, data);
   }
-
+delete(roleId:string):Observable<any>{
+  return this.http.delete(`${this.apiUrl}/role/${roleId}`)
+}
 }
