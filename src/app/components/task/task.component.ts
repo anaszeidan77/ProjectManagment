@@ -206,7 +206,7 @@ createSubTask(): FormGroup {
       return;
     }
   
-   
+    // تجهيز المهام الفرعية
     const subTaskDtos = this.editTaskForm.get('subTaskDtos')?.value.map((subTask: SubTask) => {
       const mappedSubTask: any = {
         subTaskName: subTask.subTaskName,
@@ -241,7 +241,7 @@ createSubTask(): FormGroup {
       next: (response) => {
         this.closeModal();
         console.log('Task updated successfully', response);
-        this.getAllTasks();
+        this.getAllTasks(); // تحديث القائمة بعد التعديل
       },
       error: (error) => {
         console.error('Error updating task', error);
@@ -343,15 +343,13 @@ createSubTask(): FormGroup {
       description: task.description,
       priority: task.priority,
       status: task.status,
-      dueDate: task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : null,
+      dueDate: task.dueDate,
       userId: task.userId,
       projectId: task.projectId,
       isCompleted: task.isCompleted,
       createdBy: task.createdBy,
       isDeleted: task.isDeleted,
     });
-  console.log('data ',this.editTaskForm.value);
-
   
     this.subTaskFormArray.clear();
   

@@ -1,15 +1,14 @@
 <!-- View Projects -->
 
 <div class="container-fluid">
-    <div class="card-header border-0 d-flex justify-content-between align-items-center bg-primary">
-      <h3 class="mb-0 title">list of Projects</h3>
-      <button type="button" class="btn" 
-      data-toggle="modal"  data-target="#exampleModal">
-        Add
-      </button>
-  
-    
-    </div>
+    <div class="card-header border-0 d-flex justify-content-between align-items-center bg-primary text-white">
+        <h3 class="mb-0 title">List of Projects</h3>
+        <button type="button" class="btn btn-light btn-outline-light" 
+          data-toggle="modal" data-target="#exampleModal">
+          <i class="fas fa-plus me-2"></i> Add
+        </button>
+      </div>
+      
     <div class="row">
       @for (project of projects |paginate:{
         id:'projects',
@@ -23,29 +22,34 @@
               <div class="d-flex mb-4 align-items-start">
   
                 <div ngbDropdown class="dropdown me-3">
-                  <button class="btn btn-primary" id="dropdownMenuButton" ngbDropdownToggle>
-                    <i class="fas fa-bars"></i>
-                  </button>
-                  <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
-                    <li>
-                      <button (click)="loadProjectData(project.projectId)" class="dropdown-item" data-toggle="modal"
-                        data-target="#exampleModal">
-                        <i class="fas fa-edit me-2"></i> Update
-                      </button>
-  
-                    </li>
-                    <li>
-                      <button (click)="delete(project.projectId)" class="dropdown-item text-danger">
-                        <i class="fas fa-trash-alt me-2"></i> Delete
-                      </button>
-                    </li>
-                    <li>
-                        <button (click)="projectDetails(project.projectId)" class="dropdown-item text-danger">
-                          <i class="fas fa-trash-alt me-2"></i> show
+                    <button class="btn btn-primary" id="dropdownMenuButton" ngbDropdownToggle>
+                      <i class="fas fa-bars"></i>
+                    </button>
+                    <ul ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+                      <li>
+                        <button (click)="loadProjectData(project.projectId)" class="dropdown-item" data-toggle="modal"
+                          data-target="#exampleModal">
+                          <i class="fas fa-pencil-alt me-2"></i> Update
                         </button>
                       </li>
-                  </ul>
-                </div>
+                      <li>
+                        <button (click)="delete(project.projectId)" class="dropdown-item text-danger">
+                          <i class="fas fa-trash-alt me-2"></i> Delete
+                        </button>
+                      </li>
+                      <li>
+                        <button (click)="projectDetails(project.projectId)" class="dropdown-item">
+                          <i class="fas fa-info-circle me-2"></i> Show Details
+                        </button>
+                      </li>
+                      <li>
+                        <button (click)="StatisticsProjectDetails(project.projectId)" class="dropdown-item">
+                          <i class="fas fa-chart-bar me-2"></i> Statistics
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                  
               </div>
               <div class="mr-auto">
                 <h5 class="title font-w600 mb-2"><a href="post-details.html"

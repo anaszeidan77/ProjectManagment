@@ -152,8 +152,8 @@
             <a class="nav-link" href="#" role="button" data-toggle="dropdown">
 
               <div class="header-info">
-                <span *ngIf="isLoggedIn">Johndoe</span>
-                <small *ngIf="isLoggedIn">Super Admin</small>
+                <span *ngIf="isLoggedIn">{{userName}}</span>
+                <small *ngIf="isLoggedIn">{{role}}</small>
               </div>
             </a>
             <div class="dropdown-menu dropdown-menu-right">

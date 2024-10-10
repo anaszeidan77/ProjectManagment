@@ -14,4 +14,26 @@
   .table-striped tbody tr:nth-of-type(odd) {
     background-color: #f2f2f2; /* لون الصفوف الفردية */
   }
-  
+  .icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px auto; /* تقليل المسافة بين الأيقونة والنص */
+    background-color: #f0f0f0; /* لون خلفية للدائرة */
+    border: 2px solid transparent; /* لتكون دائماً الدائرة واضحة */
+  }
+  .icon-projects {  
+    background-color: #4CAF50;
+  }
+  .icon-completed {
+    background-color: #2196F3;
+  }
+  .icon-incomplete {
+    background-color: #F44336;
+  }
+  .icon-teams {
+    background-color: #FF9800;
+  }

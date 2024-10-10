@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TaskService } from '../../services/task.service';
-import { Task } from '../../model/task';
+import { SubTask, Task } from '../../model/task';
 import { PriorityPipe } from '../../Pipes/priority.pipe';
 import { CommonModule } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -120,6 +120,9 @@ export class UserProfileComponent implements OnInit {
   viewDetails(teamId:string) {
     this.router.navigate(['/TeamDetails',teamId])
   }
+  areAllSubTasksCompleted(subTasks: SubTask[]): boolean {
+    return subTasks.every(subTask => subTask.isCompleted);
+}
 
   closeModel() {
     this.modalService.dismissAll();

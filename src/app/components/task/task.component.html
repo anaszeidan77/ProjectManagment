@@ -59,7 +59,8 @@
               </div>
               <div class="col-xl-3 my-2 col-lg-6 col-sm-6">
                 <div class="d-flex justify-content-end">
-                  <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#subtasksModal" (click)="openSubtasksModal(subtasksModal, task)">
+                  <button class="btn btn-primary btn-sm" data-toggle="modal"
+                  data-target="#subTaskModal">
                     <i class="fas fa-tasks me-1"></i> Subtasks
                   </button>
                 </div>
@@ -92,52 +93,57 @@
               </div>
             </div>
           </div>
-          <ng-template #subtasksModal let-modal>
-            <div #subtasksModal class="modal fade" id="addModal" tabindex="-1" role="dialog"
-            aria-labelledby="addModalLabel" aria-hidden="true">
-              <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">Subtasks</h5>
-                    <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
-                  </div>
-                  <div class="modal-body">
-                    <div>
-                      <h6 class="mb-3">Subtasks for {{ task.taskName }}</h6>
-                      <div class="table-responsive">
-                        <table class="table table-hover table-bordered">
-                          <thead class="table-light">
-                            <tr>
-                              <th>#</th>
-                              <th>Subtask Name</th>
-                              <th>Completed</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr *ngFor="let subTask of task.subTaskDtos; let j = index">
-                              <td>{{ j + 1 }}</td>
-                              <td>{{ subTask.subTaskName }}</td>
-                              <td>
-                                <i [ngClass]="{
-                                  'fas fa-check-circle text-success': subTask.isCompleted,
-                                  'fas fa-times-circle text-danger': !subTask.isCompleted
-                                }"></i>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
+          <div #subTaskModal class="modal fade" id="subTaskModal" tabindex="-1" role="dialog"
+          aria-labelledby="subTaskModal" aria-hidden="true">
+            <div class="modal fade show" tabindex="-1" style="display: block;" aria-modal="true" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Subtasks</h5>
+                            <button #closeButton type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <h6 class="mb-3">Subtasks for {{ task.taskName }}</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-bordered">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Subtask Name</th>
+                                                <th>Completed</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let subTask of task.subTaskDtos; let i = index">
+                                                <td>{{ i + 1 }}</td>
+                                                <td>{{ subTask.subTaskName }}</td>
+                                                <td>
+                                                    <i
+                                                        [ngClass]="{
+                                                            'fas fa-check-circle text-success': subTask.isCompleted,
+                                                            'fas fa-times-circle text-danger': !subTask.isCompleted
+                                                        }">
+                                                    </i>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary"
+                          data-dismiss="modal">Close</button>
+                        </div>
                     </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Close click')">
-                      Close
-                    </button>
-                  </div>
                 </div>
-              </div>
             </div>
-          </ng-template>
+          </div>
+        
         </ng-container>
       </div>
       <div class="tab-pane fade" id="navpills-2">
@@ -157,8 +163,8 @@
               </div>
               <div class="col-xl-3 my-2 col-lg-6 col-sm-6">
                 <div class="d-flex justify-content-end">
-                  <button class="btn btn-primary btn-sm"
-                    (click)="openSubtasksModal(subtasksModal, task)">
+                  <button class="btn btn-primary btn-sm" data-toggle="modal"
+                  data-target="#subTaskModal">
                     <i class="fas fa-tasks me-1"></i> Subtasks
                   </button>
                 </div>
@@ -194,60 +200,57 @@
               </div>
             </div>
           </div>
-          <ng-template #subtasksModal let-modal>
-            <div class="modal fade show" tabindex="-1"
-              style="display: block;" aria-modal="true" role="dialog">
-              <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">Subtasks</h5>
-                    <button type="button" class="btn-close"
-                      (click)="modal.dismiss('Cross click')"></button>
-                  </div>
-                  <div class="modal-body">
-                    <div>
-                      <h6 class="mb-3">Subtasks for {{ task.taskName }}</h6>
-                      <div class="table-responsive">
-                        <table class="table table-hover table-bordered">
-                          <thead class="table-light">
-                            <tr>
-                              <th>#</th>
-                              <th>Subtask Name</th>
-                              <th>Completed</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            @for (subTask of task.subTaskDtos; track $index) {
-                            <tr>
-                              <td>{{ $index + 1 }}</td>
-                              <td>{{ subTask.subTaskName }}</td>
-                              <td>
-                                <i
-                                  [ngClass]="{
-                                                'fas fa-check-circle text-success': subTask.isCompleted,
-                                                'fas fa-times-circle text-danger': !subTask.isCompleted
-                                              }">
-                                </i>
-                              </td>
-                            </tr>
-                            }
-                          </tbody>
-                        </table>
-                      </div>
+          <div #subTaskModal class="modal fade" id="subTaskModal" tabindex="-1" role="dialog"
+          aria-labelledby="subTaskModal" aria-hidden="true">
+            <div class="modal fade show" tabindex="-1" style="display: block;" aria-modal="true" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Subtasks</h5>
+                            <button #closeButton type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <h6 class="mb-3">Subtasks for {{ task.taskName }}</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-bordered">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Subtask Name</th>
+                                                <th>Completed</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let subTask of task.subTaskDtos; let i = index">
+                                                <td>{{ i + 1 }}</td>
+                                                <td>{{ subTask.subTaskName }}</td>
+                                                <td>
+                                                    <i
+                                                        [ngClass]="{
+                                                            'fas fa-check-circle text-success': subTask.isCompleted,
+                                                            'fas fa-times-circle text-danger': !subTask.isCompleted
+                                                        }">
+                                                    </i>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary"
+                          data-dismiss="modal">Close</button>
+                        </div>
                     </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button
-                      type="button"
-                      class="btn btn-secondary"
-                      (click)="modal.dismiss('Close click')">
-                      Close
-                    </button>
-                  </div>
                 </div>
-              </div>
             </div>
-          </ng-template>
+          </div>
+        
         </ng-container>
       </div>
       <div class="tab-pane fade" id="navpills-3">
@@ -267,8 +270,8 @@
               </div>
               <div class="col-xl-3 my-2 col-lg-6 col-sm-6">
                 <div class="d-flex justify-content-end">
-                  <button class="btn btn-primary btn-sm"
-                    (click)="openSubtasksModal(subtasksModal, task)">
+                  <button class="btn btn-primary btn-sm" data-toggle="modal"
+                  data-target="#subTaskModal">
                     <i class="fas fa-tasks me-1"></i> Subtasks
                   </button>
                 </div>
@@ -304,60 +307,57 @@
               </div>
             </div>
           </div>
-          <ng-template #subtasksModal let-modal>
-            <div class="modal fade show" tabindex="-1"
-              style="display: block;" aria-modal="true" role="dialog">
-              <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">Subtasks</h5>
-                    <button type="button" class="btn-close"
-                      (click)="modal.dismiss('Cross click')"></button>
-                  </div>
-                  <div class="modal-body">
-                    <div>
-                      <h6 class="mb-3">Subtasks for {{ task.taskName }}</h6>
-                      <div class="table-responsive">
-                        <table class="table table-hover table-bordered">
-                          <thead class="table-light">
-                            <tr>
-                              <th>#</th>
-                              <th>Subtask Name</th>
-                              <th>Completed</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            @for (subTask of task.subTaskDtos; track $index) {
-                            <tr>
-                              <td>{{ $index + 1 }}</td>
-                              <td>{{ subTask.subTaskName }}</td>
-                              <td>
-                                <i
-                                  [ngClass]="{
-                                                'fas fa-check-circle text-success': subTask.isCompleted,
-                                                'fas fa-times-circle text-danger': !subTask.isCompleted
-                                              }">
-                                </i>
-                              </td>
-                            </tr>
-                            }
-                          </tbody>
-                        </table>
-                      </div>
+          <div #subTaskModal class="modal fade" id="subTaskModal" tabindex="-1" role="dialog"
+          aria-labelledby="subTaskModal" aria-hidden="true">
+            <div class="modal fade show" tabindex="-1" style="display: block;" aria-modal="true" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Subtasks</h5>
+                            <button #closeButton type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <h6 class="mb-3">Subtasks for {{ task.taskName }}</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-bordered">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Subtask Name</th>
+                                                <th>Completed</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let subTask of task.subTaskDtos; let i = index">
+                                                <td>{{ i + 1 }}</td>
+                                                <td>{{ subTask.subTaskName }}</td>
+                                                <td>
+                                                    <i
+                                                        [ngClass]="{
+                                                            'fas fa-check-circle text-success': subTask.isCompleted,
+                                                            'fas fa-times-circle text-danger': !subTask.isCompleted
+                                                        }">
+                                                    </i>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary"
+                          data-dismiss="modal">Close</button>
+                        </div>
                     </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button
-                      type="button"
-                      class="btn btn-secondary"
-                      (click)="modal.dismiss('Close click')">
-                      Close
-                    </button>
-                  </div>
                 </div>
-              </div>
             </div>
-          </ng-template>
+          </div>
+        
         </ng-container>
       </div>
       <div class="tab-pane fade" id="navpills-4">
@@ -377,8 +377,8 @@
               </div>
               <div class="col-xl-3 my-2 col-lg-6 col-sm-6">
                 <div class="d-flex justify-content-end">
-                  <button class="btn btn-primary btn-sm"
-                    (click)="openSubtasksModal(subtasksModal, task)">
+                  <button class="btn btn-primary btn-sm" data-toggle="modal"
+                  data-target="#subTaskModal">
                     <i class="fas fa-tasks me-1"></i> Subtasks
                   </button>
                 </div>
@@ -417,60 +417,57 @@
               </div>
             </div>
           </div>
-          <ng-template #subtasksModal let-modal>
-            <div class="modal fade show" tabindex="-1"
-              style="display: block;" aria-modal="true" role="dialog">
-              <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">Subtasks</h5>
-                    <button type="button" class="btn-close"
-                      (click)="modal.dismiss('Cross click')"></button>
-                  </div>
-                  <div class="modal-body">
-                    <div>
-                      <h6 class="mb-3">Subtasks for {{ task.taskName }}</h6>
-                      <div class="table-responsive">
-                        <table class="table table-hover table-bordered">
-                          <thead class="table-light">
-                            <tr>
-                              <th>#</th>
-                              <th>Subtask Name</th>
-                              <th>Completed</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            @for (subTask of task.subTaskDtos; track $index) {
-                            <tr>
-                              <td>{{ $index + 1 }}</td>
-                              <td>{{ subTask.subTaskName }}</td>
-                              <td>
-                                <i
-                                  [ngClass]="{
-                                                'fas fa-check-circle text-success': subTask.isCompleted,
-                                                'fas fa-times-circle text-danger': !subTask.isCompleted
-                                              }">
-                                </i>
-                              </td>
-                            </tr>
-                            }
-                          </tbody>
-                        </table>
-                      </div>
+          <div #subTaskModal class="modal fade" id="subTaskModal" tabindex="-1" role="dialog"
+          aria-labelledby="subTaskModal" aria-hidden="true">
+            <div class="modal fade show" tabindex="-1" style="display: block;" aria-modal="true" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Subtasks</h5>
+                            <button #closeButton type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <h6 class="mb-3">Subtasks for {{ task.taskName }}</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-bordered">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Subtask Name</th>
+                                                <th>Completed</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let subTask of task.subTaskDtos; let i = index">
+                                                <td>{{ i + 1 }}</td>
+                                                <td>{{ subTask.subTaskName }}</td>
+                                                <td>
+                                                    <i
+                                                        [ngClass]="{
+                                                            'fas fa-check-circle text-success': subTask.isCompleted,
+                                                            'fas fa-times-circle text-danger': !subTask.isCompleted
+                                                        }">
+                                                    </i>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary"
+                          data-dismiss="modal">Close</button>
+                        </div>
                     </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button
-                      type="button"
-                      class="btn btn-secondary"
-                      (click)="modal.dismiss('Close click')">
-                      Close
-                    </button>
-                  </div>
                 </div>
-              </div>
             </div>
-          </ng-template>
+          </div>
+        
         </ng-container>
       </div>
       <div >

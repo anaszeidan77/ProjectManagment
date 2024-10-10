@@ -17,6 +17,7 @@ import { AuthComponent} from "./components/auth/auth.component";
 import { LoderService } from './services/loder.service';
 import { Observable } from 'rxjs';
 import { AuthService } from './services/auth.service';
+import { NotFoundComponent } from "./components/shared/not-found/not-found.component";
 
 @Component({
   selector: 'app-root',
@@ -28,7 +29,7 @@ import { AuthService } from './services/auth.service';
     CardComponent,
     ButtonComponent,
     TextControlComponent,
-    TableComponent, TaskComponent, AuthComponent],
+    TableComponent, TaskComponent, AuthComponent, NotFoundComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

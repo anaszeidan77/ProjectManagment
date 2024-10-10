@@ -16,6 +16,8 @@ currentRoute: string = '';
 today!: string;
 month!: string;
 year!: string;
+userName: string=localStorage.getItem("userName") as string
+role: string=localStorage.getItem("roles") as string
 constructor(private authService : AuthService,
             private router: Router,          
             private activatedRoute: ActivatedRoute){
@@ -34,7 +36,6 @@ logout(){
   ngOnInit(): void {
     this.checkLoginStatus();
     this.getCurrentRoute()
-    console.log(this.currentRoute,'sssssssssss');
     
   }
 

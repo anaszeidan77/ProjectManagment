@@ -103,9 +103,9 @@ export class AuthComponent {
           localStorage.setItem("userId", res.userId);
           localStorage.setItem("email", res.email);
           localStorage.setItem("roles", res.roles.toString());
-          alert('Logged in successfully');
+
           this.isLoggedIn$.next(true);
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/dashboard/Statistics']);
         } else {
           alert('Invalid credentials');
         }

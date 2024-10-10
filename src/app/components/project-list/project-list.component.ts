@@ -8,6 +8,7 @@ import { StatusPipe } from '../../Pipes/status.pipe';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { SubTask } from '../../model/task';
 
 
 @Component({
@@ -293,7 +294,12 @@ export class ProjectListComponent implements OnInit {
     this.getAllProjects();
   }
 
+
+
   projectDetails(id:string){
     this.router.navigate(['project-details',id])
+  }
+  StatisticsProjectDetails(id:string){
+    this.router.navigate(['statistics-project-details',id])
   }
 }
