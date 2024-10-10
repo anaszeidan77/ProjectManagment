@@ -13,7 +13,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     {
       provide: HTTP_INTERCEPTORS,
-      useValue: loaderInterceptor,
+      useValue: authInterceptor,
       multi: true
     }
   ]

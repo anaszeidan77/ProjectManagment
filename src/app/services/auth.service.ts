@@ -2,8 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { jwt, login, register } from '../model/auth';
 import { BehaviorSubject, map, Observable, take, tap } from 'rxjs';
-import { User } from '../model/user';
-  
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -11,6 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(this.hasToken());
+  //http://projectm.runasp.net/api
   private apiUrl = `${environment.url}/Auth`;
   constructor(private http : HttpClient) { }
   
@@ -32,7 +31,6 @@ export class AuthService {
       tap(response => {
         if (response.token) {
           localStorage.setItem('token', response.token);
-
           this.loggedIn.next(true);
         }
       })
@@ -60,11 +58,17 @@ export class AuthService {
         })
       );
   }
-  
-  refreshToken():Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/refreshToken`)
-  }
 
+//https://localhost:7058/api/Auth/refreshToken
+  refreshToken(): Observable<any> {
+    return this.http.get<any>(`https://localhost:7058/api/Auth/refreshToken`).pipe(
+      tap(response => {
+        if (response.token) {
+          localStorage.setItem('token', response.token);
+        }
+      })
+    );
+  }
   revokeToken(token:string):Observable<any>{
     return this.http.post<any>(`${this.apiUrl}/revokeToken`,token)
   }

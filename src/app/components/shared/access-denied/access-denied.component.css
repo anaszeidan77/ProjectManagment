@@ -1,0 +1,22 @@
+.access-denied-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #f8f9fa;
+}
+.access-denied-title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #dc3545; /* Error color */
+}
+.access-denied-message {
+    font-size: 1.5rem;
+    margin: 20px 0;
+    color: #6c757d; /* Normal text color */
+}
+.btn-home {
+    margin-top: 20px;
+}

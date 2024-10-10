@@ -8,6 +8,7 @@ import { AuthComponent } from './components/auth/auth.component';
 import { TeamComponent } from './components/team/team.component';
 import { TeamDetailsComponent } from './components/team-details/team-details.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
+import { AccessDeniedComponent } from './components/shared/access-denied/access-denied.component';
 
 export const routes: Routes =
   [
@@ -40,6 +41,11 @@ export const routes: Routes =
         .then(t => t.TaskComponent),
       canActivate: ([authGuard]),
     },
+
+    {
+      path:'accessDenied',component:AccessDeniedComponent
+    },
+
     {path:'Statistics',component:StatisticsComponent},
 
     {
