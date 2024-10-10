@@ -1,302 +1,152 @@
-
 <link
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
 
-<div class="container">
-  <div class="row">
-    <!-- Card for Project Details -->
-    <div class="col-md-6 mb-4">
-      <div class="card project-card"
-        style="height: auto;width: auto; margin-top: 10px;">
-        <div class="card-body">
-          <div class="d-flex mb-4 align-items-start">
-            <div class="d-flex mb-4 align-items-start">
-              <!-- أيقونة الهمبرغر والقائمة المنسدلة باستخدام ng-bootstrap -->
-              <div ngbDropdown class="dropdown me-3">
-                <button class="btn btn-primary"
-                  id="dropdownMenuButton" ngbDropdownToggle>
-                  <i class="fas fa-bars"></i>
-                </button>
-                <ul ngbDropdownMenu
-                  aria-labelledby="dropdownMenuButton">
-                  <li>
-                    <button class="dropdown-item">
-                      <i class="fas fa-edit me-2"></i>
-                      Update
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      class="dropdown-item text-danger">
-                      <i
-                        class="fas fa-trash-alt me-2"></i>
-                      Delete
-                    </button>
-                  </li>
-
-                </ul>
-              </div>
-            </div>
-            <div class="mr-auto">
-              <h5 class="title font-w600 mb-2"><a
-                  class="text-black">{{project.projectName}}</a></h5>
-              <span>{{project.projectName}}</span>
-            </div>
-            <span class="badge d-sm-inline-block d-none"
-              [style.background-color]="(project.status | status).color">
-              {{ (project.status | status).text }}
-            </span>
-
-          </div>
-          <p class="mb-4">{{project.description}}</p>
-          <div class="row mb-4">
-            <div class="col-sm-6 mb-sm-0 mb-3 d-flex">
-              <div class="dt-icon bgl-info mr-3">
-                <svg width="24" height="24" viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M19 5H18V3C18 2.73478 17.8946 2.48043 17.7071 2.29289C17.5196 2.10536 17.2652 2 17 2C16.7348 2 16.4804 2.10536 16.2929 2.29289C16.1054 2.48043 16 2.73478 16 3V5H8V3C8 2.73478 7.89464 2.48043 7.70711 2.29289C7.51957 2.10536 7.26522 2 7 2C6.73478 2 6.48043 2.10536 6.29289 2.29289C6.10536 2.48043 6 2.73478 6 3V5H5C4.20435 5 3.44129 5.31607 2.87868 5.87868C2.31607 6.44129 2 7.20435 2 8V9H22V8C22 7.20435 21.6839 6.44129 21.1213 5.87868C20.5587 5.31607 19.7957 5 19 5Z"
-                    fill="#92caff"></path>
-                  <path
-                    d="M2 19C2 19.7956 2.31607 20.5587 2.87868 21.1213C3.44129 21.6839 4.20435 22 5 22H19C19.7957 22 20.5587 21.6839 21.1213 21.1213C21.6839 20.5587 22 19.7956 22 19V11H2V19Z"
-                    fill="#51A6F5"></path>
-                </svg>
-              </div>
-              <div>
-                <span>Start Date</span>
-                <p class="mb-0 pt-1 font-w500 text-black">{{
-                  project.startDate | date:'EEEE, MMM d, y'
-                  }}</p>
-              </div>
-            </div>
-            <div class="col-sm-6 d-flex">
-              <div class="dt-icon mr-3 bgl-danger">
-                <svg width="19" height="24" viewBox="0 0 19 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M18.6601 8.6858C18.5437 8.44064 18.2965 8.28427 18.025 8.28427H10.9728L15.2413 1.06083C15.3697 0.843469 15.3718 0.573844 15.2466 0.354609C15.1214 0.135375 14.8884 -9.37014e-05 14.6359 4.86277e-08L8.61084 0.000656299C8.3608 0.000750049 8.12957 0.1335 8.00362 0.349453L0.0958048 13.905C-0.0310859 14.1224 -0.0319764 14.3911 0.0934142 14.6094C0.218805 14.8277 0.451352 14.9624 0.703117 14.9624H7.71037L5.66943 23.1263C5.58955 23.4457 5.74213 23.7779 6.03651 23.9255C6.13691 23.9757 6.24459 24 6.35123 24C6.55729 24 6.75923 23.9094 6.89638 23.7413L18.5699 9.43186C18.7415 9.22148 18.7766 8.93105 18.6601 8.6858V8.6858Z"
-                    fill="#FF4C41"></path>
-                </svg>
-              </div>
-              <div>
-                <span>End Data</span>
-                <p class="mb-0 pt-1 font-w500 text-black">{{
-                  project.endDate| date:'EEEE, MMM d, y'
-                  }}</p>
-              </div>
-            </div>
-          </div>
-          <div class="d-flex flex-wrap align-items-center">
-            <div class="mr-auto mb-4">
-              <p class="mb-2 font-w500 text-black">Members</p>
-              <ul class="users-lg">
-                @for (item of project.teams; track $index) {
-                <li><img
-                    src="../../../assets/TemplateDahboard/images/logo.png"
-                    alt></li>
-                }
-              </ul>
-            </div>
-            <div class="d-flex align-items-center mb-4">
-              <div class="text-center border-bx mr-3">
-                <span>Budget</span>
-                <p
-                  class="mb-0 pt-1 font-w500 text-black">${{project.budget}}</p>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-6">
-              <div>Questions:<span
-                  class="text-black ml-3 font-w600">56</span></div>
-              <div>Comments:<span
-                  class="text-black ml-3 font-w600">200</span></div>
-            </div>
-            <div class="col-6">
-              <h6>Progress
-                <span
-                  class="pull-right">{{project.totalProgressPercentageProject}}%</span>
-              </h6>
-              <div class="progress ">
-                <div
-                  class="progress-bar bg-info progress-animated"
-                  [style.width.%]="project.totalProgressPercentageProject"
-                  style="height:6px;"
-                  role="progressbar"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+<div class="container mt-12">
+  <!-- Project Title and Description -->
+  <div class="row mb-4 text-center">
+    <div class="col-md-12">
+      <h1 class="display-4 font-weight-bold">{{project.projectName}}</h1>
+      <p class="lead text-muted">{{project.description}}</p>
     </div>
+  </div>
 
+  <div class="row">
     <!-- Card for Project Tasks -->
     <div class="col-md-6 mb-4">
-      <div class="card" style="width: auto; ">
+      <div class="card">
         <div class="card-header">
-          <h5 class="card-title">Project Tasks</h5>
+          <h4 class="card-title">Project Tasks</h4>
         </div>
-        <ng-container *ngFor="let task of project.tasks">
-          <div class="card" style="height: auto;">
-            <div class="project-info">
-              <div class="col-xl-6 my-2 col-lg-4 col-sm-6">
-                <p class="text-primary mb-1">#P-000441425</p>
-                <h5 class="title font-w600 mb-2">
-                  <a class="text-black"
-                    (click)="viweTaskDetails(task.taskId!)">{{task.taskName}}</a>
-                </h5>
-                <div class="text-dark">
-                  <i class="fa fa-calendar-o mr-3" aria-hidden="true"></i>
-                  Date: {{ task.dueDate | date:'dd.MM.yyyy'}}
-                </div>
-              </div>
-              <div class="col-xl-3 my-2 col-lg-4 col-sm-6">
-                {{ task.description }}
-              </div>
-              <div class="col-xl-3 my-2 col-lg-6 col-sm-6">
-                <div class="d-flex project-status align-items-center">
-                  <span class="badge d-sm-inline-block d-none"
-                    [style.background-color]="(task.status | status).color">
-                    {{ (task.status | status).text }}
-                  </span>
-                </div>
-              </div>
-            </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover table-responsive-sm">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Task Name</th>
+                  <th>Description</th>
+                  <th>Due Date</th>
+                  <th>Status</th>
+                  <th>Details</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (task of project.tasks; track $index) {
+                  <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>
+                      <a class="text-black" (click)="viweTaskDetails(task.taskId!)">{{ task.taskName | truncateText:2 }}</a>
+                    </td>
+                    <td>{{ task.description | truncateText:2 }}</td>
+                    <td>{{ task.dueDate | date:'dd.MM.yyyy' }}</td>
+                    <td>
+                      <span class="badge" [style.background-color]="(task.status | status).color">
+                        {{ (task.status | status).text }}
+                      </span>
+                    </td>
+                    <td>
+                      <a class="btn btn-outline-primary btn-sm" (click)="viweTaskDetails(task.taskId!)">
+                        <i class="bi bi-eye-fill me-1"></i>
+                      </a>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
           </div>
-        </ng-container>
+        </div>
       </div>
     </div>
 
     <!-- Card for Project Documents -->
-      <div class="col-md-6 mb-4">
-        <div class="card" >
-          <div class="card-header">
-            <h5 class="card-title">Project Documents</h5>
-          </div>
-          <div *ngFor="let document of project.documents"
-            class="card-body d-flex flex-column flex-md-row justify-content-between align-items-start">
-
-            <!-- معلومات المستند مع الأيقونات بجانب النصوص -->
-            <div class="flex-grow-1 mb-3 mb-md-0">
-              <h5 class="card-title mb-3">{{ document.name }}</h5>
-
-              <p class="card-text d-flex align-items-center mb-2">
-                <i class="bi bi-person-fill fs-5 text-secondary me-1"></i>
-                <strong>Created by:</strong> {{ document.size }}
-              </p>
-              <p class="card-text d-flex align-items-center">
-                <i class="bi bi-calendar-fill fs-5 text-success me-1"></i>
-                <strong>Uploaded on:</strong> {{ document.lastModified|
-                date:'medium' }}
-              </p>
-            </div>
-
-            <!-- الأزرار مرتبة عموديًا -->
-            <div class="d-flex flex-column align-items-start">
-              <a [href]="document.name" target="_blank"
-                class="btn btn-secondary mb-2">
-                <i class="bi bi-eye-fill me-1"></i>
-              </a>
-              <button
-                (click)="downloadDocument(document.name)"
-                class="btn btn-primary">
-                <i class="bi bi-download me-1"></i>
-              </button>
-            </div>
-          </div>
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Project Documents</h4>
         </div>
-              <!-- حالة عدم وجود مستندات -->
-      <div class="col-md-6 mb-4" *ngIf="project.documents.length === 0">
-        <div class="card">
-          <div class="card-body text-center">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover table-responsive-sm">
+              <thead>
+                <tr>
+                  <th>Document Name</th>
+                  <th>Uploaded On</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (document of project.documents; track $index) {
+                  <tr>
+                    <td>{{ document.documentName }}</td>
+                    <td>{{ document.uploadedDate | date:'medium' }}</td>
+                    <td>
+                      <a (click)="downloadDocument(document.documentURL)" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-download me-1"></i>
+                      </a>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <div *ngIf="project.documents.length === 0" class="text-center">
             <i class="bi bi-file-earmark-excel-fill fs-1 text-muted mb-3"></i>
             <p class="text-muted">No documents available for this project.</p>
           </div>
         </div>
       </div>
-      </div>
+    </div>
 
-
-
-    <!-- Card for Project Teams (if needed) -->
-    <div class="col-md-6 mb-4">
+    <!-- Card for Project Teams -->
+    <div class="col-md-12 mb-4">
       <div class="card">
         <div class="card-header">
-          <h5 class="card-title">Project Teams</h5>
+          <h4 class="card-title">Project Teams</h4>
         </div>
         <div class="card-body">
-          @for (team of project.teams; track $index) {
-            <div class="col-xl-4 col-md-6" id="team-1">
-                <div class="card shadow">
-                    <div class="card-body">
-                        <div
-                            class="d-flex mb-4 align-items-center">
-                            <div class="avatar-group d-flex">
-                                @for (teamMember of team.teamMembers; track $index) {
-                                    <div class="avatar-group-item">
-                                        <a href="#"
-                                            class="d-inline-block"
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="top"
-                                            title="تيريل سوتو">
-                                            <img
-                                                src="../../../assets/TemplateDahboard/images/logo.png"
-                                                alt
-                                                class="rounded-circle small-avatar">
-                                        </a>
-                                    </div>
-                                }
-                            </div>
-                            <!-- end avatar group -->
-                            <div class="dropdown ms-auto">
-                                <a href="#" class="text-muted"
-                                    role="button"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    <i
-                                        class="mdi mdi-dots-horizontal font-size-18"></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item"
-                                            href="#">Update</a></li>
-                                    <li><hr
-                                            class="dropdown-divider"></li>
-                                    <li>
-                                        <a
-                                            class="dropdown-item text-danger leave-team"
-                                            data-id="1"
-                                            data-bs-toggle="modal"
-                                            data-bs-target=".bs-add-leave-team"
-                                            href="#">
-                                            مغادرة الفريق
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <!-- end dropdown -->
-
-                        </div>
-                        <div>
-                            <h5
-                                class="mb-1 font-size-18 text-primary">{{team.teamName}}</h5>
-                            <p
-                                class="text-muted font-size-14 mb-0">{{team.description |truncateText:4 }}</p>
-                        </div>
-                    </div>
-                    <!-- end card-body -->
-                </div>
-                <!-- end card -->
-            </div>
-        }
-        <!-- end col -->
-          <div *ngIf="project.teams!.length === 0" class="text-center">
-            <p>No teams assigned to this project.</p>
+          <div class="table-responsive">
+            <table class="table table-hover table-responsive-sm">
+              <thead>
+                <tr>
+                  <th>Team Name</th>
+                  <th>Description</th>
+                  <th>Members</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (team of project.teams; track $index) {
+                  <tr>
+                    <td>{{ team.teamName }}</td>
+                    <td>{{ team.description | truncateText:4 }}</td>
+                    <td>
+                      <div class="avatar-group d-flex">
+                        <ng-container *ngFor="let teamMember of team.teamMembers">
+                          <div class="avatar-group-item">
+                            <img src="../../../assets/TemplateDahboard/images/logo.png" alt class="rounded-circle small-avatar">
+                          </div>
+                        </ng-container>
+                      </div>
+                    </td>
+                    <td>
+                      <a class="btn btn-outline-primary btn-sm" (click)="viewTeamDetails(team.teamId)">
+                        <i class="bi bi-eye-fill me-1"></i>
+                      </a>
+                    </td>
+                  </tr>
+                }
+                @if (project.teams.length === 0) {
+                  <tr>
+                    <td colspan="4" class="text-center">No teams assigned to this project.</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+

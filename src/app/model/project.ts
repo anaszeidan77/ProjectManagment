@@ -13,7 +13,7 @@ export interface Project{
     createdBy:string;
     createdAt:Date;
     isDeleted:boolean;
-    documents: File[];
+    documents: Document[];
     resources: Resource[];
     tasks: Task[];
     teams: Team[];

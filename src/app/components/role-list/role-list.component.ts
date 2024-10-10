@@ -4,6 +4,7 @@ import { Role } from '../../model/role';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-role-list',
@@ -18,7 +19,8 @@ export class RoleListComponent implements OnInit{
   constructor(
      private roleServices : RoleService
     ,private router: Router,
-    private fb: FormBuilder){
+     private fb: FormBuilder,
+     private toastr:ToastrService){
       this.roleForm = this.fb.group({
         name: ['', Validators.required]
       });
@@ -30,6 +32,7 @@ export class RoleListComponent implements OnInit{
   getAllRoles(){
     this.roleServices.getAll().subscribe({
       next:(response)=> {
+        
         this.roles = response;
       },
       error(err) {
@@ -45,13 +48,13 @@ export class RoleListComponent implements OnInit{
 
       this.roleServices.addRole(newRole).subscribe({
         next: (response) => {
-          console.log('تم إضافة الدور بنجاح', response);
+          this.toastr.success("add role successeded","success")
           this.getAllRoles()
 
           this.router.navigate(['/roles']);
         },
         error: (error) => {
-          console.error('حدث خطأ أثناء إضافة الدور', error);
+          this.toastr.error("error in add rols","error")
 
         }
       });
