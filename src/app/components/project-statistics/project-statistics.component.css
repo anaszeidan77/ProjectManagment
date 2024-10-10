@@ -1,0 +1,17 @@
+.card {
+    transition: transform 0.2s;
+    border-radius: 10px;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+  }
+  
+  .card-header {
+    font-weight: bold;
+  }
+  
+  .card-body {
+    font-size: 1.5rem;
+  }
+  

@@ -1,0 +1,92 @@
+<div class="container mt-5">
+    <h1 class="text-center font-weight-bold">{{ StatisticsProject.projectName }}</h1>
+  
+    <div class="row mt-4">
+      <div class="col-md-4">
+        <div class="card text-center">
+          <div class="card-header">
+            <h5>Total Teams</h5>
+          </div>
+          <div class="card-body">
+            <i class="fas fa-users fa-3x text-primary"></i>
+            <p class="card-text">{{ StatisticsProject.totalTeams }}</p>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-md-4">
+        <div class="card text-center">
+          <div class="card-header">
+            <h5>Total Main Tasks</h5>
+          </div>
+          <div class="card-body">
+            <i class="fas fa-tasks fa-3x text-success"></i>
+            <p class="card-text">{{ StatisticsProject.totalMainTasks }}</p>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-md-4">
+        <div class="card text-center">
+          <div class="card-header">
+            <h5>Total Sub Tasks</h5>
+          </div>
+          <div class="card-body">
+            <i class="fas fa-tasks fa-3x text-info"></i>
+            <p class="card-text">{{ StatisticsProject.totalSubTasks }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="row mt-4">
+      <div class="col-md-4">
+        <div class="card text-center">
+          <div class="card-header">
+            <h5>Completed Main Tasks</h5>
+          </div>
+          <div class="card-body">
+            <i class="fas fa-check-circle fa-3x text-success"></i>
+            <p class="card-text">{{ StatisticsProject.taskCompletionStats.completedMainTasks }}</p>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-md-4">
+        <div class="card text-center">
+          <div class="card-header">
+            <h5>Incomplete Main Tasks</h5>
+          </div>
+          <div class="card-body">
+            <i class="fas fa-times-circle fa-3x text-danger"></i>
+            <p class="card-text">{{ StatisticsProject.taskCompletionStats.incompleteMainTasks }}</p>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-md-4">
+        <div class="card text-center">
+          <div class="card-header">
+            <h5>Completed Sub Tasks</h5>
+          </div>
+          <div class="card-body">
+            <i class="fas fa-check-circle fa-3x text-success"></i>
+            <p class="card-text">{{ StatisticsProject.taskCompletionStats.completedSubTasks }}</p>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-md-4 mt-4">
+        <div class="card text-center">
+          <div class="card-header">
+            <h5>Incomplete Sub Tasks</h5>
+          </div>
+          <div class="card-body">
+            <i class="fas fa-times-circle fa-3x text-danger"></i>
+            <p class="card-text">{{ StatisticsProject.taskCompletionStats.incompleteSubTasks }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
