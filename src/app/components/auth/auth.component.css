@@ -76,4 +76,10 @@
   cursor: pointer;
   color: #6c757d;
 }
-  
+
+.toggle-password {
+  position: absolute;
+  bottom: 150px; /* يمكنك تعديل هذا الرقم حسب الحاجة */
+  right: 10px; /* يمكنك تعديل هذا الرقم حسب الحاجة */
+  cursor: pointer; /* يجعل المؤشر يظهر كيد عند المرور فوق الأيقونة */
+}

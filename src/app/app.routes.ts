@@ -43,7 +43,7 @@ export const routes: Routes = [
   { path: 'roles', component: RoleListComponent }, // استخدام التحميل العادي
   { path: 'profile', component: UserProfileComponent }, // استخدام التحميل العادي
   { path: 'projects', component: ProjectListComponent }, 
-  { path: '/accessDenied', component: AccessDeniedComponent }, 
+  //{ path: '/accessDenied', component: AccessDeniedComponent }, 
   { path: 'statistics-project-details/:id', component: ProjectStatisticsComponent }, 
   {
     path: 'login',
