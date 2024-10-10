@@ -9,6 +9,7 @@ import { PaginatedResponse } from '../model/PaginatedResponse';
   providedIn: 'root'
 }) 
 export class TaskService {
+  private url='https://localhost:7058/api'
   private apiUrl = `${environment.url}/Tasks`;
   constructor(private http :HttpClient) { }
 
@@ -40,7 +41,7 @@ export class TaskService {
     const url = `${this.apiUrl}/${id}`;
     console.log('Update URL:', url); 
     console.log(task.taskId)
-    return this.http.put(`${environment.url}/Tasks/${id}`, task, this.httpOptions)
+    return this.http.put(`${this.url}/Tasks/task/${id}`, task, this.httpOptions)
     .pipe(
       catchError(this.handleError<any>('updateTask'))
     );
