@@ -90,7 +90,7 @@ export class RoleListComponent implements OnInit{
         next: (response) => {
           console.log('تم إضافة الدور بنجاح', response);
           this.getAllRoles()
-          this.router.navigate(['/roles']);
+          this.router.navigate(['/dashboard/roles']);
         },
         error: (error) => {
           console.error('حدث خطأ أثناء إضافة الدور', error);
@@ -103,7 +103,7 @@ export class RoleListComponent implements OnInit{
   }
 
   ManagePermissions(roleId : string):void{
-    this.router.navigate(['/ManagePermissions',roleId]);
+    this.router.navigate(['/dashboard/ManagePermissions',roleId]);
   }
   openMode(model : any){
 

@@ -9,7 +9,7 @@ import { PaginatedResponse } from '../model/PaginatedResponse';
   providedIn: 'root'
 }) 
 export class TaskService {
-  private url='https://localhost:7058/api'
+  //private url='https://localhost:7058/api'
   private apiUrl = `${environment.url}/Tasks`;
   constructor(private http :HttpClient) { }
 
@@ -46,7 +46,7 @@ export class TaskService {
     const url = `${this.apiUrl}/${id}`;
     console.log('Update URL:', url); 
     console.log(task.taskId)
-    return this.http.put(`${this.url}/Tasks/task/${id}`, task, this.httpOptions)
+    return this.http.put(`${this.apiUrl}/Tasks/${id}`, task, this.httpOptions)
     .pipe(
       catchError(this.handleError<any>('updateTask'))
     );
@@ -71,15 +71,15 @@ export class TaskService {
     return this.http.post<any>(`${this.apiUrl}/${subTaskId}`,{subTaskId},{'responseType':'text' as 'json'})
   }
 
-    // إعدادات HTTP
+
     private httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
 
-    // التعامل مع الأخطاء
+    
     private handleError<T>(operation = 'operation', result?: T) {
       return (error: any): Observable<T> => {
-        console.error(error); // يمكنك استبدال هذا بـ service لتسجيل الأخطاء
+        console.error(error); 
         return of(result as T);
       };
     }
