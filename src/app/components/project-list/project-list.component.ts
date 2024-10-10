@@ -9,6 +9,7 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 
+
 @Component({
   selector: 'app-project-list',
   standalone: true,
@@ -74,7 +75,9 @@ export class ProjectListComponent implements OnInit {
     this.pageSize = Number(this.route.snapshot.queryParamMap.get('pageSize')) || 10;
     this.getAllProjects();
     this.initFormAdd()
-    this.initFormEdit()
+    this.initFormEdit();
+    
+    
   }
 
 
@@ -151,7 +154,7 @@ export class ProjectListComponent implements OnInit {
 
 
 
-  onSubmit(): void {
+  AddProject(): void {
     this.projectForm.patchValue({
       createdBy: localStorage.getItem('userName'),
       userId: localStorage.getItem('userId')
@@ -189,7 +192,7 @@ export class ProjectListComponent implements OnInit {
         project.startDate = project.startDate ? new Date(project.startDate).toISOString().split('T')[0] : null;
         project.endDate = project.endDate ? new Date(project.endDate).toISOString().split('T')[0] : null;
 
-        console.log('Formatted Dates:', project.startDate, project.endDate);
+        console.log('Date:', project.startDate, project.endDate);
 
         this.projectFormEdit.patchValue(project);
         this.setDocuments(project.documents);

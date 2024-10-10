@@ -48,18 +48,17 @@ export class RoleListComponent implements OnInit{
 
       this.roleServices.addRole(newRole).subscribe({
         next: (response) => {
-          this.toastr.success("add role successeded","success")
+          console.log('تم إضافة الدور بنجاح', response);
           this.getAllRoles()
-
           this.router.navigate(['/roles']);
         },
         error: (error) => {
-          this.toastr.error("error in add rols","error")
+          console.error('حدث خطأ أثناء إضافة الدور', error);
 
         }
       });
     } else {
-      console.error('النموذج غير صالح');
+      console.error('ivaldi Form');
     }
   }
 
