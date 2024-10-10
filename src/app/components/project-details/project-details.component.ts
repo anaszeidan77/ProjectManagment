@@ -42,7 +42,7 @@ export class PrjectDetailsComponent implements OnInit{
     })
   }
   viweTaskDetails(taskId:string):void{
-    this.router.navigate(['/task-details',taskId])
+    this.router.navigate(['/dashboard/task-details',taskId])
   }
   downloadDocument(documentURL: string): void {
     const a = document.createElement('a');
@@ -53,6 +53,6 @@ export class PrjectDetailsComponent implements OnInit{
     document.body.removeChild(a);
   }
   viewTeamDetails(teamId:string) {
-    this.router.navigate(['/TeamDetails',teamId])
+    this.router.navigate(['/dashboard/TeamDetails',teamId])
   }
 }

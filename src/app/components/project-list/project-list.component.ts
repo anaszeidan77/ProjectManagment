@@ -289,7 +289,7 @@ export class ProjectListComponent implements OnInit {
   }
 
   changePage(pageNumber: number): void {
-    this.router.navigate(['/projects'], {
+    this.router.navigate(['/dashboard/projects'], {
       relativeTo: this.route,
       queryParams: { pageNumber: pageNumber, pageSize: this.pageSize },
       queryParamsHandling: 'merge'
@@ -301,9 +301,9 @@ export class ProjectListComponent implements OnInit {
 
 
   projectDetails(id:string){
-    this.router.navigate(['project-details',id])
+    this.router.navigate(['/dashboard/project-details',id])
   }
   StatisticsProjectDetails(id:string){
-    this.router.navigate(['statistics-project-details',id])
+    this.router.navigate(['/dashboard/statistics-project-details',id])
   }
 }

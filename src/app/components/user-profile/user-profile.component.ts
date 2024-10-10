@@ -118,7 +118,7 @@ export class UserProfileComponent implements OnInit {
     this.modalService.open(modal);
   }
   viewDetails(teamId:string) {
-    this.router.navigate(['/TeamDetails',teamId])
+    this.router.navigate(['/dashboard/TeamDetails',teamId])
   }
   areAllSubTasksCompleted(subTasks: SubTask[]): boolean {
     return subTasks.every(subTask => subTask.isCompleted);
