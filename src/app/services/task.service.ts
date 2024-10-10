@@ -15,10 +15,15 @@ export class TaskService {
 
 
 
-  getTasks(pageNumber: number, pageSize: number):Observable<PaginatedResponse<Task>>{
+
+  getTasks(pageNumber: number, pageSize: number,createBy:string):Observable<PaginatedResponse<Task>>{
     let params = new HttpParams()
     .set('pageNumber', pageNumber.toString())
     .set('pageSize', pageSize.toString());
+
+      if(createBy){
+      params = params.set('CreatedBy', createBy);
+    }
     return this.http.get<PaginatedResponse<Task>>(this.apiUrl, { params: params });
 
   }
@@ -48,12 +53,12 @@ export class TaskService {
   }
   
 
-  // خدمة الحذف
+  
   delete(Id: string): Observable<Task> {
     return this.http.delete<Task>(`${this.apiUrl}/${Id}`).pipe(
       catchError(err => {
         console.error('Error in delete method:', err);
-        return throwError(err); // إرسال الخطأ إلى المراقب
+        return throwError(err); 
       })
     );
   }

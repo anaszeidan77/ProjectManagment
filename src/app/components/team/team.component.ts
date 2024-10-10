@@ -22,63 +22,59 @@ import { PaginationComponent } from '../shared/pagination/pagination.component';
   selector: 'app-team',
   standalone: true,
   imports: [CommonModule, TestPipe, TruncateTextPipe,
-     TeamMembersCountPipe,RouterModule,ReactiveFormsModule,NgxPaginationModule,PaginationComponent],
+    TeamMembersCountPipe, RouterModule, ReactiveFormsModule, NgxPaginationModule, PaginationComponent],
   templateUrl: './team.component.html',
   styleUrl: './team.component.css'
 })
-export class TeamComponent implements OnInit,OnDestroy {
+export class TeamComponent implements OnInit, OnDestroy {
 
-  @ViewChild('addModal', { static: false }) addModal!: ElementRef; 
-  @ViewChild('closeButton', { static: false }) closeButton!: ElementRef; 
+  @ViewChild('addModal', { static: false }) addModal!: ElementRef;
+  @ViewChild('closeButton', { static: false }) closeButton!: ElementRef;
 
   pages: number[] = [];
-  usersEdit:User[]=[]
-  users:User[]=[];
-  projects:Project[]=[];
+  usersEdit: User[] = []
+  users: User[] = [];
+  projects: Project[] = [];
   teams: Team[] = [];
   totalItems: number = 0;
   pageSize: number = 10;
   currentPage: number = 1;
   subscription!: Subscription;
-  addTeamForm!:FormGroup;
+  addTeamForm!: FormGroup;
   editTeamForm!: FormGroup;
   selectedTeamId!: string;
-
-
+  teamId!:string;
+  createBy!:any;
   constructor(
     private teamsService: TeamsService,
     private route: ActivatedRoute,
     private router: Router,
-    private projectsService:ProjectsService,
-    private user:UserService,
-    private fb:FormBuilder,
+    private projectsService: ProjectsService,
+    private user: UserService,
+    private fb: FormBuilder,
     private modalService: NgbModal,
     private renderer: Renderer2
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-  
+    this.createBy=localStorage.getItem('userId');
     this.currentPage = Number(this.route.snapshot.queryParamMap.get('pageNumber')) || 1;
     this.pageSize = Number(this.route.snapshot.queryParamMap.get('pageSize')) || 10;
 
 
-   
-    
     this.inintAddFrom();
     this.initEditForm();
 
     this.getTeams();
-     this.getAllUsers();
+    this.getAllUsers();
     this.getAllProjects();
 
-    
-
   }
-  viewDetails(teamId:string) {
-    this.router.navigate(['/TeamDetails',teamId])
+  viewDetails(teamId: string) {
+    this.router.navigate(['/TeamDetails', teamId])
   }
 
-  
+
   initEditForm() {
     this.editTeamForm = this.fb.group({
       teamName: ['', Validators.required],
@@ -87,42 +83,42 @@ export class TeamComponent implements OnInit,OnDestroy {
       projectId: ['', Validators.required]
     });
   }
-  inintAddFrom(){
-    this.addTeamForm=this.fb.group({
-      teamName:['',Validators.required],
-      description:['',Validators.required],
+  inintAddFrom() {
+    this.addTeamForm = this.fb.group({
+      teamName: ['', Validators.required],
+      description: ['', Validators.required],
       userIds: [[], Validators.required],
-      projectId:['',Validators.required]
+      projectId: ['', Validators.required]
     })
   }
- 
+
 
 
   Add() {
     const teamMembers = this.addTeamForm.value.userIds.map((userId: string) => ({
       userId: userId,
-      createdBy: 'admin'  
+      createdBy: localStorage.getItem('userId'),
     }));
     const teamData: Team = {
       ...this.addTeamForm.value,
-      createdBy: 'admin',//current user
-      teamMembers: teamMembers  
+      createdBy: localStorage.getItem('userId'),
+      teamMembers: teamMembers
     };
-  
-  console.log(teamData);
-  
-  
+
+    console.log(teamData);
+
+
     this.teamsService.addTeam(teamData).subscribe({
-      next:(response)=>{
+      next: (response) => {
         console.log('sussess');
         this.closeModal()
-      this.getTeams();
-        console.log('Model ',this.addModal);
-        
+        this.getTeams();
+        console.log('Model ', this.addModal);
+
       },
-      error:(error)=>{
+      error: (error) => {
         console.log('errors');
-        
+
       }
     })
   }
@@ -131,25 +127,30 @@ export class TeamComponent implements OnInit,OnDestroy {
       this.renderer.selectRootElement(this.closeButton.nativeElement).click();
     }
   }
-  
+
   getTeams(): void {
-    this.subscription = this.teamsService.getAll(this.currentPage, this.pageSize)
-    .subscribe(
-      {
-        next:(response)=>{
-           
+   this.createBy= localStorage.getItem('userId') || null;
+  
+    this.subscription = this.teamsService.getAll(this.currentPage, this.pageSize,this.createBy)
+      .subscribe(
+        {
+          next: (response) => {
+
             this.teams = response.data;
             this.totalItems = response.totalItems;
             this.pageSize = response.pageSize;
             this.currentPage = response.pageNumber;
-          
-        },
-        error:(error)=>{
-console.log(error);
 
+          },
+          error: (error) => {
+            console.log(error);
+
+          }
         }
-      }
-    );
+      );
+
+
+    
   }
 
 
@@ -172,31 +173,31 @@ console.log(error);
 
 
   }
-  
-  getAllUsers(){
+
+  getAllUsers() {
     this.user.getAll().subscribe(
       {
-        next:(response)=>{
-          this.users=response;
-        
+        next: (response) => {
+          this.users = response;
+
         },
-        error:(error)=>{
+        error: (error) => {
 
         }
       }
     )
   }
-  getAllProjects(){
-    this.projectsService.getAll(1,10).subscribe({
-      next:(response)=>{
-        this.projects=response.data;
+  getAllProjects() {
+    this.projectsService.getAll(1,100,this.createBy).subscribe({
+      next: (response) => {
+        this.projects = response.data;
       },
-      error:(error)=>{
-        
+      error: (error) => {
+
       }
     })
   }
-  deleteTeam(teamId: string) {    
+  deleteTeam(teamId: string) {
     const modalRef = this.modalService.open(ConfirmModalComponent);
     modalRef.componentInstance.message = 'Are you sure you want to delete this teame?';
 
@@ -205,17 +206,17 @@ console.log(error);
         this.teamsService.delete(teamId)
           .subscribe({
             next: (response) => {
-     
+
               console.log('team deleted successfully');
               const index = this.teams.findIndex(team => team.teamId === teamId);
-            
+
               if (index !== -1) {
                 this.teams.splice(index, 1);
               }
-             // this.toastr.success('team deleted successfully', 'Success');
+              // this.toastr.success('team deleted successfully', 'Success');
             },
             error: (error) => {
-              
+
               console.error('Error deleting team:', error);
               //this.toastr.error('Error deleting team','Error')
             }
@@ -227,31 +228,32 @@ console.log(error);
 
 
   updateTeam() {
-    
-    console.log('data ',this.editTeamForm.value);
-    
+
+    console.log('data ', this.editTeamForm.value);
+
     if (this.editTeamForm.invalid) {
       return;
     }
 
     const teamMembers = this.editTeamForm.value.userIds.map((userId: string) => ({
       userId: userId,
-      updatedBy:localStorage.getItem('userId')
+      CreatedBy: localStorage.getItem('userId')
     }));
     const updatedTeam: Team = {
       teamId: this.selectedTeamId,
       ...this.editTeamForm.value,
-      updatedBy:localStorage.getItem('userId'),
-      teamMembers: teamMembers  
+      // updatedBy: localStorage.getItem('userId'),
+      CreatedBy:localStorage.getItem('userId'),
+      teamMembers: teamMembers,
     };
-  
+
     console.log(updatedTeam);
-  
-    this.teamsService.update(updatedTeam).subscribe({
+
+    this.teamsService.update(this.teamId,updatedTeam).subscribe({
       next: (response) => {
         console.log(response);
         this.closeModal()
-       
+
         this.getTeams();
       },
       error: (error) => {
@@ -260,25 +262,19 @@ console.log(error);
     });
   }
 
-    
-    openEditModal(team: Team) {
-     
-      this.usersEdit = this.users.filter(user => team.teamMembers.some(member => member.userId === user.id));
 
-      this.selectedTeamId = team.teamId;
-      this.editTeamForm.patchValue({
-        teamName: team.teamName,
-        description: team.description,
-        userIds: team.teamMembers.map(member => member.userId),
-        projectId: team.projectId
-      });
-  
-    }
+  openEditModal(team: Team) {
+    this.teamId=team.teamId;
+    this.usersEdit = this.users.filter(user => team.teamMembers.some(member => member.userId === user.id));
 
+    this.selectedTeamId = team.teamId;
+    this.editTeamForm.patchValue({
+      teamName: team.teamName,
+      description: team.description,
+      userIds: team.teamMembers.map(member => member.userId),
+      projectId: team.projectId,
+      
+    });
+
+  }
 }
-
-
-
-
-
-

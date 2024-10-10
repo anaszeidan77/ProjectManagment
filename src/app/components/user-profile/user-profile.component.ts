@@ -63,7 +63,7 @@ export class UserProfileComponent implements OnInit {
     });
   }
   getTeams(): void {
-    this.subscription = this.teamService.getAll(this.currentPage, this.pageSize)
+    this.subscription = this.teamService.getTemaAll(this.currentPage, this.pageSize)
       .subscribe({
         next: (response) => {
 
