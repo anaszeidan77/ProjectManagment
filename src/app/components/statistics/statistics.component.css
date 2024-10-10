@@ -1,0 +1,17 @@
+.card {
+    background-color: #f8f9fa; /* لون خلفية البطاقة */
+  }
+  
+  .card-title {
+    font-weight: bold; /* جعل عنوان البطاقة أكثر بروزاً */
+  }
+  
+  .table th {
+    background-color: #007bff; /* لون خلفية رأس الجدول */
+    color: white; /* لون النص */
+  }
+  
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f2f2f2; /* لون الصفوف الفردية */
+  }
+  

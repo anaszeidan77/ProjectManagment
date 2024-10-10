@@ -1,12 +1,13 @@
 
-
 import { Routes } from '@angular/router';
+
 import { setLayout } from './resolvers/layout.resolver';
 import { PageLayout } from './enums/page-layout.enum';
 import { authGuard } from './guards/auth.guard';
 import { AuthComponent } from './components/auth/auth.component';
 import { TeamComponent } from './components/team/team.component';
 import { TeamDetailsComponent } from './components/team-details/team-details.component';
+import { StatisticsComponent } from './components/statistics/statistics.component';
 
 export const routes: Routes =
   [
@@ -22,7 +23,7 @@ export const routes: Routes =
         layout: () => setLayout(PageLayout.Dashboard)
       },
       children: [
-
+        
       ]
     },
 
@@ -39,6 +40,8 @@ export const routes: Routes =
         .then(t => t.TaskComponent),
       canActivate: ([authGuard]),
     },
+    {path:'Statistics',component:StatisticsComponent},
+
     {
       path: 'users', loadComponent: () => import('./components/auth/user/user.component')
         .then(u => u.UserComponent),
