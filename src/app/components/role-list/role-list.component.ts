@@ -92,7 +92,7 @@ export class RoleListComponent implements OnInit{
         next: (response) => {
           this.toastr.success("add role success","success")
           this.getAllRoles()
-          this.router.navigate(['/roles']);
+          this.router.navigate(['/dashboard/roles']);
         },
         error: (error) => {
          this.toastr.error("error in add role","error")
@@ -105,7 +105,7 @@ export class RoleListComponent implements OnInit{
   }
 
   ManagePermissions(roleId : string):void{
-    this.router.navigate(['/ManagePermissions',roleId]);
+    this.router.navigate(['/dashboard/ManagePermissions',roleId]);
   }
   openMode(model : any){
 

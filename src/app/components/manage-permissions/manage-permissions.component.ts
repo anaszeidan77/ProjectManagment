@@ -46,7 +46,7 @@ export class ManagePermissionsComponent implements OnInit {
     this.roleServices.updatePermissions(updatedData).subscribe({
       next: (response) => {
         console.log('update permissions sacsseded');
-        this.router.navigate(['/roles'])
+        this.router.navigate(['/dashboard/roles'])
       },
       error: (err) => {
         console.log('error in permissions', err);
